@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Storage;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('roman-camp')->group(function() {
+    Zeus::routes();
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

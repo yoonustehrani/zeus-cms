@@ -2,11 +2,10 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use \Zeus\Models\User as ZeusUser;
 
-class User extends Authenticatable
+class User extends ZeusUser
 {
     use Notifiable;
 
