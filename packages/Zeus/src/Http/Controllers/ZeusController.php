@@ -16,8 +16,7 @@ class ZeusController extends Controller
      */
     public function index()
     {
-        $user = User::find(1);
-        return $user;
+        return view("ZEV::components.pages.dashboard");
     }
 
     /**

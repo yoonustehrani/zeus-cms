@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('roman-camp')->group(function() {
+Route::prefix('zeus')->group(function() {
     Zeus::routes();
 });
 
