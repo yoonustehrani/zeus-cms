@@ -15,6 +15,6 @@ class ZeusGateWayMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return auth()->user()->hasPermission('browse_views') ? $next($request) : abort(503);
+        return auth()->user()->hasPermission('browse_views') ? $next($request) : abort(403);
     }
 }

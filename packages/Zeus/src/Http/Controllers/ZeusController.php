@@ -3,12 +3,9 @@
 namespace Zeus\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-// use Illuminate\Support\Facades\DB;
-use Zeus\Models\Role;
+use Zeus\Database\Schema\ZeusSchemaManager;
+use Zeus\Facades\ZeusFacade;
 
 class ZeusController extends Controller
 {
