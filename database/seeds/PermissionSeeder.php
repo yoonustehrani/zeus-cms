@@ -28,7 +28,7 @@ class PermissionSeeder extends Seeder
                     'key' => $permission_keys[$key] . $table,
                     'table_name' => (! in_array($table, $skips)) ? $table : null,
                 ];
-                Permission::craete($permission);
+                Permission::create($permission);
             }
         }
     }

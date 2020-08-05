@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Zeus\Models\Menu as ModelsMenu;
 
-class Menu extends Model
+class Menu extends ModelsMenu
 {
-    //
+
 }
