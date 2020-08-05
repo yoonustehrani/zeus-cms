@@ -2,6 +2,10 @@
 
 return [
     'website' => 'sampitechgroup.net',
+    'package' => [
+        'name' => 'Zeus Webpanel',
+        'title' => 'Ζεύς',
+    ],
     'controllers' => [
         'namespace' => 'Zeus\\Http\\Controllers',
     ],
