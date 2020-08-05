@@ -4,21 +4,6 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import 'colors';
 
-div.profile-img {
-    img {
-        border-radius: 50px;
-        width: 50px;
-        height: 50px;
-        border: 2px solid #24394d;
-    }
-}
-div.email-container {
-
-    a {
-
-    }
-}
-
 @import 'theme.scss';
 
 @import '~dropzone/dist/dropzone.css';
@@ -167,4 +152,59 @@ body.swal2-height-auto { height: 100% !important; }
     opacity: 1;
     transition: 0.5s;
     overflow: hidden;
+}
+
+div.admin-info-container {
+    margin-top: -10px;
+    img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+        border: 3px solid #24394d;
+        transition: 0.4s;
+        overflow: hidden;
+    }
+    img:hover {
+        transform: scale(1.1);
+    }
+    a.admin-email-link {
+        font-family: Iransans;
+        text-decoration: none !important;
+        transition: 0.3s;
+        color: #24394d;
+        border: 3px solid #24394d;
+        border-radius: 30px;
+        padding: 4px;
+        font-size: 12px;
+    }
+    a.admin-email-link:hover {
+        background-color: #24394d;
+        color: #9bb3d1;
+    }
+}
+
+div.drop-down-container {
+    button {
+        border: 3px solid #24394d;
+        background-color: #9bb3d1;
+        transition: 0.3s;
+        i {
+            color: #24394d;
+        }
+    }
+    button:hover {
+        background-color: #24394d;
+        color: #fff;
+        i {
+            color: #5c98cf;
+        }
+    }
+    div.dropdown-menu {
+        i {
+            color: #24394d;
+        }
+        a {
+            color: #5c98cf;
+        }
+    }
 }
