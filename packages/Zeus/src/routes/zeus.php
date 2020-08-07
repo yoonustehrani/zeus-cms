@@ -7,6 +7,10 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 
     Route::get('/', $namespace_prefix . 'ZeusController@index')->name('dashboard');
 
+    Route::get('fields', function () {
+        return view('ZEV::components.pages.fields');
+    });
+
     Route::resource('database', $namespace_prefix . 'DatabaseController');
 
     try {
