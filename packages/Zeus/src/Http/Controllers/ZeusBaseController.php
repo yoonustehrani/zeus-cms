@@ -5,16 +5,31 @@ namespace Zeus\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MenuController extends Controller
+class ZeusBaseController extends Controller
 {
+    public function getSlug(Request $request)
+    {
+        if (isset($this->slug)) {
+            $slug = $this->slug;
+        } else {
+            $slug = explode('.', $request->route()->getName())[1];
+        }
+
+        return $slug;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $slug = $this->getSlug($request);
+        $dataType = \Zeus::model('DataType')->with('rows')->where('slug', '=', $slug)->first();
+        $model = \Zeus::getModel($dataType->model_name);
+		$data  = ($dataType->server_side) ? $model->paginate(20) : $model::all();
+        dd($dataType->toArray(), $data->toArray());
+        return view('ZEV.components.pages.create', compact('data'));
     }
 
     /**
@@ -22,9 +37,11 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+		$slug = $this->getSlug($request);
+		$dataType = \Zeus::model('DataType')->with('rows')->where('slug', '=', $slug)->first();
+        return $dataType;
     }
 
     /**
@@ -44,9 +61,12 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $slug = $this->getSlug($request);
+        $dataType = \Zeus::model('DataType')->where('slug', '=', $slug)->first();
+        $model = \Zeus::getModel($dataType->model_name);
+        return $model::whereId($id)->firstOrFail();
     }
 
     /**
@@ -57,7 +77,7 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
