@@ -13622,3 +13622,63 @@ body.swal2-height-auto {
   overflow: hidden;
 }
 
+div.admin-info-container {
+  margin-top: -10px;
+}
+
+div.admin-info-container img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  border: 3px solid #24394d;
+  transition: 0.4s;
+  overflow: hidden;
+}
+
+div.admin-info-container img:hover {
+  transform: scale(1.1);
+}
+
+div.admin-info-container a.admin-email-link {
+  font-family: Iransans;
+  text-decoration: none !important;
+  transition: 0.3s;
+  color: #24394d;
+  border: 3px solid #24394d;
+  border-radius: 30px;
+  padding: 4px;
+  font-size: 12px;
+}
+
+div.admin-info-container a.admin-email-link:hover {
+  background-color: #24394d;
+  color: #9bb3d1;
+}
+
+div.drop-down-container button {
+  border: 3px solid #24394d;
+  background-color: #9bb3d1;
+  transition: 0.3s;
+}
+
+div.drop-down-container button i {
+  color: #24394d;
+}
+
+div.drop-down-container button:hover {
+  background-color: #24394d;
+  color: #fff;
+}
+
+div.drop-down-container button:hover i {
+  color: #5c98cf;
+}
+
+div.drop-down-container div.dropdown-menu i {
+  color: #24394d;
+}
+
+div.drop-down-container div.dropdown-menu a {
+  color: #5c98cf;
+}
+
