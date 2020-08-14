@@ -1,5 +1,14 @@
 const mix = require('laravel-mix');
-
+const src = {
+    res: {
+        js: "resources/js/",
+        sass: "resources/sass/"
+    },
+    pub: {
+        js: "public/js/",
+        css: "public/css/"
+    }
+}
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -10,7 +19,13 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+let { res, pub } = src;
 
-mix.sass('resources/sass/zeus/zeus.scss', 'public/css');
+mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
+    .js(res.js + "components/datepicker.js", pub.js)
+    .js(res.js + "components/date-time-picker.js", pub.js)
+    .js(res.js + "components/timepicker.js", pub.js)
+    .react(res.js + "richText.js", pub.js)
+
 // react('resources/js/app.js', 'public/js')
 //     .sass('resources/sass/app.scss', 'public/css');

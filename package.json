@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.10.4",
         "@babel/preset-react": "^7.0.0",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
@@ -17,21 +18,25 @@
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.19",
+        "persian-date": "^1.1.0",
         "popper.js": "^1.12",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
-        "sass-loader": "^8.0.0"
+        "sass-loader": "^8.0.0",
+        "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.14.0",
+        "@tinymce/tinymce-react": "^3.6.0",
         "dropzone": "^5.7.2",
         "lity": "^2.4.1",
         "moment": "^2.27.0",
+        "persian-datepicker": "^1.2.0",
+        "redux": "^4.0.5",
         "select2": "^4.0.13",
         "sweetalert2": "^9.17.1",
-        "swiper": "^6.1.1",
-        "redux": "^4.0.5"
+        "swiper": "^6.1.1"
     }
 }
