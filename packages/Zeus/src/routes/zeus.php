@@ -11,7 +11,13 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
         return view('ZEV::components.pages.fields');
     });
 
+    Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['create', 'store']);
+
+    Route::get('datatypes/{datatype}/create', $namespace_prefix . 'DataTypeController@create')->name('datatypes.create');
+    Route::post('datatypes/{datatype}/add', $namespace_prefix . 'DataTypeController@store')->name('datatypes.store');
+
     Route::resource('database', $namespace_prefix . 'DatabaseController');
+
 
     try {
         foreach (ZeusFacade::model('DataType')::all() as $dataType) {

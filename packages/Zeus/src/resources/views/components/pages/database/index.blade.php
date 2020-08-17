@@ -22,9 +22,9 @@
                         <td>{{ $table->prefix . $table->name }}</td>
                         <td class="text-left">
                             @if ($table->dataTypeId)
-
+                                <a href="{{ route('RomanCamp.datatypes.edit', ['datatype' => $table->name]) }}" class="btn btn-warning">Edit this Roman army</a>
                             @else
-                                <a class="btn btn-sm btn-light" href="#add-to-army">add {{ $table->name }} to Roman Army</a>
+                                <a class="btn btn-sm btn-light" href="{{ route('RomanCamp.datatypes.create', ['datatype' => $table->name]) }}">add {{ $table->name }} to Roman Army</a>
                             @endif
                         </td>
                         <td><a class="btn btn-sm btn-warning" href=""><i class="fas fa-search"></i></a></td>

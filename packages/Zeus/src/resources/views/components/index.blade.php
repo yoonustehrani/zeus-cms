@@ -1,7 +1,7 @@
 @extends('ZEV::index')
 
 @section('css')
-    <title>Database</title>
+    <title>{{ $dataType->display_name_plural }}</title>
 @endsection
 
 @section('pagecontent')
