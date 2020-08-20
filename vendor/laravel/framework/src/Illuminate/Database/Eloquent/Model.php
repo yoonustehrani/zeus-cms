@@ -1777,12 +1777,4 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     {
         $this->bootIfNotBooted();
     }
-
-    /**
-     * Get All Columns of the table
-     */
-    public function getTableColumns() {
-        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
-    }
-
 }
