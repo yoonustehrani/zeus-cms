@@ -11,6 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.sass('resources/sass/zeus/zeus.scss', 'public/css');
-// react('resources/js/app.js', 'public/js')
+mix.sass('resources/sass/zeus/zeus.scss', 'public/css')
+.react('resources/js/app.js', 'public/js')
+.react('resources/js/menu_builder.js', 'public/js')
 //     .sass('resources/sass/app.scss', 'public/css');

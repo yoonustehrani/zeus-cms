@@ -77,10 +77,12 @@ class ZeusBaseController extends Controller
     public function edit(Request $request, $id)
     {
         $slug = $this->getSlug($request);
-        $dataType = \Zeus::model('DataType')->with('columns')->where('slug', '=', $slug)->first();
+        $dataType = \Zeus::model('DataType')->with(['columns' => function($q) {
+            $q->where('edit', true);
+        }])->where('slug', '=', $slug)->first();
         $model = \Zeus::getModel($dataType->model_name);
         $editable = $model::whereId($id)->firstOrFail();
-        return $model->getRelations();
+        return [$editable->toArray(), $dataType->toArray()];
     }
 
     /**

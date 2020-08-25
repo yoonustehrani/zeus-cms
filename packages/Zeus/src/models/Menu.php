@@ -13,5 +13,4 @@ class Menu extends Model
     {
         return $this->hasMany(MenuItem::class)->orderBy('order')->whereNull('parent_id');
     }
-
 }

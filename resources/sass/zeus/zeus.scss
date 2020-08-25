@@ -12,6 +12,9 @@
 @import '~swiper/swiper.scss';
 @import '~sweetalert2/src/sweetalert2.scss';
 @import '~select2/dist/css/select2.min.css';
+@import '../../../node_modules/jquery-ui/themes/base/base.css';
+@import '~jquery-ui/themes/base/sortable.css';
+
 
 .swiper-container {
 	width: 100%;
@@ -205,6 +208,42 @@ div.drop-down-container {
         }
         a {
             color: #5c98cf;
+        }
+    }
+}
+
+.menu-builder {
+    ul {
+        list-style: none;
+        float: left;
+        li {
+            background: $white;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.1);
+            float: left;
+            transition: 0.3;
+            // box-sizing: border-box;
+            span.item-data {
+                float: left;
+                margin-right: 20px;
+                font-size: 16px;
+                margin-top: 4px;
+            }
+            span.item-action {
+                float: right;
+                height: 100%;
+            }
+        }
+        li:hover {
+            cursor: move;
+            background: #dfdfdf;
+        }
+        li:active {
+            background: #333333;
+            color: $white;
         }
     }
 }

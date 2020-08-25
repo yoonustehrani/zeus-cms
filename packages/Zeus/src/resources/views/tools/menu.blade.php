@@ -6,7 +6,7 @@
         @foreach ($menu->parent_items as $item)
             @if (count($item->children) < 1)
             <li>
-                <a href="{{ ($item->route) ? route($item->route) : $item->url }}"><i class="{{ $item->icon_class ?: '' }}"></i>{{ $item->title }}</a>
+                <a target="{{ $item->target }}" href="{{ ($item->route) ? route($item->route) : $item->url }}"><i class="{{ $item->icon_class ?: '' }}"></i>{{ $item->title }}</a>
             </li>
             @else
                 <li>

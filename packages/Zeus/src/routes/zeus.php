@@ -17,7 +17,9 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     Route::post('datatypes/{datatype}/add', $namespace_prefix . 'DataTypeController@store')->name('datatypes.store');
 
     Route::resource('database', $namespace_prefix . 'DatabaseController');
-
+    Route::prefix('menu-builder')->group(function() use($namespace_prefix) {
+        Route::get('/{menu}', $namespace_prefix . 'MenuBuilderController@edit');
+    });
 
     try {
         foreach (ZeusFacade::model('DataType')::all() as $dataType) {
@@ -36,4 +38,8 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     } catch (\Exception $e) {
         // do nothing, might just be because table not yet migrated.
     }
+
+    Route::group(['prefix' => 'api/v1', 'as' => 'api.'], function() use($namespace_prefix) {
+        Route::get('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@items')->name('menu.items');
+    });
 });

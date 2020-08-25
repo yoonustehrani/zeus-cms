@@ -1,3 +1,5 @@
 {
-    "/css/zeus.css": "/css/zeus.css"
+    "/js/app.js": "/js/app.js",
+    "/css/zeus.css": "/css/zeus.css",
+    "/js/menu_builder.js": "/js/menu_builder.js"
 }
