@@ -6,15 +6,18 @@ class MenuBuilder extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            items: [],
+            items: this.props.Items ? this.props.Items : [],
             newChanges: []
         }
-        Axios.get(this.props.getItems).then(res => {
-            let { parent_items } = res.data;
-            this.setState(prevState => ({
-                items: parent_items.sort((a, b) => (a.order > b.order) ? 1 : -1),
-            }));
-        });
+        if (this.props.getItems) {
+            Axios.get(this.props.getItems).then(res => {
+                let { parent_items } = res.data;
+                this.setState(prevState => ({
+                    items: parent_items.sort((a, b) => (a.order > b.order) ? 1 : -1),
+                }));
+            });
+        }
+        
     }
     injectJquery = () => {
         let state = this.state;

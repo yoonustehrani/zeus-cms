@@ -16,7 +16,7 @@ class ZeusController extends Controller
      */
     public function index()
     {
-        return view("ZEV::components.pages.dashboard");
+        return view("ZEV::pages.dashboard");
     }
 
     /**
