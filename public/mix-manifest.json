@@ -1,3 +1,7 @@
 {
-    "/js/code-editor.js": "/js/code-editor.js"
+    "/js/date-time-picker.js": "/js/date-time-picker.js",
+    "/js/datepicker.js": "/js/datepicker.js",
+    "/css/zeus.css": "/css/zeus.css",
+    "/js/richText.js": "/js/richText.js",
+    "/js/timepicker.js": "/js/timepicker.js"
 }
