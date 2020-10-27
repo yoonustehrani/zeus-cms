@@ -25,11 +25,10 @@ class ZeusBaseController extends Controller
     public function index(Request $request)
     {
         $slug = $this->getSlug($request);
-        $dataType = \Zeus::model('DataType')->with('rows')->where('slug', '=', $slug)->first();
+        $dataType = \Zeus::model('DataType')->with('columns')->where('slug', '=', $slug)->first();
         $model = \Zeus::getModel($dataType->model_name);
 		$data  = ($dataType->server_side) ? $model->paginate(20) : $model::all();
-        dd($dataType->toArray(), $data->toArray());
-        return view('ZEV.components.pages.create', compact('data'));
+        return view('ZEV::components.index', compact('data', 'dataType'));
     }
 
     /**
@@ -75,9 +74,15 @@ class ZeusBaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-
+        $slug = $this->getSlug($request);
+        $dataType = \Zeus::model('DataType')->with(['columns' => function($q) {
+            $q->where('edit', true);
+        }])->where('slug', '=', $slug)->first();
+        $model = \Zeus::getModel($dataType->model_name);
+        $editable = $model::whereId($id)->firstOrFail();
+        return [$editable->toArray(), $dataType->toArray()];
     }
 
     /**

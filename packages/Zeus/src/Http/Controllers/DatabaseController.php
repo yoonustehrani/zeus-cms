@@ -31,6 +31,6 @@ class DatabaseController extends Controller
             return (object) $table;
         }, $new_tables_list->toArray());
         // return $tables;
-        return view('ZEV::components.pages.database.index', compact('tables'));
+        return view('ZEV::pages.database.index', compact('tables'));
     }
 }
