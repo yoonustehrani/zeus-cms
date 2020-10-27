@@ -16,8 +16,8 @@
     <td class="text-left">
         @if (isset($edit))
             @foreach ($visiblities as $visiblity => $data)
-            <label title="{{ $data[1] }}" for="row_{{ $row['field'] }}_{{ $visiblity }}">{{ $visiblity }}</label>
-            <input type="checkbox" id="row_{{ $row['field'] }}_{{ $visiblity }}" name="row_{{ $row['field'] }}_{{ $visiblity }}" @if($data[0]) checked @endif>
+            <label title="{{ $data }}" for="row_{{ $row['field'] }}_{{ $visiblity }}">{{ $visiblity }}</label>
+            <input type="checkbox" id="row_{{ $row['field'] }}_{{ $visiblity }}" name="row_{{ $row['field'] }}_{{ $visiblity }}" @if($row[$visiblity]) checked @endif>
             <br>
             @endforeach
         @else
