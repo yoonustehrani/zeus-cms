@@ -19,14 +19,14 @@ class CreateDataTypesTable extends Migration
             $table->string('slug');
             $table->string('display_name_singular');
             $table->string('display_name_plural');
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('model_name');
-            $table->string('policy_name');
-            $table->string('controller');
-            $table->string('description');
-            $table->boolean('generate_permission');
-            $table->boolean('server_side');
-            $table->text('details');
+            $table->string('policy_name')->nullable();
+            $table->string('controller')->nullable();
+            $table->string('description', 400)->nullable();
+            $table->boolean('generate_permission')->default(false);
+            $table->boolean('server_side')->default(true);
+            $table->text('details')->nullable();
             $table->timestamps();
         });
     }
