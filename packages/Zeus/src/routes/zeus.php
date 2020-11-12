@@ -11,12 +11,11 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
         return view('ZEV::components.pages.fields');
     });
 
-    Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['create', 'store']);
+    Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['show','create', 'store']);
 
     Route::get('datatypes/{datatype}/create', $namespace_prefix . 'DataTypeController@create')->name('datatypes.create');
     Route::post('datatypes/{datatype}/add', $namespace_prefix . 'DataTypeController@store')->name('datatypes.store');
-
-    Route::resource('database', $namespace_prefix . 'DatabaseController');
+    Route::resource('database', $namespace_prefix . 'DatabaseController')->only('index');
     Route::prefix('menu-builder')->group(function() use($namespace_prefix) {
         Route::get('/{menu}', $namespace_prefix . 'MenuBuilderController@edit');
     });

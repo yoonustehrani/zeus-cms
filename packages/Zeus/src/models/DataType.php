@@ -41,6 +41,10 @@ class DataType extends Model
     {
         return $this->hasMany(DataRow::class)->whereBrowse(true)->orderBy('order');
     }
+    public function addRows()
+    {
+        return $this->hasMany(DataRow::class)->whereAdd(true)->orderBy('order');
+    }
     public function getDetailsAttribute($details) {
         return json_decode($details);
     }
@@ -58,7 +62,7 @@ class DataType extends Model
             $row->order = $order;
             $row->display_name = $request_data["row_{$column}_display_name"]; // 
             $row->details = json_decode($request_data["row_{$column}_details"]) ?: [];
-            $row->details = json_encode($row->details);
+            // $row->details = json_encode($row->details);
             foreach ($this->visibility as $visibility => $description) {
                 $row->{$visibility} = isset($request_data["row_{$column}_{$visibility}"]) ? true : false;
             }
@@ -72,7 +76,7 @@ class DataType extends Model
             $row->type = $request_data["row_{$row->field}_type"];
             $row->display_name = $request_data["row_{$row->field}_display_name"]; // 
             $row->details = json_decode($request_data["row_{$row->field}_details"]) ?: [];
-            $row->details = json_encode($row->details);
+            // $row->details = json_encode($row->details);
             foreach ($this->visibility as $visibility => $description) {
                 $row->{$visibility} = isset($request_data["row_{$row->field}_{$visibility}"]) ? true : false;
             }

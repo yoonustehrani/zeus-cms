@@ -27,7 +27,11 @@
                                 <a class="btn btn-sm btn-light" href="{{ route('RomanCamp.datatypes.create', ['datatype' => $table->name]) }}">add {{ $table->name }} to Roman Army</a>
                             @endif
                         </td>
-                        <td><a class="btn btn-sm btn-warning" href=""><i class="fas fa-search"></i></a></td>
+                        <td>
+                            @if ($table->dataTypeId)
+                                <a class="btn btn-sm btn-warning" href="{{ route('RomanCamp.' . $table->slug . '.index') }}"><i class="fas fa-search"></i></a>
+                            @endif
+                        </td>
                         <td><a class="btn btn-sm btn-primary" href=""><i class="fas fa-pencil-alt"></i></a></td>
                         <td><a class="btn btn-sm btn-danger" href=""><i class="fas fa-trash"></i></a></td>
                     </tr>

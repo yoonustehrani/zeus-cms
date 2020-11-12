@@ -9,6 +9,9 @@ return [
     'controllers' => [
         'namespace' => 'Zeus\\Http\\Controllers',
     ],
+    'database' => [
+        'hidden_tables' => ['data_types', 'data_rows', 'menu_items', 'permission_role', 'role_user', 'migrations', 'sessions', 'password_resets', 'settings']
+    ],
     'developers' => [
         [
             'name' => 'Yoonus Tehrani',
@@ -49,7 +52,9 @@ return [
     ],
 
     'copyright' => 'ZeusPanel 2020 by <a>Sampi Tech Group</a>',
-
+    'menus' => [
+        'main' => 'admin'
+    ],
     'media' => [
         // The allowed mimetypes to be uploaded through the media-manager.
         'allowed_mimetypes' => '*', //All types can be uploaded

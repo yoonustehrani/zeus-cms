@@ -50,7 +50,7 @@
     </td>
     <td>
         <textarea class="form-control bg-dark text-warning json-code" style="resize: none;" name="row_{{ $row['field'] }}_details" id="details" spellcheck="false"
-        placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="4">{{ old("row_{$row['field']}_details") ?: (isset($row['details']) ? $row['details'] : '') }}</textarea>
+        placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="4">{{ old("row_{$row['field']}_details") ?: (isset($row['details']) ? json_encode($row['details']) : '') }}</textarea>
     </td>
 </tr>
 @endforeach

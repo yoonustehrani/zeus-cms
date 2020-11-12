@@ -7,16 +7,6 @@ use Illuminate\Http\Request;
 
 class ZeusBaseController extends Controller
 {
-    public function getSlug(Request $request)
-    {
-        if (isset($this->slug)) {
-            $slug = $this->slug;
-        } else {
-            $slug = explode('.', $request->route()->getName())[1];
-        }
-
-        return $slug;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,11 +14,36 @@ class ZeusBaseController extends Controller
      */
     public function index(Request $request)
     {
-        $slug = $this->getSlug($request);
-        $dataType = \Zeus::model('DataType')->with('columns')->where('slug', '=', $slug)->first();
-        $model = \Zeus::getModel($dataType->model_name);
-		$data  = ($dataType->server_side) ? $model->paginate(20) : $model::all();
-        return view('ZEV::components.index', compact('data', 'dataType'));
+        $datatype = $this->getDataType($this->getSlug($request))->with('columns')->first();
+        try {
+            $model = \Zeus::getModel($datatype->model_name);
+            $details  = (array) $datatype->details;
+            if ($details) {
+                $orderBy = isset($details['order_column']) ? $details['order_column'] : false;
+                if ($request->sort_by) {
+                    $orderBy = $request->sort_by;
+                }
+                $orderDir = (isset($details['order_direction']) && $details['order_direction'] == 'desc') ? 'desc' : 'asc'; 
+                if ($request->sort) {
+                    $orderDir = $request->sort == 'asc' ? 'asc' : 'desc';
+                }
+                if ($orderBy) {
+                    $model = $model->orderBy($orderBy, $orderDir);
+                }
+                if ($datatype->server_side) {
+                    $data = (isset($details['paginate']) && is_numeric($details['paginate'])) ? $model->paginate($details['paginate']) : $model->paginate(20);
+                } else {
+                    $data = $orderBy ? $model->get() : $model->all();
+                }
+                
+            } else {
+                $data = $model->all();
+            }
+            return view('ZEV::pages.default.index', compact('data', 'datatype'));
+        } catch(\Exception $e) {
+            throw $e;
+            // abort(403, 'Model Name Not Right');
+        }
     }
 
     /**
@@ -38,9 +53,8 @@ class ZeusBaseController extends Controller
      */
     public function create(Request $request)
     {
-		$slug = $this->getSlug($request);
-		$dataType = \Zeus::model('DataType')->with('rows')->where('slug', '=', $slug)->first();
-        return $dataType;
+		$datatype = $this->getDataType($this->getSlug($request))->with('addRows')->first();
+        return $datatype;
     }
 
     /**
@@ -51,7 +65,7 @@ class ZeusBaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datatype = $this->getDataType($this->getSlug($request))->with('rows')->first();
     }
 
     /**
@@ -94,7 +108,7 @@ class ZeusBaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $datatype = $this->getDataType($this->getSlug($request))->with('rows')->first();
     }
 
     /**
@@ -103,8 +117,29 @@ class ZeusBaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $datatype = $this->getDataType($this->getSlug($request))->first();
+        try {
+            $model = \Zeus::getModel($datatype->model_name);
+            $target = $model::whereId($id)->firstOrFail();
+            $target->delete();
+            return back();
+        } catch(\Throwable $e) {
+            throw $e;
+        }
+    }
+    protected function getDataType($slug) {
+        return \Zeus::model('DataType')->whereSlug($slug);
+    }
+    protected function getSlug($request)
+    {
+        if (isset($this->slug)) {
+            $slug = $this->slug;
+        } else {
+            $slug = explode('.', $request->route()->getName())[1];
+        }
+
+        return $slug;
     }
 }

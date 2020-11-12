@@ -114,7 +114,7 @@
                 <div class="input-group-text p-1 px-2">
                     Generate Permissions : 
                     <label style="margin-left:10px;" class="checkbox-c toggle-check mt-2" for="generate_permission">
-                        <input type="checkbox" name="generate_permission" checked id="generate_permission">
+                        <input type="checkbox" name="generate_permission" @if($datatype->generate_permission) checked @endif id="generate_permission">
                         <span class="check-handle"></span>
                     </label>
                 </div>
@@ -123,7 +123,7 @@
                 <div class="input-group-text p-1 px-2">
                     Pagination : 
                     <label style="margin-left:10px;" class="checkbox-c toggle-check mt-2" for="server_side">
-                        <input type="checkbox" name="server_side" id="server_side">
+                        <input type="checkbox" @if($datatype->server_side) checked @endif name="server_side" id="server_side">
                         <span class="check-handle"></span>
                     </label>
                 </div>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Zeus\Database\Schema\ZeusSchemaManager;
 use Zeus\Models\DataRow;
 use Zeus\Models\DataType;
+use Zeus\Models\Menu;
 
 class DataTypeController extends Controller
 {
@@ -146,11 +147,16 @@ class DataTypeController extends Controller
             $datatype->save();
             
             if ($datatype->save()) {
+
                 $datatype->createDataRows($request->all());
-                // foreach ($rows as $row) {
-                //     $datatype->rows()->create($row);
-                // }
-                // return ['okay' => true];
+                $menu = \Zeus::getModel('App\Menu')->whereName(config('ZEC.menus.main'))->firstOrFail();
+                $menuItem = \Zeus::getModel('App\MenuItem');
+                $menuItem = new $menuItem;
+                $menuItem->title =  $datatype->display_name_plural;
+                $menuItem->icon_class = $datatype->icon;
+                $menuItem->order = $menu->generate_order();
+                $menuItem->route = "RomanCamp.{$datatype->slug}.index";
+                $menu->items()->create($menuItem->toArray());
             }
             DB::commit();
         } catch (\Exception $e) {
@@ -159,9 +165,9 @@ class DataTypeController extends Controller
         }
         return redirect()->to(route('RomanCamp.database.index'));
     }
-    public function update(Request $request, $table)
+    public function update(Request $request, $slug)
     {
-        $datatype = DataType::whereSlug($table)->with('rows')->firstOrFail();
+        $datatype = DataType::whereSlug($slug)->with('rows')->firstOrFail();
         $request->validate([
             'name' => 'required|string|min:3|max:60',
             'slug' => 'required|string|min:3|max:60|unique:data_types,id,' . $datatype->id,
@@ -199,5 +205,32 @@ class DataTypeController extends Controller
             throw $e;
         }
         return redirect()->to(route('RomanCamp.datatypes.edit', ['datatype' => $datatype->slug]));
+    }
+    public function show($slug)
+    {
+        $datatype = DataType::whereSlug($slug)->with('columns')->firstOrFail();
+        $details  = (array) $datatype->details;
+        try {
+            $model = app($datatype->model_name);
+            if ($details) {
+                $orderBy = isset($details['order_column']) ? $details['order_column'] : false;
+                $orderDir = (isset($details['order_direction']) && $details['order_direction'] == 'desc') ? 'desc' : 'asc'; 
+                if ($orderBy) {
+                    $model = $model->orderBy($orderBy, $orderDir);
+                }
+                if ($datatype->server_side) {
+                    $target_rows = (isset($details['paginate']) && is_numeric($details['paginate'])) ? $model->paginate($details['paginate']) : $model->paginate(20);
+                } else {
+                    $target_rows = $orderBy ? $model->get() : $model->all();
+                }
+                
+            } else {
+                $target_rows = $model->all();
+            }
+            return $target_rows;
+        } catch(\Exception $e) {
+            throw $e;
+            // abort(403, 'Model Name Not Right');
+        }
     }
 }
