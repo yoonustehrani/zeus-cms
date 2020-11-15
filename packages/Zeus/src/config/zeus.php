@@ -8,6 +8,7 @@ return [
     ],
     'controllers' => [
         'namespace' => 'Zeus\\Http\\Controllers',
+        'route_prefix' => 'RomanCamp.'
     ],
     'database' => [
         'hidden_tables' => ['data_types', 'data_rows', 'menu_items', 'permission_role', 'role_user', 'migrations', 'sessions', 'password_resets', 'settings']

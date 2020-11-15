@@ -41,7 +41,7 @@ class DataType extends Model
     {
         return $this->hasMany(DataRow::class)->whereBrowse(true)->orderBy('order');
     }
-    public function addRows()
+    public function add_rows()
     {
         return $this->hasMany(DataRow::class)->whereAdd(true)->orderBy('order');
     }

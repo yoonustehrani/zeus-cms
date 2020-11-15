@@ -12,6 +12,11 @@ class ZeusBaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $route_prefix;
+    public function __construct()
+    {
+        $this->route_prefix = config('ZEC.controllers.route_prefix');
+    }
     public function index(Request $request)
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('columns')->first();
@@ -53,8 +58,11 @@ class ZeusBaseController extends Controller
      */
     public function create(Request $request)
     {
-		$datatype = $this->getDataType($this->getSlug($request))->with('addRows')->first();
-        return $datatype;
+        $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
+        if ($request->debug) {
+            return $datatype;
+        }
+        return view('ZEV::pages.default.create', compact('datatype'));
     }
 
     /**
@@ -65,7 +73,44 @@ class ZeusBaseController extends Controller
      */
     public function store(Request $request)
     {
-        $datatype = $this->getDataType($this->getSlug($request))->with('rows')->first();
+        $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
+        $validation = collect([]);
+        foreach ($datatype->add_rows as $row) {
+            $rules = [];
+            $should_be_added = false;
+            if ($row->required) {
+                array_push($rules, 'required');
+                $should_be_added = true;
+            }
+            $key_value_rules = ['min', 'max'];
+            foreach ($key_value_rules as $rule) {
+                if ($row->details && isset($row->details->validation) && isset($row->details->validation->{$rule})) {
+                    $value = $row->details->validation->{$rule};
+                    array_push($rules, "{$rule}:{$value}");
+                    $should_be_added = true;
+                }
+            }
+            if ($should_be_added) {
+                $validation->put($row->field, implode('|', $rules));
+            }
+        }
+        $request->validate($validation->toArray());
+        $model = app($datatype->model_name);
+        $model = new $model;
+        foreach ($datatype->add_rows as $row) {
+            if ($request->{$row->field}) {
+                switch ($row->type) {
+                    case 'checkbox':
+                        $model->{$row->field} = !! $request->{$row->field};
+                    break;
+                    default:
+                        $model->{$row->field} = $request->{$row->field};
+                    break;
+                }            
+            }        
+        }
+        $model->save();
+        return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.index"));
     }
 
     /**
@@ -91,12 +136,12 @@ class ZeusBaseController extends Controller
     public function edit(Request $request, $id)
     {
         $slug = $this->getSlug($request);
-        $dataType = \Zeus::model('DataType')->with(['columns' => function($q) {
+        $datatype = \Zeus::model('DataType')->with(['columns' => function($q) {
             $q->where('edit', true);
         }])->where('slug', '=', $slug)->first();
-        $model = \Zeus::getModel($dataType->model_name);
+        $model = \Zeus::getModel($datatype->model_name);
         $editable = $model::whereId($id)->firstOrFail();
-        return [$editable->toArray(), $dataType->toArray()];
+        return view('ZEV::pages.default.edit', compact('editable', 'datatype'));
     }
 
     /**
@@ -124,7 +169,7 @@ class ZeusBaseController extends Controller
             $model = \Zeus::getModel($datatype->model_name);
             $target = $model::whereId($id)->firstOrFail();
             $target->delete();
-            return back();
+            return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.index"));
         } catch(\Throwable $e) {
             throw $e;
         }

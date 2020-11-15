@@ -21,11 +21,11 @@ const src = {
  */
 let { res, pub } = src;
 
-mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
-    .js(res.js + "components/datepicker.js", pub.js)
-    .js(res.js + "components/date-time-picker.js", pub.js)
-    .js(res.js + "components/timepicker.js", pub.js)
-    .react(res.js + "richText.js", pub.js)
-
+// mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
+//     .js(res.js + "components/datepicker.js", pub.js)
+//     .js(res.js + "components/date-time-picker.js", pub.js)
+//     .js(res.js + "components/timepicker.js", pub.js)
+//     .react(res.js + "richText.js", pub.js)
+mix.js(res.js + "tools.js", pub.js)
 // react('resources/js/app.js', 'public/js')
 //     .sass('resources/sass/app.scss', 'public/css');

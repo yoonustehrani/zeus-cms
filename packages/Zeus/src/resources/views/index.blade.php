@@ -17,6 +17,7 @@
     </div>
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/tools.js') }}"></script>
 @yield('script')
 @stack('scripts')
 @endsection

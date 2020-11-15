@@ -13,12 +13,12 @@ $(document).ready(function() {
         },
         viewMode: 'year',
         calendar:{
-            persian: {
-                locale: 'fa'
-            },
             gregorian: {
-                locale: 'fa'
-            }
+                locale: '{{ app()->getLocale() }}'
+            },
+            persian: {
+                locale: '{{ app()->getLocale() }}'
+            },
         },
         toolbox:{
             calendarSwitch:{
