@@ -2,6 +2,7 @@
 
 namespace Zeus\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Zeus\Database\Schema\ZeusSchemaManager;
@@ -45,6 +46,10 @@ class DataType extends Model
     {
         return $this->hasMany(DataRow::class)->whereAdd(true)->orderBy('order');
     }
+    public function edit_rows()
+    {
+        return $this->hasMany(DataRow::class)->whereEdit(true)->orderBy('order');
+    }
     public function getDetailsAttribute($details) {
         return json_decode($details);
     }
@@ -60,9 +65,8 @@ class DataType extends Model
             $row->type = $request_data["row_{$column}_type"];
             $row->field = $column;
             $row->order = $order;
-            $row->display_name = $request_data["row_{$column}_display_name"]; // 
+            $row->display_name = $request_data["row_{$column}_display_name"];
             $row->details = json_decode($request_data["row_{$column}_details"]) ?: [];
-            // $row->details = json_encode($row->details);
             foreach ($this->visibility as $visibility => $description) {
                 $row->{$visibility} = isset($request_data["row_{$column}_{$visibility}"]) ? true : false;
             }
@@ -74,9 +78,8 @@ class DataType extends Model
     {
         foreach ($this->rows as $row) {
             $row->type = $request_data["row_{$row->field}_type"];
-            $row->display_name = $request_data["row_{$row->field}_display_name"]; // 
+            $row->display_name = $request_data["row_{$row->field}_display_name"];
             $row->details = json_decode($request_data["row_{$row->field}_details"]) ?: [];
-            // $row->details = json_encode($row->details);
             foreach ($this->visibility as $visibility => $description) {
                 $row->{$visibility} = isset($request_data["row_{$row->field}_{$visibility}"]) ? true : false;
             }
@@ -93,5 +96,51 @@ class DataType extends Model
         foreach ($details as $detaial) {
             $this->details = collect($this->details)->put($detaial, $request_data[$detaial] ?: null);
         }
+    }
+    public function validation_rules($rows)
+    {
+        $validation = collect([]);
+        foreach ($rows as $row) {
+            $rules = [];
+            $should_be_added = false;
+            if ($row->required) {
+                array_push($rules, 'required');
+                $should_be_added = true;
+            }
+            $key_value_rules = ['min', 'max'];
+            foreach ($key_value_rules as $rule) {
+                if ($row->details && isset($row->details->validation) && isset($row->details->validation->{$rule})) {
+                    $value = $row->details->validation->{$rule};
+                    array_push($rules, "{$rule}:{$value}");
+                    $should_be_added = true;
+                }
+            }
+            if ($should_be_added) {
+                $validation->put($row->field, implode('|', $rules));
+            }
+        }
+        return $validation->toArray();
+    }
+    public function assign_value_to_instance($model, $rows, $request)
+    {
+        foreach ($rows as $row) {
+            if ($request->{$row->field}) {
+                switch ($row->type) {
+                    case 'checkbox':
+                        $model->{$row->field} = !! $request->{$row->field};
+                    break;
+                    case 'datetime':
+                        $date = (new Carbon(
+                            ((int) $request->{$row->field}) / 1000
+                        ))->timezone(config('ZEC.package.timezone'));
+                        $model->{$row->field} = $date->format(config('ZEC.database.date_format'));
+                    break;
+                    default:
+                        $model->{$row->field} = $request->{$row->field};
+                    break;
+                }
+            }
+        }
+        return $model;
     }
 }

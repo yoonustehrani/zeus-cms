@@ -74,41 +74,10 @@ class ZeusBaseController extends Controller
     public function store(Request $request)
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
-        $validation = collect([]);
-        foreach ($datatype->add_rows as $row) {
-            $rules = [];
-            $should_be_added = false;
-            if ($row->required) {
-                array_push($rules, 'required');
-                $should_be_added = true;
-            }
-            $key_value_rules = ['min', 'max'];
-            foreach ($key_value_rules as $rule) {
-                if ($row->details && isset($row->details->validation) && isset($row->details->validation->{$rule})) {
-                    $value = $row->details->validation->{$rule};
-                    array_push($rules, "{$rule}:{$value}");
-                    $should_be_added = true;
-                }
-            }
-            if ($should_be_added) {
-                $validation->put($row->field, implode('|', $rules));
-            }
-        }
-        $request->validate($validation->toArray());
-        $model = app($datatype->model_name);
+        $request->validate($datatype->validation_rules($datatype->add_rows));
+        $model = \Zeus::getModel($datatype->model_name);
         $model = new $model;
-        foreach ($datatype->add_rows as $row) {
-            if ($request->{$row->field}) {
-                switch ($row->type) {
-                    case 'checkbox':
-                        $model->{$row->field} = !! $request->{$row->field};
-                    break;
-                    default:
-                        $model->{$row->field} = $request->{$row->field};
-                    break;
-                }            
-            }        
-        }
+        $model = $datatype->assign_value_to_instance($datatype->model_name, $datatype->add_rows, $request);
         $model->save();
         return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.index"));
     }
@@ -153,7 +122,13 @@ class ZeusBaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $datatype = $this->getDataType($this->getSlug($request))->with('rows')->first();
+        $datatype = $this->getDataType($this->getSlug($request))->with('edit_rows')->first();
+        $request->validate($datatype->validation_rules($datatype->edit_rows));
+        $model = \Zeus::getModel($datatype->model_name);
+        $editable = $model::whereId($id)->firstOrFail();
+        $edited = $datatype->assign_value_to_instance($editable, $datatype->edit_rows, $request);
+        $edited->save();
+        return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.edit", ['id' => $edited->id]));
     }
 
     /**

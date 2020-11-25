@@ -6,14 +6,10 @@
         <span class="input-group-text">@if($row->details && isset($row->details->icon)) <i class="{{ $row->details->icon }}"></i> @else {{ $row->display_name }} @endif</span>
     </div>
     <input type="hidden" name="{{ $row->field }}" id="field_{{ $row->field }}_hidden" 
-    value="{{ isset($edit) ? $edit['value']->unix() * 1000 : time() * 1000 }}">
+    value="{{ isset($edit) ? $edit['value']->unix() * 1000 : time() * 1000 }}"
+    @if(isset($edit)) data-date="{{ $edit['value'] }}" @endif>
     <input @if($row->required) @endif type="text" class="form-control date-time-picker" id="field_{{ $row->field }}"
     @if($row->details && isset($row->details->place_holder)) placeholder="{{ $row->details->place_holder }}" @endif
-    {{-- @if (isset($edit))
-        data-value="{{ old($row->field) ?: $edit['value']->unix() * 1000 }}"
-    @else
-        data-value="{{ old($row->field) ?: ($row->details && isset($row->details->default) ? $row->details->default : '') }}"
-    @endif> --}}
     @if($row->details && isset($row->details->help_text))
         <span class="col-12 mt-1 text-secondary">{{ $row->details->help_text }}</span>
     @endif
@@ -25,15 +21,12 @@
         let dateTime = $('#field_{{ $row->field }}');
         let mustSetValue = $('#field_{{ $row->field }}_hidden');
         var pdt = dateTime.persianDatepicker({
-            format: '{{ ($row->details && isset($row->details->format)) ? $row->details->format : "dddd, DD MMMM YYYY, h:mm a" }}',
-            // checkYear: function(year) {
-            //     return (year <= (new persianDate().year() - 8)) && (year >= (new persianDate().year() - 80));
-            // },
+            format: '{{ ($row->details && isset($row->details->format)) ? $row->details->format : "dddd, DD MMMM YYYY, H:mm:ss" }}',
             onSelect: function(unix){
                 dateTime.attr("unixValue", unix)
-                mustSetValue.attr('value', unix)
+                mustSetValue.val(unix);
             },
-            viewMode: 'year',
+            viewMode: 'day',
             calendar:{
                 persian: {
                     locale: '{{ app()->getLocale() }}'
@@ -56,13 +49,16 @@
             timePicker: {
                 enabled: true,
                 second: {
-                    enabled: {{ ($row->details && isset($row->details->seconds) && $row->details->seconds) ? "true" : "false"  }}
+                    enabled: {{ ($row->details && isset($row->details->seconds) && ! $row->details->seconds) ? "false" : "true" }}
                 }
             }
         });
-        let newp = new persianDate();
-        let defate = newp.format("dddd, DD MMMM YYYY, h:mm a")
-        dateTime.attr("unixValue", newp.unix() * 1000);
+        let defate = new Date("{{ now()->format('Y-m-d H:i:s') }}").valueOf();
+        let input_field = $('input[name="{{ $row->field }}"]');
+        if (input_field.val().length > 0) {
+            let dt = new Date(input_field.attr('data-date'));
+            defate = dt.valueOf();
+        }
         pdt.setDate(defate)
     });
 </script>
