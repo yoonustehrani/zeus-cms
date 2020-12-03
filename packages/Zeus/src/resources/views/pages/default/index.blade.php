@@ -50,8 +50,8 @@
                         <span class="check-handle"></span>
                     </label>
                     @else
-                    {{ $dt[$column->field] }}
-                    @endif         
+                    {{ gettype($dt->{$column->field}) != 'array' ? $dt->{$column->field} : json_encode($dt->{$column->field}) }}
+                    @endif
                 </td>
                 @endforeach
                 <td><a class="btn btn-sm btn-outline-info" href="{{ route('RomanCamp.' . $datatype->slug . '.edit' , ['id' => $dt->id]) }}"><i class="fas fa-pencil-alt"></i></a></td>
@@ -67,7 +67,9 @@
         </tbody>
     </table>
     <div class="col-12 float-left text-center">
-        {!! $data->withQueryString()->links() !!}
+        @if ($datatype->server_side)
+            {!! $data->withQueryString()->links() !!}
+        @endif
     </div>
 </div>
 @endsection
