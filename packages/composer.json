@@ -1,0 +1,14 @@
+{
+    "name": "zeus/zeuspanel",
+    "description": "A Laravel content management system",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yoonus Teharani",
+            "email": "yoonustehrani28@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
