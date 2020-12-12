@@ -1,5 +1,7 @@
 <?php
 
+use ZeusMailMarketer\ZeusMailMarketer;
+
 return [
 
     /*
@@ -166,6 +168,7 @@ return [
          * Package Service Providers...
          */
         Zeus\ZeusPanelServiceProvider::class,
+        \ZeusMailMarketer\ZeusMailMarketerServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -227,6 +230,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Zeus' => Zeus\Facades\ZeusFacade::class,
+        'ZeusMMarketer' => ZeusMailMarketer\Facades\ZeusMailMarketerFacade::class,
     ],
 
 ];

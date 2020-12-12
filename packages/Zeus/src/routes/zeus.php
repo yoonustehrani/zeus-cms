@@ -7,9 +7,6 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 
     Route::get('/', $namespace_prefix . 'ZeusController@index')->name('dashboard');
     Route::get('extentions', $namespace_prefix . 'ExtentionController@index');
-    Route::get('fields', function () {
-        return view('ZEV::components.pages.fields');
-    });
 
     Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['show','create', 'store']);
 
@@ -41,4 +38,18 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     Route::group(['prefix' => 'api/v1', 'as' => 'api.'], function() use($namespace_prefix) {
         Route::get('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@items')->name('menu.items');
     });
+    try {
+        \Zeus::load_extentions();
+        Route::group(['prefix' => 'extention', 'as' => 'extention.'], function() {
+            foreach (\Zeus::get_extentions() as $extention) {
+                if (isset($extention['routes_file'])) {
+                    Route::group(['prefix' => $extention['routes']['name'], 'as' => $extention['routes']['as']], function() use($extention) {
+                        include($extention['routes_file']);
+                    });
+                }
+            }
+        });
+    } catch(\Exception $e) {
+
+    }
 });

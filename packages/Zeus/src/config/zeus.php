@@ -1,5 +1,7 @@
 <?php
 
+use ZeusMailMarketer\ZeusMailMarketer;
+
 return [
     'website' => 'sampitechgroup.net',
     'package' => [
@@ -94,4 +96,7 @@ return [
            ],
        ]*/
     ],
+    'extentions' => [
+        ZeusMailMarketer::class
+    ]
 ];

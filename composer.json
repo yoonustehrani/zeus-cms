@@ -37,7 +37,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Zeus\\": "packages/Zeus/src/"
+            "Zeus\\": "packages/Zeus/src/",
+            "ZeusMailMarketer\\": "packages/ZeusMailMarketer/src/"
         },
         "files": [
             "app/helpers.php"
