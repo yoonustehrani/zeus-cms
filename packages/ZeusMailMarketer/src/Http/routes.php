@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Config;
 
-Route::get('/', function () {
-    return view('ZEMMV::index');
-});
+$zemm_unique_namespace = config('ZECMM.controllers.namespace') . '\\';
+
+Route::get('/', $zemm_unique_namespace . 'DashboardController@index');

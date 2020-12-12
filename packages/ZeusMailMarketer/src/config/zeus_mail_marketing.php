@@ -5,7 +5,7 @@ return [
         'name' => 'Zeus Mail Marketer'
     ],
     'controllers' => [
-        'namespace' => 'ZeusMailMarketer\\Http\\Controllers',
+        'namespace' => '\\ZeusMailMarketer\\Http\\Controllers',
         'route_prefix' => 'RomanCamp.'
     ],
     'views' => [
