@@ -14,7 +14,23 @@ class ZeusMailMarketer
         \Zeus::register_extention(
             'Zeus Mail Marketer',
             (new ZeusMailMarketer),
-            ['routes_file' => __DIR__ . '/Http/routes.php', 'route_prefix' => ['name' => 'mail-marketer', 'as' => 'zeus-mail-marketer.']],
+            [
+                'routes_file' => __DIR__ . '/Http/routes.php',
+                'route_prefix' => ['name' => 'mail-marketer', 'as' => 'zeus-mail-marketer.'],
+                'menu' => [
+                    'title' => 'NewsLetter',
+                    'icon_class' => 'far fa-newspaper',
+                    'route' => 'RomanCamp.extention.zeus-mail-marketer.',
+                    'target' => '_self',
+                    'children' => [
+                        // [
+                        //     'title' => 'Email Services',
+                        //     'icon_class' => 'fas fa-envelope',
+                        //     'url' => '/'
+                        // ]
+                    ]
+                ],
+            ],
         );
     }
 }

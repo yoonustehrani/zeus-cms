@@ -48,7 +48,13 @@ class ZeusPanel {
     public function register_extention($name, $class, $conf_array)
     {
         $array = collect($this->extentions);
-        $array->push(['name' => $name, 'class' => $class, 'routes_file' => $conf_array['routes_file'], 'routes' => $conf_array['route_prefix']]);
+        $array->push([
+            'name' => $name,
+            'class' => $class,
+            'menu'  => isset($conf_array['menu']) ? $conf_array['menu'] : [],
+            'routes_file' => $conf_array['routes_file'],
+            'routes' => $conf_array['route_prefix']
+        ]);
         $this->extentions = $array->toArray();
     }
 }
