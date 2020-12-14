@@ -77,7 +77,7 @@ class ZeusBaseController extends Controller
         $request->validate($datatype->validation_rules($datatype->add_rows));
         $model = \Zeus::getModel($datatype->model_name);
         $model = new $model;
-        $model = $datatype->assign_value_to_instance($datatype->model_name, $datatype->add_rows, $request);
+        $model = $datatype->assign_value_to_instance($model, $datatype->add_rows, $request);
         $model->save();
         return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.index"));
     }
