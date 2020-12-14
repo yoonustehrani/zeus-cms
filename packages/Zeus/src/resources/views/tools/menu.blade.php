@@ -10,7 +10,7 @@
                 <a target="{{ $item->target }}" href="{{ ($item->route) ? route($item->route) : $item->url }}"><i class="{{ $item->icon_class ?: '' }}"></i>{{ $item->title }}</a>
             </li>
             @else
-                <li>
+                <li class="has_sub">
                     <p><i class="{{ $item->icon_class ?: '' }}"></i>{{ $item->title }}<i class="opener fa fa-angle-right float-right"></i></p>
                     <ul>
                     @foreach ($item->children as $child)
@@ -27,7 +27,7 @@
                     <a target="{{ $item['menu']['target'] }}" href="{{ isset($item['menu']['route']) ? route($item['menu']['route']) : $item['menu']['url'] }}"><i class="{{ isset($item['menu']['icon_class']) ? $item['menu']['icon_class'] : '' }}"></i>{{ $item['menu']['title'] }}</a>
                 </li>
                 @else
-                    <li>
+                    <li class="has_sub">
                         <p><i class="{{ $item['menu']['icon_class'] ?: '' }}"></i>{{ $item['menu']['title'] }}<i class="opener fa fa-angle-right float-right"></i></p>
                         <ul>
                         @foreach ($item['menu']['children'] as $child)

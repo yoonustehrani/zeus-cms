@@ -1,4 +1,4 @@
-window.$ =  require('jquery');
+window.$ = window.jQuery = require('jquery');
 import 'jquery-ui';
 import 'jquery-ui/ui/core';
 import 'jquery-ui/ui/widgets/selectable';

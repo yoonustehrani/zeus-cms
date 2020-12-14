@@ -18,6 +18,12 @@
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/tools.js') }}"></script>
+<script>
+    $('.has_sub').click(function() {
+        $(this).toggleClass('active');
+        $(' .opener', this).toggleClass('fa-angle-right fa-angle-down');
+    });
+</script>
 @yield('script')
 @stack('scripts')
 @endsection
