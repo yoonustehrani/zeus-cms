@@ -23,11 +23,11 @@ class ZeusMailMarketer
                     'route' => 'RomanCamp.extention.zeus-mail-marketer.',
                     'target' => '_self',
                     'children' => [
-                        // [
-                        //     'title' => 'Email Services',
-                        //     'icon_class' => 'fas fa-envelope',
-                        //     'url' => '/'
-                        // ]
+                        [
+                            'title' => 'Email Services',
+                            'icon_class' => 'fas fa-envelope',
+                            'route' => 'RomanCamp.extention.zeus-mail-marketer.services.index'
+                        ]
                     ]
                 ],
             ],

@@ -127,6 +127,15 @@ nav {
                 }
             }
         }
+        li.has_sub {
+            > p {
+                a {
+                    width: fit-content;
+                    float: left;
+                    padding: 0px;
+                }
+            }
+        }
         li:hover {
             > p, > a {
                 padding-left: 20px;

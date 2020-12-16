@@ -12,4 +12,11 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// require('./components/Example');
+$('#toggle-logout').on('click', function(e) {
+    e.preventDefault();
+    $('#logout-form').trigger('submit');
+});
+$('.has_sub').on('click', function() {
+    $(this).toggleClass('active');
+    $(' .opener', this).toggleClass('fa-angle-right fa-angle-down');
+});

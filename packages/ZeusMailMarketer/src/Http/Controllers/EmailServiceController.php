@@ -2,6 +2,7 @@
 
 namespace ZeusMailMarketer\Http\Controllers;
 
+use App\EmailService;
 use App\EmailServiceType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,13 +13,15 @@ class EmailServiceController extends Controller
     {
         return EmailServiceType::whereName($type)->firstOrFail();
     }
-    public function index($type)
+    public function index()
     {
-        return $this->getType($type);
+        $email_services = EmailService::with('type')->get();
+        return view('ZEMMV::pages.email_services.index', compact('email_services'));
     }
     public function create()
     {
-
+        $types = EmailServiceType::all();
+        return $types;
     }
     public function store(Request $request)
     {
