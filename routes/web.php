@@ -1,5 +1,8 @@
 <?php
 
+use App\Mail\UserSubscribed;
+use App\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +18,21 @@ use Illuminate\Support\Facades\Storage;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $mailable = new UserSubscribed();
+    $res = Mail::manual_mailer('yoonus_gmail', [
+        'transport' => 'smtp',
+        'host' => 'smtp.gmail.com',
+        'port' => 587,
+        'encryption' => 'tls',
+        'username' => 'yoonustehrani28@gmail.com',
+        'password' => 'koplsiucclqsfbvn',
+        'timeout' => null,
+        'auth_mode' => null,
+    ])
+    ->to('elnovelofficial@gmail.com')
+    ->send($mailable);
+    dd($res);
+    // return view('welcome');
 });
 
 Route::prefix('zeus')->group(function() {
