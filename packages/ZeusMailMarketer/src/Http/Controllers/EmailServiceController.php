@@ -11,7 +11,7 @@ class EmailServiceController extends Controller
 {
     protected function getType($type)
     {
-        return EmailServiceType::whereName($type)->firstOrFail();
+        return EmailServiceType::whereId($type)->firstOrFail();
     }
     public function index()
     {
@@ -21,15 +21,20 @@ class EmailServiceController extends Controller
     public function create()
     {
         $types = EmailServiceType::all();
-        return $types;
+        return view('ZEMMV::pages.email_services.create', compact('types'));
     }
     public function store(Request $request)
     {
-        
+        $type = $this->getType($request->type);
+        $service = new EmailService;
+        $service->name = $request->name;
+        $service->details = encrypt(json_encode(json_decode($request->settings)));
+        $type->services()->create($service->toArray());
+        return redirect()->to(route(config('ZECMM.controllers.route') . 'services.index'));
     }
     public function show($email_service)
     {
-        
+        return EmailService::with('type')->whereId($email_service)->firstOrFail();
     }
     public function edit($email_service)
     {
@@ -41,6 +46,7 @@ class EmailServiceController extends Controller
     }
     public function delete($email_service)
     {
-
+        $email_service = EmailService::whereId($email_service)->firstOrFail();
+        $email_service->delete();
     }
 }

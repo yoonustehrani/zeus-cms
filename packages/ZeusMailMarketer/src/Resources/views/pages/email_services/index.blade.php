@@ -27,6 +27,12 @@
                 <td>
                     <a href="{{ route(config('ZECMM.controllers.route') . 'services.edit', ['service' => $service->id]) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-pencil-alt"></i></a>
                 </td>
+                <td>
+                    <form action="{{ route(config('ZECMM.controllers.route') . 'services.destroy', ['service' => $service->id]) }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
+                    </form>
+                </td>
             </tr>
             @endforeach
         </tbody>

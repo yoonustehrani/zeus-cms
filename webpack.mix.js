@@ -21,8 +21,8 @@ const src = {
  */
 let { res, pub } = src;
 
-mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
-.react(res.js + 'app.js', pub.js);
+// mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
+mix.react(res.js + 'tools.js', pub.js);
 //     .js(res.js + "components/datepicker.js", pub.js)
 //     .js(res.js + "components/date-time-picker.js", pub.js)
 //     .js(res.js + "components/timepicker.js", pub.js)
