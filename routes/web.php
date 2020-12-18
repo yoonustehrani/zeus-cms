@@ -19,14 +19,14 @@ use Illuminate\Support\Facades\Storage;
 
 // $mailable = new UserSubscribed();
 // $res = Mail::manual_mailer('yoonus_gmail', [
-//     'transport' => 'smtp',
-//     'host' => 'smtp.gmail.com',
-//     'port' => 587,
-//     'encryption' => 'tls',
-//     'username' => 'yoonustehrani28@gmail.com',
-//     'password' => 'koplsiucclqsfbvn',
-//     'timeout' => null,
-//     'auth_mode' => null,
+    // 'transport' => 'smtp',
+    // 'host' => 'smtp.gmail.com',
+    // 'port' => 587,
+    // 'encryption' => 'tls',
+    // 'username' => 'yoonustehrani28@gmail.com',
+    // 'password' => 'koplsiucclqsfbvn',
+    // 'timeout' => null,
+    // 'auth_mode' => null,
 // ])
 // ->to('elnovelofficial@gmail.com')
 // ->send($mailable);
@@ -43,3 +43,4 @@ Route::prefix('zeus')->group(function() {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

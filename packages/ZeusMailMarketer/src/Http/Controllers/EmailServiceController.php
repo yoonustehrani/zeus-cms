@@ -28,7 +28,7 @@ class EmailServiceController extends Controller
         $type = $this->getType($request->type);
         $service = new EmailService;
         $service->name = $request->name;
-        $service->details = encrypt(json_encode(json_decode($request->settings)));
+        $service->details = $request->settings;
         $type->services()->create($service->toArray());
         return redirect()->to(route(config('ZECMM.controllers.route') . 'services.index'));
     }
@@ -38,11 +38,18 @@ class EmailServiceController extends Controller
     }
     public function edit($email_service)
     {
-
+        $service = EmailService::whereId($email_service)->firstOrFail();
+        $types = EmailServiceType::all();
+        return view('ZEMMV::pages.email_services.edit', compact('service', 'types'));
     }
     public function update(Request $request, $email_service)
     {
-
+        $service = EmailService::whereId($email_service)->firstOrFail();
+        $service->name = $request->name;
+        $service->details = encrypt(json_encode(json_decode($request->settings)));
+        $service->type_id = optional($this->getType($request->type))->id;
+        $service->save();
+        return back();
     }
     public function delete($email_service)
     {
