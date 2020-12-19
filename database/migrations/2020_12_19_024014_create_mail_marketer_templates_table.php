@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmailServicesTable extends Migration
+class CreateMailMarketerTemplatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateEmailServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mail_marketer_email_services', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('type_id');
+        Schema::create('mail_marketer_templates', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('name');
-            $table->mediumText('details');
+            $table->longText('content');
             $table->timestamps();
-            $table->foreign('type_id')->references('id')->on('email_service_types')->onUpdate('cascade');
         });
     }
 
@@ -30,6 +28,6 @@ class CreateEmailServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('email_services');
+        Schema::dropIfExists('mail_marketer_templates');
     }
 }

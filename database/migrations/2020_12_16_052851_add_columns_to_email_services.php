@@ -13,7 +13,7 @@ class AddColumnsToEmailServices extends Migration
      */
     public function up()
     {
-        Schema::table('email_services', function (Blueprint $table) {
+        Schema::table('mail_marketer_email_services', function (Blueprint $table) {
             $table->integer('daily_emails')->after('name')->default(0);
             $table->integer('daily_emails_left')->after('daily_emails')->default(0);
             $table->integer('hourly_emails')->after('daily_emails_left')->default(0);
