@@ -25,7 +25,7 @@ class CreateMailMarketerMessagesTable extends Migration
             $table->unsignedBigInteger('subscriber_id');
             $table->string('hash');
             $table->timestamps();
-            $table->foreign('subscriber_id')->references('id')->on()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('subscriber_id')->references('id')->on('mail_marketer_subscribers')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

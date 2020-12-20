@@ -2,9 +2,11 @@
 
 namespace ZeusMailMarketer\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Segment extends Model
+class Segment extends Base
 {
-    public $table = 'mail_marketer_segments';
+    public $table = parent::TABLE_PREFIX . 'segments';
+    public function subscribers()
+    {
+        return $this->belongsToMany(Subscriber::class, parent::TABLE_PREFIX . 'segment_subscriber');
+    }
 }

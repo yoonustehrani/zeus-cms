@@ -2,8 +2,8 @@
 
 namespace ZeusMailMarketer\Http\Controllers;
 
-use App\EmailService;
-use App\EmailServiceType;
+use ZeusMailMarketer\Models\EmailService;
+use ZeusMailMarketer\Models\EmailServiceType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -29,7 +29,8 @@ class EmailServiceController extends Controller
         $service = new EmailService;
         $service->name = $request->name;
         $service->details = $request->settings;
-        $type->services()->create($service->toArray());
+        $service->type_id = $type->id;
+        $service->save();
         return redirect()->to(route(config('ZECMM.controllers.route') . 'services.index'));
     }
     public function show($email_service)
@@ -46,14 +47,15 @@ class EmailServiceController extends Controller
     {
         $service = EmailService::whereId($email_service)->firstOrFail();
         $service->name = $request->name;
-        $service->details = encrypt(json_encode(json_decode($request->settings)));
+        $service->details = $request->settings;
         $service->type_id = optional($this->getType($request->type))->id;
         $service->save();
         return back();
     }
-    public function delete($email_service)
+    public function destroy($email_service)
     {
         $email_service = EmailService::whereId($email_service)->firstOrFail();
         $email_service->delete();
+        return back();
     }
 }

@@ -1,11 +1,10 @@
 <?php
 
-namespace App;
+namespace ZeusMailMarketer\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class EmailServiceType extends Model
+class EmailServiceType extends Base
 {
+    public $table = parent::TABLE_PREFIX . 'email_service_types';
     protected $fillable = ['name'];
     public function services()
     {

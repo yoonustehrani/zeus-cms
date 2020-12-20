@@ -19,7 +19,7 @@ class CreateEmailServicesTable extends Migration
             $table->string('name');
             $table->mediumText('details');
             $table->timestamps();
-            $table->foreign('type_id')->references('id')->on('email_service_types')->onUpdate('cascade');
+            $table->foreign('type_id')->references('id')->on('mail_marketer_email_service_types')->onUpdate('cascade');
         });
     }
 

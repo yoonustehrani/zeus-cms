@@ -13,7 +13,7 @@ class CreateEmailServiceTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('email_service_types', function (Blueprint $table) {
+        Schema::create('mail_marketer_email_service_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();

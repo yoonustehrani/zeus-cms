@@ -30,6 +30,7 @@
                 <td>
                     <form action="{{ route(config('ZECMM.controllers.route') . 'services.destroy', ['service' => $service->id]) }}" method="post">
                     @csrf
+                    @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
                     </form>
                 </td>
