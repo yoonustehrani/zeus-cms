@@ -28,8 +28,11 @@ class UserSubscribed extends Mailable
      */
     public function build()
     {
-        return $this->from('info@elnovel.net')
-                    ->subject('Welcome to our website')
-                    ->view('emails.subscribed');
+        $this->from('info@elnovel.net')
+                ->subject('Welcome to our website')
+                ->view('emails.subscribed');
+                // ->withSwiftMessage(function ($message) {
+                //     $message->getHeaders()->addTextHeader('Return-Path', 'bounces@elnovel.net');
+                // });
     }
 }
