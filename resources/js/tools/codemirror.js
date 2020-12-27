@@ -1,0 +1,1 @@
+window.CodeMirror = require('codemirror')

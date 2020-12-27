@@ -1,4 +1,5 @@
 require('./tools/date')
+require('./tools/codemirror')
 
 $('.json-code').on('keydown', function(e) {
     if (e.keyCode === 9) {

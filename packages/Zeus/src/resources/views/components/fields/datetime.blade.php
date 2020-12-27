@@ -6,13 +6,13 @@
         <span class="input-group-text">@if($row->details && isset($row->details->icon)) <i class="{{ $row->details->icon }}"></i> @else {{ $row->display_name }} @endif</span>
     </div>
     <input type="hidden" name="{{ $row->field }}" id="field_{{ $row->field }}_hidden" 
-    value="{{ isset($edit) ? $edit['value']->unix() * 1000 : time() * 1000 }}"
+    value="{{ (isset($edit) && $edit['value']) ? $edit['value']->unix() * 1000 : time() * 1000 }}"
     @if(isset($edit)) data-date="{{ $edit['value'] }}" @endif>
     <input @if($row->required) @endif type="text" class="form-control date-time-picker" id="field_{{ $row->field }}"
     @if($row->details && isset($row->details->place_holder)) placeholder="{{ $row->details->place_holder }}" @endif
     @if($row->details && isset($row->details->help_text))
         <span class="col-12 mt-1 text-secondary">{{ $row->details->help_text }}</span>
-    @endif
+    @endif>
 </div>
 
 @push('scripts')
@@ -55,9 +55,11 @@
         });
         let defate = new Date("{{ now()->format('Y-m-d H:i:s') }}").valueOf();
         let input_field = $('input[name="{{ $row->field }}"]');
-        if (input_field.val().length > 0) {
+        if (input_field.attr('data-date').length > 0) {
             let dt = new Date(input_field.attr('data-date'));
             defate = dt.valueOf();
+        } else {
+            mustSetValue.val(defate);
         }
         pdt.setDate(defate)
     });
