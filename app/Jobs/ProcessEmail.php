@@ -19,6 +19,12 @@ class ProcessEmail implements ShouldQueue
     public $tries = 3;
     public $maxExceptions = 2;
     public $retryAfter    = 10;
+    /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
     protected $message;
 
     /**
@@ -44,8 +50,7 @@ class ProcessEmail implements ShouldQueue
     public function failed(Throwable $e)
     {
         \Log::error("message #{$this->message->id} Failed.");
-        $failure = new MessageFailure();
-        $this->message->failure()->create($failure->toArray());
+        $this->message->failure()->create((new MessageFailure())->toArray());
         \Log::error($e->__toString());
     }
 }

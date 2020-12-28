@@ -230,7 +230,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Zeus' => Zeus\Facades\ZeusFacade::class,
-        'ZeusMMarketer' => ZeusMailMarketer\Facades\ZeusMailMarketerFacade::class,
+        'MailMarketer' => \ZeusMailMarketer\Facades\ZeusMailMarketerFacade::class,
+        'NormalizeTags' => \ZeusMailMarketer\Facades\NormalizeTagsFacade::class,
     ],
 
 ];
