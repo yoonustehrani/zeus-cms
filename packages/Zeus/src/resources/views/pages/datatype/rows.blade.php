@@ -1,5 +1,10 @@
 @foreach ($rows as $row)
 <tr>
+    {{-- @php
+        if (preg_match("/^relationship__/", $row['type'])) {
+            dd(substr($row['type'], strlen('relationship__'), strlen($row['type'])));
+        }
+    @endphp --}}
     @if($row['required']) <input type="hidden" value="required" name="row_{{ $row['field'] }}_required"> @endif
     <th>{{ $loop->index + 1 }}</th>
     <td class="text-left text-small">

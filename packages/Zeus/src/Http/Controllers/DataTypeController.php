@@ -22,7 +22,21 @@ class DataTypeController extends Controller
         'datetime' => 'DateTime Picker',
         'radio' => 'Radio Button',
         'checkbox' => 'Checkbox',
-        'richtext' => 'Rich Text Editor'
+        'richtext' => 'Rich Text Editor',
+        'relationship__hasOne' => 'Has One Relationship',
+        'relationship__hasMany' => 'Has Many Relationship',
+        'relationship__belongsTo' => 'Belongs To Relationship',
+        'relationship__belongsToMany' => 'Belongs To Many Relationship',
+        'relationship__morphOne' => 'Morph One Relationship',
+        'relationship__morphMany' => 'Morph Many Relationship',
+    ];
+    public $relations = [
+        'hasOne',
+        'hasMany',
+        'belongsTo',
+        'belongsToMany',
+        'morphOne',
+        'morphMany',
     ];
     public $visibility = [
         'browse' => 'field will show up when you browse the current data',

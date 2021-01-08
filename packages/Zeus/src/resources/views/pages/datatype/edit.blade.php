@@ -141,6 +141,11 @@
                 </thead>
                 <tbody>
                     @component('ZEV::pages.datatype.rows', ['rows' => $datatype->rows->toArray(), 'types' => $types, 'visiblities' => $visibilities, 'edit' => true])@endcomponent
+                    <td colspan="3" class="text-left">
+                        <a class="btn btn-outline-danger" href="{{ route('RomanCamp.datarows.create', ['datatype' => $datatype->id, 'type' => 'relationship']) }}">
+                            <i class="fas fa-plus"></i> Add RelationShip
+                        </a>
+                    </td>
                 </tbody>
             </table>
         </div>

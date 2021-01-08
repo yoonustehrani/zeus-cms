@@ -12,6 +12,7 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 
     Route::get('datatypes/{datatype}/create', $namespace_prefix . 'DataTypeController@create')->name('datatypes.create');
     Route::post('datatypes/{datatype}/add', $namespace_prefix . 'DataTypeController@store')->name('datatypes.store');
+    Route::resource('datatypes/{datatype}/datarows', $namespace_prefix . 'DataRowController');
     Route::resource('database', $namespace_prefix . 'DatabaseController')->only('index');
     Route::prefix('menu-builder')->group(function() use($namespace_prefix) {
         Route::get('/{menu}', $namespace_prefix . 'MenuBuilderController@edit');
