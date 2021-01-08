@@ -27,7 +27,12 @@ class ZeusMailMarketer
                             'title' => 'Email Services',
                             'icon_class' => 'fas fa-envelope',
                             'route' => 'RomanCamp.extention.zeus-mail-marketer.services.index'
-                        ]
+                        ],
+                        [
+                            'title' => 'Email Templates',
+                            'icon_class' => 'fas fa-envelope',
+                            'route' => 'RomanCamp.extention.zeus-mail-marketer.templates.index'
+                        ],
                     ]
                 ],
             ],

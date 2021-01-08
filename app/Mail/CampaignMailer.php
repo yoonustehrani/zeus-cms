@@ -11,16 +11,13 @@ class CampaignMailer extends Mailable
 {
     use Queueable, SerializesModels;
     public $content;
-    public $subject;
-    public $custom_from;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($content, $subject, $custom_from = null)
+    public function __construct($content)
     {
-        $this->custom_from = $custom_from ?: config('mail.from');
         $this->content = $content;
     }
 
@@ -31,8 +28,6 @@ class CampaignMailer extends Mailable
      */
     public function build()
     {
-        return $this->from($this->custom_from[0], $this->custom_from[1])
-                    ->subject($this->subject)
-                    ->html($this->content);
+        return $this->html($this->content);
     }
 }

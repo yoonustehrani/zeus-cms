@@ -10,3 +10,7 @@ Route::get('/', ZMM_NAMESPACE . 'DashboardController@index');
 Route::resource('/subscribers', ZMM_NAMESPACE . 'SubscriberController');
 Route::resource('/templates', ZMM_NAMESPACE . 'TemplateController');
 Route::resource('/email_services/services', ZMM_NAMESPACE . 'EmailServiceController');
+
+Route::group(['middleware' => ['api'], 'as' => 'api.'], function () {
+    Route::get('templates/{template}/api', ZMM_NAMESPACE . 'TemplateController@showApi')->name('templates.show');
+});

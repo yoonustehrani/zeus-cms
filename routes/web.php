@@ -23,50 +23,35 @@ use ZeusMailMarketer\Services\NormalizeTags;
 
 Route::get('/', function () {
     // $cssToInlineStyles = new CssToInlineStyles();
-    $fullname = "yoonus tehrani";
-    $html = file_get_contents(__DIR__ . '/../examples/index.html');
-    $content = (new NormalizeTags)
-                ->content($html)
-                ->tags(['fullname'])
-                ->values(compact('fullname'))
-                ->normalize();
-    // return response($html);
-    // $css = "
-    // h1 {
-    //     color: red;
-    // }
-    // .dool {
-    //     color: blueviolet;
-    //     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    // }
-    // ";
-    // $css = file_get_contents(__DIR__ . '/examples/sumo/style.css');
-
+    // $fullname = "yoonus tehrani";
+    // $html = file_get_contents(__DIR__ . '/../examples/index.html');
+    // $content = (new NormalizeTags)
+    //             ->content($html)
+    //             ->tags(['fullname'])
+    //             ->values(compact('fullname'))
+    //             ->normalize();
     // output
-    // $html2 = $cssToInlineStyles->convert(
-    //     $html,
-    //     $css
-    // );
-    // return response($content);
-    $mailable = new CampaignMailer($content, 'به ال ناول خوش آمدید', ['newsletter@Elnovel.net', 'یونس طهرانی - دپارتمان فروش']);
-    try {
-        Mail::manual_mailer('yoonus_gmail', [
-            'transport' => 'smtp',
-            'host' => 'smtp.gmail.com',
-            'port' => 587,
-            'encryption' => 'tls',
-            'username' => 'yoonustehrani28@gmail.com',
-            'password' => 'koplsiucclqsfbvn',
-            'timeout' => 60,
-            'auth_mode' => null,
-            'pretend' => false,
-            ])
-            ->to('elnovelofficial@gmail.com')
-            ->send($mailable);
-    } catch (\Throwable $th) {
-        throw $th;
-        return 'error';
-    }
+    // $content = $cssToInlineStyles->convert($content); // , $css
+    // $mailable = (new CampaignMailer($content))->subject('به ال ناول خوش آمدید')->from('newsletter@Elnovel.net', 'یونس طهرانی - دپارتمان فروش');
+    // return $mailable;
+    // try {
+    //     Mail::manual_mailer('yoonus_gmail', [
+    //         'transport' => 'smtp',
+    //         'host' => 'smtp.gmail.com',
+    //         'port' => 587,
+    //         'encryption' => 'tls',
+    //         'username' => 'yoonustehrani28@gmail.com',
+    //         'password' => 'koplsiucclqsfbvn',
+    //         'timeout' => 60,
+    //         'auth_mode' => null,
+    //         'pretend' => false,
+    //         ])
+    //         ->to('elnovelofficial@gmail.com')
+    //         ->send($mailable);
+    // } catch (\Throwable $th) {
+    //     throw $th;
+    //     return 'error';
+    // }
     return view('welcome');
 });
 
