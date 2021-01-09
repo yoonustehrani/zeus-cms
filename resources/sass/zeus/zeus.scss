@@ -248,3 +248,17 @@ div.drop-down-container {
         }
     }
 }
+
+.select2 .selection {
+    float: left !important;
+}
+
+.select2-container--default .select2-selection--single, .select2 .selection {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow, .select2-container--default .select2-selection--single .select2-selection__rendered {
+    top: 3px !important;
+    padding-top: 3px;
+}

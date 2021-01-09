@@ -10,7 +10,7 @@
     <form action="{{ route('RomanCamp.' . $datatype->slug . '.update', ['id' => $editable->id]) }}" class="col-12 float-left p-0 form-group" method="post">
         @csrf
         @method('PUT')
-        @foreach ($datatype->columns as $row)
+        @foreach ($datatype->rows as $row)
             @component("ZEV::components.fields.{$row->type}", ['row' => $row, 'edit' => ['value' => $editable->{$row->field}]])
                 
             @endcomponent

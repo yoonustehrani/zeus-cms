@@ -135,6 +135,9 @@ class DataType extends Model
                         ))->timezone(config('ZEC.package.timezone'));
                         $model->{$row->field} = $date->format(config('ZEC.database.date_format'));
                     break;
+                    case 'relationship__belongsToMany':
+                        
+                        break;
                     default:
                         $model->{$row->field} = $request->{$row->field};
                     break;
@@ -142,5 +145,18 @@ class DataType extends Model
             }
         }
         return $model;
+    }
+    public function assign_relationships($model, $rows, $request)
+    {
+        foreach ($rows as $row) {
+            if ($request->{$row->field}) {
+                switch ($row->type) {
+                    case 'relationship__belongsToMany':
+                        $model->{$row->details->target_method}()->sync($request->input($row->field));
+                        break;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -23,6 +23,8 @@ class DataTypeController extends Controller
         'radio' => 'Radio Button',
         'checkbox' => 'Checkbox',
         'richtext' => 'Rich Text Editor',
+        'selectbox' => 'Select Box',
+        'selectbox-multiple' => 'Select Box Multi',
         'relationship__hasOne' => 'Has One Relationship',
         'relationship__hasMany' => 'Has Many Relationship',
         'relationship__belongsTo' => 'Belongs To Relationship',

@@ -7866,6 +7866,13 @@ window.jQuery = window.$;
 
 __webpack_require__(/*! ./tools/date */ "./resources/js/tools/date.js");
 
+$('.must_be_select2').each(function () {
+  var config = {};
+  var place_holder = $(this).attr('data-placeholder');
+  config.placeholder = place_holder ? place_holder : 'select one';
+  $(this).select2(config);
+});
+
 /***/ }),
 
 /***/ "./resources/js/tools/date.js":

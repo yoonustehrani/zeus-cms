@@ -23,17 +23,26 @@ class DataRowController extends Controller
     public function edit($datatype, $datarow)
     {
         $datatype = DataType::findOrFail($datatype);
-        $datarow  = $datatype->rows()->findOrFail($datarow);
-        $relations = [
-            'hasOne',
-            'hasMany',
-            'belongsTo',
-            'belongsToMany'
-        ];
+        // $datarow = new DataRow();
+        // $datarow->field = "permissions";
+        // $datarow->required = false;
+        // $datarow->type  = "relationship__belongsToMany";
+        // $datarow->display_name = "Permissions";
+        // $datarow->details = [];
+        // $datarow->order = 5;
+        // $datatype->rows()->create($datarow->toArray());
+        // return $datarow;
+        // $datarow  = $datatype->rows()->findOrFail($datarow);
+        // $relations = [
+        //     'hasOne',
+        //     'hasMany',
+        //     'belongsTo',
+        //     'belongsToMany'
+        // ];
         // $datarow->type = 'relationship__' . $relations[2];
         // $datarow->required = false;
         // $details = ((array) $datarow->details);
-        // $details['target_model'] = 'App\\File';
+        // $details['target_method'] = 'file';        
         // $datarow->details = json_decode($datarow->details);
         // $fakeDetails = 
         // $datarow->details = 'App\\File';
