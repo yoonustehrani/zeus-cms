@@ -1,3 +1,4 @@
+window.jQuery = window.$;
 require('./tools/date')
 require('./tools/codemirror')
 
@@ -31,3 +32,10 @@ $('.json-code').on('keydown', function(e) {
         }
     }
 });
+
+$('.must_be_select2').each(function() {
+    let config = {};
+    let place_holder = $(this).attr('data-placeholder');
+    config.placeholder = place_holder ? place_holder : 'Select';
+    $(this).select2(config);
+})

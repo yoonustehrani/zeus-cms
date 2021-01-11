@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Zeus\Models\Role as ModelsRole;
 
-class Role extends Model
+class Role extends ModelsRole
 {
     //
 }

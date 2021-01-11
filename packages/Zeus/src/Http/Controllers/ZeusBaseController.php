@@ -59,6 +59,24 @@ class ZeusBaseController extends Controller
     public function create(Request $request)
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
+        foreach ($datatype->add_rows as $row) {
+            switch ($row->type) {
+                case 'relationship__belongsTo':
+                    $row->type = 'selectbox';
+                    if (optional($row->details)->target_model && $datatype->model_name) {
+                        $data = \Zeus::getModel($row->details->target_model)->get();
+                        $row->data = $data;
+                    }
+                    break;
+                case 'relationship__belongsToMany':
+                    $row->type = 'selectbox-multiple';
+                    if (optional($row->details)->target_method && $datatype->model_name) {
+                        $data = \Zeus::getModel($row->details->target_model)->get();
+                        $row->data = $data;
+                    }
+                    break;
+            }
+        }
         if ($request->debug) {
             return $datatype;
         }
@@ -75,10 +93,19 @@ class ZeusBaseController extends Controller
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
         $request->validate($datatype->validation_rules($datatype->add_rows));
-        $model = \Zeus::getModel($datatype->model_name);
-        $model = new $model;
-        $model = $datatype->assign_value_to_instance($model, $datatype->add_rows, $request);
-        $model->save();
+        try {
+            \DB::beginTransaction();
+            $model = \Zeus::getModel($datatype->model_name);
+            $model = new $model;
+            $model = $datatype->assign_value_to_instance($model, $datatype->add_rows, $request);
+            if ($model->save()) {
+                $datatype->assign_relationships($model, $datatype->add_rows, $request);
+            }
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            throw $e;
+        }
         return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.index"));
     }
 
@@ -105,11 +132,31 @@ class ZeusBaseController extends Controller
     public function edit(Request $request, $id)
     {
         $slug = $this->getSlug($request);
-        $datatype = \Zeus::model('DataType')->with(['columns' => function($q) {
+        $datatype = \Zeus::model('DataType')->with(['rows' => function($q) {
             $q->where('edit', true);
         }])->where('slug', '=', $slug)->first();
+        // return $datatype
         $model = \Zeus::getModel($datatype->model_name);
         $editable = $model::whereId($id)->firstOrFail();
+        foreach ($datatype->rows as $row) {
+            switch ($row->type) {
+                case 'relationship__belongsTo':
+                    $row->type = 'selectbox';
+                    if (optional($row->details)->target_model && $datatype->model_name) {
+                        $data = \Zeus::getModel($row->details->target_model)->get();
+                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->first();
+                        $row->data = $data;
+                    }
+                    break;
+                case 'relationship__belongsToMany':
+                    $row->type = 'selectbox-multiple';
+                    if (optional($row->details)->target_method && $datatype->model_name) {
+                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->get();
+                        $row->data = \Zeus::getModel($row->details->target_model)->get();
+                    }
+                    break;
+            }
+        }
         return view('ZEV::pages.default.edit', compact('editable', 'datatype'));
     }
 
@@ -127,7 +174,9 @@ class ZeusBaseController extends Controller
         $model = \Zeus::getModel($datatype->model_name);
         $editable = $model::whereId($id)->firstOrFail();
         $edited = $datatype->assign_value_to_instance($editable, $datatype->edit_rows, $request);
-        $edited->save();
+        if ($edited->save()) {
+            $datatype->assign_relationships($edited, $datatype->add_rows, $request);
+        }
         return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.edit", ['id' => $edited->id]));
     }
 

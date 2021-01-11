@@ -5,7 +5,7 @@
  */
 
 require('./bootstrap');
-
+require('select2');
 /**
  * Next, we will create a fresh React component instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -20,3 +20,4 @@ $('.has_sub').on('click', function() {
     $(this).toggleClass('active');
     $(' .opener', this).toggleClass('fa-angle-right fa-angle-down');
 });
+// require('./components/Example');

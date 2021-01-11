@@ -13007,6 +13007,7 @@ nav .horizental-menu li.active ul li a {
   padding-left: 20px;
 }
 
+<<<<<<< HEAD
 nav .horizental-menu li.has_sub > p a {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -13015,6 +13016,8 @@ nav .horizental-menu li.has_sub > p a {
   padding: 0px;
 }
 
+=======
+>>>>>>> rel
 nav .horizental-menu li:hover > p,
 nav .horizental-menu li:hover > a {
   padding-left: 20px;
@@ -15215,3 +15218,22 @@ div.drop-down-container div.dropdown-menu a {
   color: #ffffff;
 }
 
+<<<<<<< HEAD
+=======
+.select2 .selection {
+  float: left !important;
+}
+
+.select2-container--default .select2-selection--single,
+.select2 .selection {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow,
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  top: 3px !important;
+  padding-top: 3px;
+}
+
+>>>>>>> rel

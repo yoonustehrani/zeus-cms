@@ -128,19 +128,38 @@ class DataType extends Model
                 switch ($row->type) {
                     case 'checkbox':
                         $model->{$row->field} = !! $request->{$row->field};
-                    break;
+                        break;
                     case 'datetime':
                         $date = (new Carbon(
                             ((int) $request->{$row->field}) / 1000
                         ))->timezone(config('ZEC.package.timezone'));
                         $model->{$row->field} = $date->format(config('ZEC.database.date_format'));
-                    break;
+                        break;
+                    case 'relationship__belongsTo':
+                        $target = \Zeus::getModel($row->details->target_model)::whereId($request->{$row->field})->firstOrFail();
+                        $model->{$row->details->target_method}()->associate($target);
+                        break;
+                    case 'relationship__belongsToMany':
+                        break;
                     default:
                         $model->{$row->field} = $request->{$row->field};
-                    break;
+                        break;
                 }
             }
         }
         return $model;
+    }
+    public function assign_relationships($model, $rows, $request)
+    {
+        foreach ($rows as $row) {
+            if ($request->{$row->field}) {
+                switch ($row->type) {
+                    case 'relationship__belongsToMany':
+                        $model->{$row->details->target_method}()->sync($request->input($row->field));
+                        break;
+                }
+            }
+        }
+        return true;
     }
 }
