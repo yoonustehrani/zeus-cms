@@ -7,7 +7,8 @@
     @if($row->details && isset($row->details->place_holder)) data-placeholder="{{ $row->details->place_holder }}" @endif>
         <option></option>
         @foreach ($row->data as $item)
-            <option value="{{ $item->id }}">{{ method_exists($item, '__str') ? $item->__str() : $item->id }}</option>
+            <option @if ($item->id === $edit['value']->id) selected @endif
+            value="{{ $item->id }}">{{ method_exists($item, '__str') ? $item->__str() : $item->id }}</option>
         @endforeach
     </select>
     @if($row->details && isset($row->details->help_text))

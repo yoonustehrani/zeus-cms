@@ -135,6 +135,7 @@ class ZeusBaseController extends Controller
         $datatype = \Zeus::model('DataType')->with(['rows' => function($q) {
             $q->where('edit', true);
         }])->where('slug', '=', $slug)->first();
+        // return $datatype
         $model = \Zeus::getModel($datatype->model_name);
         $editable = $model::whereId($id)->firstOrFail();
         foreach ($datatype->rows as $row) {
@@ -143,6 +144,7 @@ class ZeusBaseController extends Controller
                     $row->type = 'selectbox';
                     if (optional($row->details)->target_model && $datatype->model_name) {
                         $data = \Zeus::getModel($row->details->target_model)->get();
+                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->first();
                         $row->data = $data;
                     }
                     break;
@@ -172,7 +174,9 @@ class ZeusBaseController extends Controller
         $model = \Zeus::getModel($datatype->model_name);
         $editable = $model::whereId($id)->firstOrFail();
         $edited = $datatype->assign_value_to_instance($editable, $datatype->edit_rows, $request);
-        $edited->save();
+        if ($edited->save()) {
+            $datatype->assign_relationships($edited, $datatype->add_rows, $request);
+        }
         return redirect()->to(route("{$this->route_prefix}{$datatype->slug}.edit", ['id' => $edited->id]));
     }
 
