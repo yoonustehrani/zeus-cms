@@ -32,13 +32,17 @@ class MenuBuilder extends Component {
                 let { item } = ui;
                 let identifier = Number(item.attr('data-identifier'));
                 let parent   = Number(item.attr('data-parent'));
-                let eParent  = item.parent();
-                let newPlace = $(' li.parent', eParent).index(item)
+                let eParent  = item.parent()[0];
+                let newPlace = $(' li', eParent).index(item)
                 let newState = state.items.map(menuItem => {
                     if ((menuItem.id == identifier)) {
                         menuItem.order = newPlace
                     } else if (menuItem.order == newPlace) {
-                        menuItem.order = newPlace + 1
+                        if (old_position > newPlace) {
+                            menuItem.order = newPlace + 1
+                        } else {
+                            menuItem.order = newPlace - 1
+                        }
                     } else if (menuItem.order == (old_position - 1)) {
                         menuItem.order = old_position
                     }

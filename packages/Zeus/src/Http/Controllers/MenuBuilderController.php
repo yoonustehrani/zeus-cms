@@ -14,7 +14,7 @@ class MenuBuilderController extends Controller
     }
     public function edit(Menu $menu)
     {
-        return view('ZEV::components.pages.menus.builder', compact('menu'));
+        return view('ZEV::pages.menus.builder', compact('menu'));
     }
     public function items(Menu $menu)
     {

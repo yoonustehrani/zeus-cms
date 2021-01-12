@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2342,7 +2342,7 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.13.1
+/** @license React v16.14.0
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -26912,7 +26912,7 @@ function injectIntoDevTools(devToolsConfig) {
     // Enables DevTools to append owner stacks to error messages in DEV mode.
     getCurrentFiber:  function () {
       return current;
-    } 
+    }
   }));
 }
 var IsSomeRendererActing$1 = ReactSharedInternals.IsSomeRendererActing;
@@ -27264,7 +27264,7 @@ implementation) {
   };
 }
 
-var ReactVersion = '16.13.1';
+var ReactVersion = '16.14.0';
 
 setAttemptUserBlockingHydration(attemptUserBlockingHydration$1);
 setAttemptContinuousHydration(attemptContinuousHydration$1);
@@ -27411,7 +27411,7 @@ if (false) {} else {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.13.1
+/** @license React v16.14.0
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -27431,7 +27431,7 @@ if (true) {
 var _assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
 var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
 
-var ReactVersion = '16.13.1';
+var ReactVersion = '16.14.0';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -30804,13 +30804,17 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
           var item = ui.item;
           var identifier = Number(item.attr('data-identifier'));
           var parent = Number(item.attr('data-parent'));
-          var eParent = item.parent();
-          var newPlace = $(' li.parent', eParent).index(item);
+          var eParent = item.parent()[0];
+          var newPlace = $(' li', eParent).index(item);
           var newState = state.items.map(function (menuItem) {
             if (menuItem.id == identifier) {
               menuItem.order = newPlace;
             } else if (menuItem.order == newPlace) {
-              menuItem.order = newPlace + 1;
+              if (old_position > newPlace) {
+                menuItem.order = newPlace + 1;
+              } else {
+                menuItem.order = newPlace - 1;
+              }
             } else if (menuItem.order == old_position - 1) {
               menuItem.order = old_position;
             }
@@ -30827,20 +30831,24 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
     });
 
     _this.state = {
-      items: [],
+      items: _this.props.Items ? _this.props.Items : [],
       newChanges: []
     };
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(_this.props.getItems).then(function (res) {
-      var parent_items = res.data.parent_items;
 
-      _this.setState(function (prevState) {
-        return {
-          items: parent_items.sort(function (a, b) {
-            return a.order > b.order ? 1 : -1;
-          })
-        };
+    if (_this.props.getItems) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(_this.props.getItems).then(function (res) {
+        var parent_items = res.data.parent_items;
+
+        _this.setState(function (prevState) {
+          return {
+            items: parent_items.sort(function (a, b) {
+              return a.order > b.order ? 1 : -1;
+            })
+          };
+        });
       });
-    });
+    }
+
     return _this;
   }
 
@@ -30897,14 +30905,26 @@ if (document.getElementById(Id)) {
 
 /***/ }),
 
-/***/ 1:
-/*!********************************************!*\
-  !*** multi ./resources/js/menu_builder.js ***!
-  \********************************************/
+/***/ "./resources/sass/zeus/zeus.scss":
+/*!***************************************!*\
+  !*** ./resources/sass/zeus/zeus.scss ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!****************************************************************************!*\
+  !*** multi ./resources/js/menu_builder.js ./resources/sass/zeus/zeus.scss ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! W:\php\zeuscms\resources\js\menu_builder.js */"./resources/js/menu_builder.js");
+__webpack_require__(/*! W:\php\zeuscms\resources\js\menu_builder.js */"./resources/js/menu_builder.js");
+module.exports = __webpack_require__(/*! W:\php\zeuscms\resources\sass\zeus\zeus.scss */"./resources/sass/zeus/zeus.scss");
 
 
 /***/ })
