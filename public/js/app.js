@@ -16033,26 +16033,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
- */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-/**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-=======
 /***/ "./node_modules/select2/dist/js/select2.js":
 /*!*************************************************!*\
   !*** ./node_modules/select2/dist/js/select2.js ***!
@@ -16289,7 +16269,6 @@ var requirejs, require, define;
     function makeRelParts(relName) {
         return relName ? splitPrefix(relName) : [];
     }
->>>>>>> rel
 
     /**
      * Makes a name map, normalizing the name, and using a plugin
@@ -16302,16 +16281,6 @@ var requirejs, require, define;
             prefix = parts[0],
             relResourceName = relParts[1];
 
-<<<<<<< HEAD
-$('#toggle-logout').on('click', function (e) {
-  e.preventDefault();
-  $('#logout-form').trigger('submit');
-});
-$('.has_sub').on('click', function () {
-  $(this).toggleClass('active');
-  $(' .opener', this).toggleClass('fa-angle-right fa-angle-down');
-});
-=======
         name = parts[1];
 
         if (prefix) {
@@ -16344,7 +16313,6 @@ $('.has_sub').on('click', function () {
             p: plugin
         };
     };
->>>>>>> rel
 
     function makeConfig(name) {
         return function () {
@@ -16352,48 +16320,6 @@ $('.has_sub').on('click', function () {
         };
     }
 
-<<<<<<< HEAD
-/***/ "./resources/js/bootstrap.js":
-/*!***********************************!*\
-  !*** ./resources/js/bootstrap.js ***!
-  \***********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery-ui */ "./node_modules/jquery-ui/ui/widget.js");
-/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery_ui__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var jquery_ui_ui_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery-ui/ui/core */ "./node_modules/jquery-ui/ui/core.js");
-/* harmony import */ var jquery_ui_ui_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_core__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var jquery_ui_ui_widgets_selectable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-ui/ui/widgets/selectable */ "./node_modules/jquery-ui/ui/widgets/selectable.js");
-/* harmony import */ var jquery_ui_ui_widgets_selectable__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_selectable__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var jquery_ui_ui_widgets_sortable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
-/* harmony import */ var jquery_ui_ui_widgets_sortable__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable__WEBPACK_IMPORTED_MODULE_3__);
-window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-
-
-
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
-// try {
-// window.Popper = require('popper.js').default;
-// window.$ = window.jQuery = require('jquery');
-// require('bootstrap');
-// $("#menu-sortable").sortable()
-// } catch (e) {}
-
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-=======
     handlers = {
         require: function (name) {
             return makeRequire(name);
@@ -22228,7 +22154,16 @@ __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-// require('./components/Example');
+
+
+$('#toggle-logout').on('click', function (e) {
+  e.preventDefault();
+  $('#logout-form').trigger('submit');
+});
+$('.has_sub').on('click', function () {
+  $(this).toggleClass('active');
+  $(' .opener', this).toggleClass('fa-angle-right fa-angle-down');
+}); // require('./components/Example');
 
 /***/ }),
 
@@ -22249,7 +22184,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_ui_ui_widgets_selectable__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_selectable__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var jquery_ui_ui_widgets_sortable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
 /* harmony import */ var jquery_ui_ui_widgets_sortable__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable__WEBPACK_IMPORTED_MODULE_3__);
-window.$ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 
 
@@ -22272,7 +22207,6 @@ window.$ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
->>>>>>> rel
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
@@ -22291,28 +22225,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./resources/sass/zeus/zeus.scss":
-/*!***************************************!*\
-  !*** ./resources/sass/zeus/zeus.scss ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!*******************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/zeus/zeus.scss ***!
-  \*******************************************************************/
-=======
 /***/ 1:
 /*!***********************************!*\
   !*** multi ./resources/js/app.js ***!
   \***********************************/
->>>>>>> rel
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

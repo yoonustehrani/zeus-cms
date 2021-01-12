@@ -17671,7 +17671,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 __webpack_require__(/*! ./tools/date */ "./resources/js/tools/date.js");
 
-<<<<<<< HEAD
 __webpack_require__(/*! ./tools/codemirror */ "./resources/js/tools/codemirror.js");
 
 $('.json-code').on('keydown', function (e) {
@@ -17704,6 +17703,12 @@ $('.json-code').on('keydown', function (e) {
     }
   }
 });
+$('.must_be_select2').each(function () {
+  var config = {};
+  var place_holder = $(this).attr('data-placeholder');
+  config.placeholder = place_holder ? place_holder : 'Select';
+  $(this).select2(config);
+});
 
 /***/ }),
 
@@ -17716,15 +17721,6 @@ $('.json-code').on('keydown', function (e) {
 
 window.CodeMirror = __webpack_require__(/*! codemirror */ "./node_modules/codemirror/lib/codemirror.js");
 
-=======
-$('.must_be_select2').each(function () {
-  var config = {};
-  var place_holder = $(this).attr('data-placeholder');
-  config.placeholder = place_holder ? place_holder : 'select one';
-  $(this).select2(config);
-});
-
->>>>>>> rel
 /***/ }),
 
 /***/ "./resources/js/tools/date.js":

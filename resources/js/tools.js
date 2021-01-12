@@ -1,4 +1,3 @@
-window.jQuery = window.$;
 require('./tools/date')
 require('./tools/codemirror')
 

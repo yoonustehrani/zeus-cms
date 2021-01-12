@@ -21,4 +21,6 @@ const src = {
  */
 let { res, pub } = src;
 
-// mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
+// mix.react(res.js + 'app.js', pub.js)
+// .js(res.js + 'tools.js', pub.js)
+mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
