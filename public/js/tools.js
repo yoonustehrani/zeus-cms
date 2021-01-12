@@ -17673,7 +17673,7 @@ __webpack_require__(/*! ./tools/date */ "./resources/js/tools/date.js");
 
 __webpack_require__(/*! ./tools/codemirror */ "./resources/js/tools/codemirror.js");
 
-$('.json-code').on('keydown', function (e) {
+$(document).on('keydown', '.json-code', function (e) {
   if (e.keyCode === 9) {
     e.preventDefault();
     var cursorPos = $(this).prop('selectionStart');
@@ -17735,14 +17735,26 @@ window.persianDatepicker = __webpack_require__(/*! persian-datepicker/dist/js/pe
 
 /***/ }),
 
+/***/ "./resources/sass/zeus/zeus.scss":
+/*!***************************************!*\
+  !*** ./resources/sass/zeus/zeus.scss ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 0:
-/*!*************************************!*\
-  !*** multi ./resources/js/tools.js ***!
-  \*************************************/
+/*!*********************************************************************!*\
+  !*** multi ./resources/js/tools.js ./resources/sass/zeus/zeus.scss ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! W:\php\zeuscms\resources\js\tools.js */"./resources/js/tools.js");
+__webpack_require__(/*! W:\php\zeuscms\resources\js\tools.js */"./resources/js/tools.js");
+module.exports = __webpack_require__(/*! W:\php\zeuscms\resources\sass\zeus\zeus.scss */"./resources/sass/zeus/zeus.scss");
 
 
 /***/ })

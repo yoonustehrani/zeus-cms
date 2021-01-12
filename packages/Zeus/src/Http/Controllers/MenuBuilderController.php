@@ -16,16 +16,25 @@ class MenuBuilderController extends Controller
     {
         return view('ZEV::pages.menus.builder', compact('menu'));
     }
-    public function items(Menu $menu)
+    public function show(Menu $menu)
     {
         $menu->load('parent_items.children');
         return $menu;
     }
     public function update(Request $request, Menu $menu) {
-        $menu->load('parent_items.children');
+        $menu->load('items');
         $items = $request->items;
-        foreach ($items as $item) {
-            
+        $updateIds = array_keys($items);
+        $changed_items = collect([]);
+        foreach ($menu->items as $item) {
+            if (in_array($item->id, $updateIds)) {
+                foreach ($items[$item->id] as $key => $value) {
+                    $item->{$key} = $value;
+                }
+                $changed_items->push($item);
+            }
         }
+        $menu->items()->saveMany($changed_items);
+        return ['okay' => true];
     }
 }

@@ -37,7 +37,8 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     }
 
     Route::group(['prefix' => 'api/v1', 'as' => 'api.'], function() use($namespace_prefix) {
-        Route::get('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@items')->name('menu.items');
+        Route::get('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@show')->name('menu.items.show');
+        Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
     });
     try {
         \Zeus::load_extentions();
