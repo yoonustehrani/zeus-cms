@@ -9,6 +9,7 @@
         <div 
         data-items="{{ route('RomanCamp.api.menu.items.show', ['menu' => $menu->id]) }}" 
         data-update="{{ route('RomanCamp.api.menu.items.update', ['menu' => $menu->id]) }}"
+        data-store="{{ route('RomanCamp.api.menu.items.store', ['menu' => $menu->id]) }}"
         id="react-menu_builder"></div>
     </div>
 @endsection

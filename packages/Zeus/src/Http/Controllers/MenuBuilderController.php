@@ -5,6 +5,7 @@ namespace Zeus\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Menu;
+use App\MenuItem;
 
 class MenuBuilderController extends Controller
 {
@@ -16,12 +17,29 @@ class MenuBuilderController extends Controller
     {
         return view('ZEV::pages.menus.builder', compact('menu'));
     }
-    public function show(Menu $menu)
+    public function show($menu)
     {
-        $menu->load('parent_items.children');
+        $menu = Menu::with(['parent_items' => function($q) {
+            $q->orderBy('order', 'asc')->with('children');
+        }])->findOrFail($menu);
+        
         return $menu;
     }
-    public function update(Request $request, Menu $menu) {
+    public function store(Request $request, Menu $menu)
+    {
+        $menuItem = new MenuItem();
+        $menuItem->title = $request->title;
+        $menuItem->url   = $request->url ?: '';
+        $menuItem->route   = $request->route;
+        $menuItem->icon_class   = $request->icon_class;
+        $menuItem->parameters   = json_decode(json_encode($request->parameters));
+        $menuItem->order   = $menu->generate_order();
+        $menuItem = $menu->items()->create($menuItem->toArray());
+        $menuItem->children = [];
+        return $menuItem;
+    }
+    public function update(Request $request, Menu $menu)
+    {
         $menu->load('items');
         $items = $request->items;
         $updateIds = array_keys($items);

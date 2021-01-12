@@ -30618,8 +30618,10 @@ if (false) {} else {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -30754,6 +30756,7 @@ function _defineProperty(obj, key, value) {
 
 
 
+
 var AddItem = /*#__PURE__*/function (_Component) {
   _inherits(AddItem, _Component);
 
@@ -30785,13 +30788,59 @@ var AddItem = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "onClickSubmit", function () {
+      var _this$props = _this.props,
+          Action = _this$props.Action,
+          onSubmit = _this$props.onSubmit;
+      var _this$state = _this.state,
+          title = _this$state.title,
+          url = _this$state.url,
+          route = _this$state.route,
+          parameters = _this$state.parameters,
+          icon_class = _this$state.icon_class,
+          target = _this$state.target;
+
+      _this.toggleSaving();
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(Action, {
+        title: title,
+        url: url,
+        route: route,
+        parameters: parameters,
+        icon_class: icon_class,
+        target: target
+      }).then(function (res) {
+        _this.setState({
+          title: "",
+          url: "",
+          route: "",
+          parameters: "",
+          icon_class: "",
+          target: "_blank"
+        });
+
+        onSubmit(res.data);
+
+        _this.toggleSaving();
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "toggleSaving", function () {
+      _this.setState(function (prevState) {
+        return {
+          saving: !prevState.saving
+        };
+      });
+    });
+
     _this.state = {
       title: "",
       url: "",
       route: "",
       parameters: "",
       icon_class: "",
-      target: "_blank"
+      target: "_blank",
+      saving: false
     };
     return _this;
   }
@@ -30799,93 +30848,101 @@ var AddItem = /*#__PURE__*/function (_Component) {
   _createClass(AddItem, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-12 float-left p-0 form-group"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-lg-4 col-md-6 col-12 float-left input-group mb-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "input-group-prepend"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "input-group-text"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-font"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         placeholder: "Title",
         onChange: this.onTextStateChange.bind(this, 'title'),
         value: this.state.title
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-lg-4 col-md-6 col-12 float-left input-group mb-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "input-group-prepend"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "input-group-text"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-link"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         placeholder: "URL",
         onChange: this.onTextStateChange.bind(this, 'url'),
         value: this.state.url
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-lg-4 col-md-6 col-12 float-left input-group mb-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "input-group-prepend"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "input-group-text"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-network-wired"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         placeholder: "Route",
         onChange: this.onTextStateChange.bind(this, 'route'),
         value: this.state.route
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-lg-4 col-md-6 col-12 float-left input-group mb-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "input-group-prepend"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "input-group-text"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-icons"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         placeholder: "Icon class e.g: fas fa-user",
         onChange: this.onTextStateChange.bind(this, 'icon_class'),
         value: this.state.icon_class
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-lg-4 col-md-6 col-12 float-left input-group mb-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "input-group-prepend"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "input-group-text"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-external-link-alt"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
         onChange: this.onOptionChange,
         className: "form-control",
         value: this.state.target
       }, ["_blank", "_self"].map(function (target, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
           key: i,
           value: target
         }, target);
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-lg-6 col-md-8 col-12 float-left input-group mb-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
         onChange: this.onTextStateChange.bind(this, 'parameters'),
         rows: "6",
         className: "json-code form-control bg-dark text-warning"
-      })));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "col-12 float-left"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        onClick: this.onClickSubmit,
+        disabled: this.state.saving,
+        className: "btn btn-success"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "fas fa-".concat(this.state.saving ? 'upload' : 'save')
+      }))));
     }
   }]);
 
   return AddItem;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (AddItem);
 
@@ -31175,6 +31232,41 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -31316,7 +31408,15 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onSubmitForm", function () {});
+    _defineProperty(_assertThisInitialized(_this), "onSubmitForm", function (newItem) {
+      _this.setState(function (prevState) {
+        return {
+          items: [].concat(_toConsumableArray(prevState.items), [newItem])
+        };
+      });
+
+      return true;
+    });
 
     _defineProperty(_assertThisInitialized(_this), "injectJquery", function () {
       var state = _this.state;
@@ -31327,7 +31427,6 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
       var updateItems = _this.props.updateItems;
       $("#menu_sortable").sortable({
         start: function start(e, ui) {
-          // puts the old positions into array before sorting
           old_position = ui.item.index();
         },
         update: function update(event, ui) {
@@ -31368,8 +31467,7 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
             }
 
             return menuItem;
-          }); // console.log(newChanges);
-
+          });
           setState(function (prevState) {
             return {
               items: newState
@@ -31388,7 +31486,7 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
     _this.state = {
       items: _this.props.Items ? _this.props.Items : [],
       newChanges: [],
-      createForm: true
+      createForm: false
     };
 
     if (_this.props.getItems) {
@@ -31411,6 +31509,7 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
   _createClass(MenuBuilder, [{
     key: "render",
     value: function render() {
+      var storeItem = this.props.storeItem;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "menu-builder"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -31423,7 +31522,8 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-12 mb-4 pl-5 float-left ".concat(this.state.createForm ? '' : 'd-none')
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AddItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        onSubmit: this.onSubmitForm
+        Action: storeItem,
+        onSubmit: this.onSubmitForm.bind(this)
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "col-md-4 col-12 float-left",
         id: "menu_sortable"
@@ -31464,10 +31564,12 @@ var Id = 'react-menu_builder';
 if (document.getElementById(Id)) {
   var elem = $('#' + Id);
   var getItems = elem.attr('data-items'),
-      updateItems = elem.attr('data-update');
+      updateItems = elem.attr('data-update'),
+      storeItem = elem.attr('data-store');
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_MenuBuider__WEBPACK_IMPORTED_MODULE_2__["default"], {
     getItems: getItems,
-    updateItems: updateItems
+    updateItems: updateItems,
+    storeItem: storeItem
   }), document.getElementById(Id));
 } // $( "#menu-builders" ).sortable();
 // $( "#menu-builders" ).disableSelection();

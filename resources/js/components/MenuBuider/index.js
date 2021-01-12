@@ -9,7 +9,7 @@ class MenuBuilder extends Component {
         this.state = {
             items: this.props.Items ? this.props.Items : [],
             newChanges: [],
-            createForm: true
+            createForm: false
         }
         if (this.props.getItems) {
             Axios.get(this.props.getItems).then(res => {
@@ -26,8 +26,11 @@ class MenuBuilder extends Component {
             createForm: ! prevState.createForm
         }))
     }
-    onSubmitForm = () => {
-
+    onSubmitForm = (newItem) => {
+        this.setState(prevState => ({
+            items: [...prevState.items, newItem]
+        }))
+        return true;
     }
     injectJquery = () => {
         let state = this.state;
@@ -36,7 +39,6 @@ class MenuBuilder extends Component {
         let {updateItems} = this.props;
         $("#menu_sortable").sortable({
             start: function(e, ui) {
-                // puts the old positions into array before sorting
                 old_position = ui.item.index();
             },
             update: function( event, ui ) {
@@ -67,7 +69,6 @@ class MenuBuilder extends Component {
                     }
                     return menuItem;
                 });
-                // console.log(newChanges);
                 setState(prevState => ({
                     items: newState
                 }), () => {
@@ -80,6 +81,7 @@ class MenuBuilder extends Component {
         })
     }
     render() {
+        let {storeItem} = this.props;
         return (
             <div className="menu-builder">
                 <div className="col-12 float-left mb-3">
@@ -88,7 +90,7 @@ class MenuBuilder extends Component {
                     </button>
                 </div>
                 <div className={`col-12 mb-4 pl-5 float-left ${this.state.createForm ? '' : 'd-none'}`}>
-                    <AddItem onSubmit={this.onSubmitForm}/>
+                    <AddItem Action={storeItem} onSubmit={this.onSubmitForm.bind(this)}/>
                 </div>
                 <ul className="col-md-4 col-12 float-left" id="menu_sortable">
                     {
