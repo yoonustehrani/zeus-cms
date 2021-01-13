@@ -30975,24 +30975,6 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -31127,13 +31109,14 @@ var Item = /*#__PURE__*/function (_Component) {
 
   _createClass(Item, [{
     key: "componentDidMount",
-    value: function componentDidMount() {
-      var id = this.props.id;
-      $('#' + "parent-with-child-".concat(id)).sortable();
+    value: function componentDidMount() {// let {id} = this.props;
+      // $('#' + `parent-with-child-${id}`).sortable();
     }
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var _this$state = this.state,
           title = _this$state.title,
           url = _this$state.url,
@@ -31162,17 +31145,13 @@ var Item = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-pencil-alt"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          _this2.props.destroyItem();
+        },
         className: "btn btn-sm btn-danger rounded-circle"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-trash"
-      })))), this.state.children.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        id: "parent-with-child-".concat(id),
-        className: "children-list"
-      }, this.state.children.map(function (child, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Item, _extends({
-          key: i
-        }, child));
-      }))));
+      })))));
     }
   }]);
 
@@ -31418,6 +31397,32 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
       return true;
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleDeleteItem", function (menuItem) {
+      var deletePath = _this.props.destroyItem.replace('menuItem', menuItem);
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"](deletePath, {}).then(function (res) {
+        var _res$data = res.data,
+            okay = _res$data.okay,
+            order = _res$data.order;
+
+        if (okay) {
+          _this.setState(function (prevState) {
+            return {
+              items: _toConsumableArray(prevState.items.map(function (item) {
+                if (item.id !== menuItem) {
+                  if (item.order > order) {
+                    item.order -= 1;
+                  }
+
+                  return item;
+                }
+              }))
+            };
+          });
+        }
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "injectJquery", function () {
       var state = _this.state;
 
@@ -31437,32 +31442,34 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
           var newPlace = $(' li', eParent).index(item);
           var newChanges = {};
           var newState = state.items.map(function (menuItem) {
-            if (menuItem.id == identifier) {
-              menuItem.order = newPlace;
-              newChanges[menuItem.id] = {
-                order: newPlace
-              };
-            } else if (menuItem.order == newPlace) {
-              var newOrder = old_position > newPlace ? newPlace + 1 : newPlace - 1;
-              menuItem.order = newOrder;
-              newChanges[menuItem.id] = {
-                order: newOrder
-              };
-            } else {
-              if (menuItem.order < newPlace && menuItem.order > old_position) {
-                var _newOrder = menuItem.order - 1;
-
-                menuItem.order = _newOrder;
+            if (menuItem) {
+              if (menuItem.id == identifier) {
+                menuItem.order = newPlace;
                 newChanges[menuItem.id] = {
-                  order: _newOrder
+                  order: newPlace
                 };
-              } else if (menuItem.order > newPlace && menuItem.order < old_position) {
-                var _newOrder2 = menuItem.order + 1;
-
-                menuItem.order = _newOrder2;
+              } else if (menuItem.order == newPlace) {
+                var newOrder = old_position > newPlace ? newPlace + 1 : newPlace - 1;
+                menuItem.order = newOrder;
                 newChanges[menuItem.id] = {
-                  order: _newOrder2
+                  order: newOrder
                 };
+              } else {
+                if (menuItem.order < newPlace && menuItem.order > old_position) {
+                  var _newOrder = menuItem.order - 1;
+
+                  menuItem.order = _newOrder;
+                  newChanges[menuItem.id] = {
+                    order: _newOrder
+                  };
+                } else if (menuItem.order > newPlace && menuItem.order < old_position) {
+                  var _newOrder2 = menuItem.order + 1;
+
+                  menuItem.order = _newOrder2;
+                  newChanges[menuItem.id] = {
+                    order: _newOrder2
+                  };
+                }
               }
             }
 
@@ -31473,7 +31480,7 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
               items: newState
             };
           }, function () {
-            axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(updateItems, {
+            axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(updateItems, {
               items: newChanges
             }).then(function (res) {
               console.log(res.data);
@@ -31486,7 +31493,8 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
     _this.state = {
       items: _this.props.Items ? _this.props.Items : [],
       newChanges: [],
-      createForm: false
+      createForm: false,
+      editForm: true
     };
 
     if (_this.props.getItems) {
@@ -31509,6 +31517,8 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
   _createClass(MenuBuilder, [{
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var storeItem = this.props.storeItem;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "menu-builder"
@@ -31528,7 +31538,8 @@ var MenuBuilder = /*#__PURE__*/function (_Component) {
         className: "col-md-4 col-12 float-left",
         id: "menu_sortable"
       }, this.state.items.map(function (menuItem, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Item__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
+        return menuItem && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Item__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
+          destroyItem: _this2.handleDeleteItem.bind(_this2, menuItem.id),
           key: i
         }, menuItem));
       }), this.injectJquery()));
@@ -31563,13 +31574,17 @@ var Id = 'react-menu_builder';
 
 if (document.getElementById(Id)) {
   var elem = $('#' + Id);
-  var getItems = elem.attr('data-items'),
-      updateItems = elem.attr('data-update'),
-      storeItem = elem.attr('data-store');
+  var getItems = elem.attr('data-menu-show'),
+      updateItems = elem.attr('data-menu-update'),
+      storeItem = elem.attr('data-store'),
+      destroyItem = elem.attr('data-destroy'),
+      updateItem = elem.attr('data-update');
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_MenuBuider__WEBPACK_IMPORTED_MODULE_2__["default"], {
     getItems: getItems,
     updateItems: updateItems,
-    storeItem: storeItem
+    storeItem: storeItem,
+    updateItem: updateItem,
+    destroyItem: destroyItem
   }), document.getElementById(Id));
 } // $( "#menu-builders" ).sortable();
 // $( "#menu-builders" ).disableSelection();

@@ -38,7 +38,46 @@ class MenuBuilderController extends Controller
         $menuItem->children = [];
         return $menuItem;
     }
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request, Menu $menu, $menuItem)
+    {
+        $menuItem = $menu->items()->findOrFail($menuItem);
+        $menuItem->title = $request->title;
+        $menuItem->url   = $request->url ?: '';
+        $menuItem->route   = $request->route;
+        $menuItem->icon_class   = $request->icon_class;
+        $menuItem->parameters   = json_decode(json_encode($request->parameters));
+        if ($menuItem->save()) {
+            $menuItem->children = [];
+            return $menuItem;
+        }
+        return response()->json(['error' => [
+            [
+                'message' => 'Error while updating'
+            ]
+        ]], 422);
+    }
+    public function destroy(Menu $menu, $menuItem)
+    {
+        $menuItem = $menu->items()->findOrFail($menuItem);
+        $target_order = $menuItem->order;
+        try {
+            \DB::beginTransaction();
+            if ($menuItem->delete()) {
+                $items = $menu->parent_items()->orderBy('order', 'asc')->where('order', '>', (int) $target_order)->get();
+                $changed_items = $items->map(function($item) {
+                    $item->order -= 1;
+                    return $item;
+                });
+                $menu->items()->saveMany($changed_items);
+                \DB::commit();
+                return ['okay' => true, 'order' => $target_order];
+            }
+        } catch(\Exception $e) {
+            \DB::rollback();
+            throw $e;
+        }
+    }
+    public function updateMany(Request $request, Menu $menu)
     {
         $menu->load('items');
         $items = $request->items;
