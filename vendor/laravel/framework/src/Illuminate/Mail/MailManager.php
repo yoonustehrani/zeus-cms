@@ -73,30 +73,6 @@ class MailManager implements FactoryContract
     }
 
     /**
-     * Manual mailer
-     * 
-     * @param string $name
-     * @param array $config
-     * @return \Illuminate\Mail\Mailer
-     */
-    public function manual_mailer($name, $config)
-    {
-        $mailer = (new Mailer(
-            $name,
-            $this->app['view'],
-            $this->createSwiftMailer($config),
-            $this->app['events']
-        ));
-        if ($this->app->bound('queue')) {
-            $mailer->setQueue($this->app['queue']);
-        }
-        foreach (['from', 'reply_to', 'to', 'return_path'] as $type) {
-            $this->setGlobalAddress($mailer, $config, $type);
-        }
-
-        return $mailer;
-    }
-    /**
      * Get a mailer driver instance.
      *
      * @param  string|null  $driver
