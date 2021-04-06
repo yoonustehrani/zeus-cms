@@ -107,7 +107,7 @@
         <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
             <p class="w-100 float-left">Details in Json Format: </p>
             <textarea class="form-control bg-dark text-warning json-code" style="resize: none;" name="details" id="details" spellcheck="false"
-            placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="10">{{ old('details') ?: json_encode($datatype->details) }}</textarea>
+            placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="10">{{ old('details') ?: json_encode($datatype->details, JSON_PRETTY_PRINT) }}</textarea>
         </div>
         <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
             <div class="input-group-prepend">
