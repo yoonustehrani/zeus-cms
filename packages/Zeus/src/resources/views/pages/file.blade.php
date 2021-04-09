@@ -2,10 +2,15 @@
 
 @section('css')
     <title>React File Extention</title>
+    <link rel="stylesheet" href="{{ asset('/css/files.css') }}">
 @endsection
 
 @section('pagecontent')
-<div class="col-12 float-left p-3">
-    <h3 class="col-12 p-0 float-left">React File Page</h3>
+<form action="/" id="dropzoneTarget" class="dropzone"></form>
+<div id="react-files" class="col-12 float-left p-3">
 </div>
+@endsection
+
+@section('script')
+    <script src="{{ asset('/js/files.js') }}"></script>
 @endsection
