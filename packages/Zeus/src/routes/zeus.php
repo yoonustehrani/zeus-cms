@@ -6,6 +6,7 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\';
 
     Route::get('/', $namespace_prefix . 'ZeusController@index')->name('dashboard');
+    Route::view('/react-file', 'ZEV::pages.file');
     Route::get('extentions', $namespace_prefix . 'ExtentionController@index');
 
     Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['show','create', 'store']);
