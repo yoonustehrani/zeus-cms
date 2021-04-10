@@ -11,7 +11,6 @@ use Zeus\Models\UploadedFile;
 
 class FileManagerController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request  $request
@@ -44,6 +43,10 @@ class FileManagerController extends Controller
         if ($request->order_by) {
             $order = $request->order == 'desc' ? 'desc' : 'asc';
             $files = $files->orderBy($request->order_by, $order);
+        }
+
+        if ($request->query('q')) {
+            $files = $files->search($request->query('q'), null, true);
         }
 
         return $files->get();
