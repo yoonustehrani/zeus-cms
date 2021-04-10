@@ -44,7 +44,6 @@ class UploadedFile
         if ($this->thumbnailable) {
             $this->make_thumbnail($image, 200, 200)->save(public_path($this->thumbnail_path));
         }
-        return 'saved !';
     }
     public function make_uuid()
     {

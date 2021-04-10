@@ -11,13 +11,6 @@
 </form>
 <div id="react-files" class="col-12 float-left p-3">
 </div>
-
-
-<form action="{{ route('Romancamp.api.files.upload', ['type' => 'image']) }}" class="col-12 float-left" method="POST" enctype="multipart/form-data">
-    @csrf
-    <input type="file" name="file" id="file">
-    <button type="submit" class="btn btnprimary">Upload</button>
-</form>
 @endsection
 
 @section('script')
