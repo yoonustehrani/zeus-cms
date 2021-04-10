@@ -1,1 +1,28 @@
-@import "~dropzone/dist/dropzone.css"
+@import "~dropzone/dist/dropzone.css";
+
+div.filter-box {
+    border: 1px solid #364156;
+}
+
+div.select-option {
+    i {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+    font-size: 12px;
+}
+
+div.filter-option {
+    width: max-content !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    > span {
+        text-align: center;
+        // white-space: nowrap;
+        margin-left: 6px;
+        font-size: 15px;
+        width: 100%;
+    }
+}
