@@ -3,6 +3,11 @@
 @section('css')
     <title>React File Extention</title>
     <link rel="stylesheet" href="{{ asset('css/files.css') }}">
+    <style>
+        pre {
+            color: #FFD700;
+        }
+    </style>
 @endsection
 
 @section('pagecontent')
@@ -57,6 +62,73 @@
             <td>SELECT * FROM `files` ORDER BY `column` $something</td>
             <td>
                 <a target="_blank" href="{{ $url }}?order_by=created_at&order=desc">{{ $url }}?order_by=created_at&order=desc</a>
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>trash</td>
+            <td>'true'</td>
+            <td><span class="badge badge-danger">no</span></td>
+            <td>SELECT * FROM `files` WHERE NOT NULL `deleted_at`</td>
+            <td>
+                <a target="_blank" href="{{ $url }}?trash=true">{{ $url }}?trash=true</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@php
+    $file_url = urldecode(route('Romancamp.api.files.show', ['file' => "\$fileId"]));
+@endphp
+<p class="mt-4">
+    <b>Each File url :</b>
+    <a target="_blank" href="{{ $file_url }}" class="badge badge-dark">
+        {{ $file_url }}
+    </a>
+</p>
+<table class="col-12 float-left table table-bordered text-center">
+    <thead class="thead-dark">
+        <th scope="col">#</th>
+        <th scope="col">info</th>
+        <th scope="col">method</th>
+        <th scope="col">parameters</th>
+        {{-- <th scope="col">example url</th> --}}
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>updating a file's information</td>
+            <td>PUT<br>PATCH</td>
+            <td class="text-left">
+                <pre class="bg-dark p-1 px-2">{{ json_encode([
+                    'name' => 'required|string',
+                    'type' => 'required|string',
+                    'ext'  => 'required|string',
+                    'path'  => 'required|string',
+                    'thumbnail_path'  => 'required|string',
+                ], JSON_PRETTY_PRINT) }}</pre>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>soft deleting a file</td>
+            <td>DELETE</td>
+            <td class="text-left"></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>force deleting a file</td>
+            <td>DELETE</td>
+            <td class="text-left">
+                <pre class="bg-dark p-1 px-2">// The below parameter should be included url{{ "\n{\n    \"force_delete\": \"true\"\n}" }}</pre>
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>restoring a soft deleted file</td>
+            <td>PUT<br>PATCH</td>
+            <td class="text-left">
+                <pre class="bg-dark p-1 px-2">// The below parameter should be included url{{ "\n{\n    \"restore\": \"true\"\n}" }}</pre>
             </td>
         </tr>
     </tbody>

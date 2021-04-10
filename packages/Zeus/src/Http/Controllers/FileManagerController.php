@@ -29,7 +29,8 @@ class FileManagerController extends Controller
             ],
             'type' => 'nullable|string'
         ]);
-        $files = new ZeusFile;
+        
+        $files = ($request->trash == 'true') ? ZeusFile::onlyTrashed() : new ZeusFile;
         /**
          * Types of orderby over $request
          * @param string order_by (name | ext | type)
@@ -113,7 +114,28 @@ class FileManagerController extends Controller
      */
     public function update(Request $request, $file)
     {
-        //
+        $file = ($request->restore == 'true') ? ZeusFile::withTrashed()->findOrFail($file) : ZeusFile::findOrFail($file);
+
+        if ($request->restore == 'true' && $file->deleted_at) {
+            return ['okay' => $file->restore()];
+        }
+
+        $request->validate([
+            'name' => 'required|string',
+            'type' => 'required|string',
+            'ext'  => 'required|string',
+            'path'  => 'required|string',
+            'thumbnail_path'  => 'required|string',
+        ]);
+
+        $file->name = $request->name;
+        $file->path = $request->path;
+        $file->thumbnail_path = $request->thumbnail_path;
+        $file->ext = $request->ext;
+        
+        $file->save();
+
+        return $file;
     }
 
     /**
@@ -122,8 +144,14 @@ class FileManagerController extends Controller
      * @param  int  $file
      * @return \Illuminate\Http\Response
      */
-    public function destroy($file)
+    public function destroy(Request $request,$file)
     {
-        //
+        $file = ($request->force_delete == 'true') ? ZeusFile::onlyTrashed()->findOrFail($file) : ZeusFile::findOrFail($file);
+        
+        if ($request->force_delete == 'true') {
+            return ['okay' => $file->forceDelete()];
+        }
+
+        return ['okay' => $file->delete()];
     }
 }
