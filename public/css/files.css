@@ -240,5 +240,16 @@
         border-left: 6px solid transparent;
         border-right: 6px solid transparent;
         border-bottom: 6px solid #be2626; }
+div.filter-box {
+  border: 1px solid #364156;
+}
 
+div.select-option {
+  font-size: 12px;
+}
+
+div.select-option i {
+  margin-right: 6px;
+  font-size: 14px;
+}
 

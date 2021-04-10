@@ -1,1 +1,13 @@
-@import "~dropzone/dist/dropzone.css"
+@import "~dropzone/dist/dropzone.css";
+
+div.filter-box {
+    border: 1px solid #364156;
+}
+
+div.select-option {
+    i {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+    font-size: 12px;
+}
