@@ -253,3 +253,20 @@ div.select-option i {
   font-size: 14px;
 }
 
+div.filter-option {
+  width: -webkit-max-content !important;
+  width: -moz-max-content !important;
+  width: max-content !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+div.filter-option > span {
+  text-align: center;
+  margin-left: 6px;
+  font-size: 15px;
+  width: 100%;
+}
+
