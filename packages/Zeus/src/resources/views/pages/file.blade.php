@@ -6,6 +6,9 @@
 @endsection
 
 @section('pagecontent')
+<form action="{{ route('Romancamp.api.files.upload', ['type' => 'image']) }}" id="dropzoneTarget" class="dropzone">
+@csrf
+</form>
 <div id="react-files" class="col-12 float-left p-3">
 </div>
 @endsection

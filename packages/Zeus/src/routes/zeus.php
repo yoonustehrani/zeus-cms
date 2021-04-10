@@ -37,13 +37,6 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
         // do nothing, might just be because table not yet migrated.
     }
 
-    Route::group(['prefix' => 'api/v1', 'as' => 'api.'], function() use($namespace_prefix) {
-        Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
-        Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
-        Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');
-        Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
-        Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
-    });
     try {
         \Zeus::load_extentions();
         Route::group(['prefix' => 'extention', 'as' => 'extention.'], function() {
@@ -58,4 +51,15 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     } catch(\Exception $e) {
 
     }
+});
+
+Route::group(['prefix' => 'api/v1', 'as' => 'Romancamp.api.', 'middleware' => ['api']], function() {
+    $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\';
+    Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
+    Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
+    Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');
+    Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
+    Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
+    Route::resource('file-manager/files',  $namespace_prefix . 'FileManagerController')->only('index', 'show');
+    Route::post('file-manager/files/{type}/upload', $namespace_prefix . 'FileManagerController@store')->name('files.upload')->middleware('api');
 });
