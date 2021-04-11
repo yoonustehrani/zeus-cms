@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Uploader from './uploader'
 import FilterBox from './filter-box'
+import Media from './media'
 
 export default class ReactFiles extends Component {
     state = {
@@ -22,7 +23,8 @@ export default class ReactFiles extends Component {
         return (
             <div>
                 <Uploader addNewFile={this.addNewFile.bind(this)} />
-                <FilterBox/>
+                <FilterBox />
+                <Media />
             </div>
         )
     }

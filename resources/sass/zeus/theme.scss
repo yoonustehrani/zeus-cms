@@ -12,6 +12,9 @@ body,html {
     height: 100%;
     float: left;
 }
+h1, h2, h3, h4, h5, h6, button, a, p, input, span, li, div {
+    font-family: $nunito;
+}
 #left-menu {
 	overflow-x: hidden;
     overflow-y: auto;

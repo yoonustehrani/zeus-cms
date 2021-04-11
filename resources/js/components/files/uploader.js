@@ -19,7 +19,7 @@ export default class Uploader extends Component {
     
     render() {
         return (
-            <div className="col-md-8 float-right">
+            <div className="col-lg-8 float-right remove-sm-padding">
                 <form action="/" id="dropzoneTarget" className="dropzone"></form>
             </div>
         )

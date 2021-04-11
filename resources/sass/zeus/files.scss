@@ -1,28 +1,98 @@
 @import "~dropzone/dist/dropzone.css";
+@import '~animate.css/animate.min.css';
 
 div.filter-box {
-    border: 1px solid #364156;
+    background-color: #E0EAFC;
+    box-shadow: 3px 3px 7px 0 #bdc3c7;
+    border: 2px solid #A7BFE8;
+    border-radius: 8px;     
+    span {
+        white-space: nowrap;
+        font-weight: bold;
+    }    
 }
 
 div.select-option {
     i {
         margin-right: 6px;
-        font-size: 14px;
+        font-size: 16px;
     }
-    font-size: 12px;
+    font-size: 14px;
 }
 
 div.filter-option {
-    width: max-content !important;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     align-items: center;
+    @media (max-width: 576px) {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
     > span {
         text-align: center;
-        // white-space: nowrap;
-        margin-left: 6px;
+        white-space: nowrap;
+        margin-right: 6px;
         font-size: 15px;
-        width: 100%;
+    }
+    label {
+        margin-right: 10px;
+    }
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.inline-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    > div {
+        min-width: 46%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
+
+.remove-sm-padding {
+    @media (max-width: 576px) {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+@media all and (min-width: 992px) and (max-width: 1434px) {
+    div.format-select2 {
+        margin-top: 5px !important;
+    }
+    .inline-flex-100 {
+        > div {
+            width: 100% !important;
+        }
+    }
+}
+div.scroll-parent {
+    overflow-y: auto;
+    height: 100%;
+    div.media-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        div.media-item {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            > img {
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+            }
+        }
     }
 }

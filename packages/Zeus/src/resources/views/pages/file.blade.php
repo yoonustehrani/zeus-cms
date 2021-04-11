@@ -67,5 +67,4 @@
 
 @section('script')
     <script src="{{ asset('js/files.js') }}"></script>
-    <script src="{{ asset('js/select2.js') }}"></script>
 @endsection
