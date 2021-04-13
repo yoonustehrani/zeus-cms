@@ -40,7 +40,7 @@ class FileManagerController extends Controller
         if ($request->ext) {
             $files = $files->whereExt($request->ext);
         }
-        
+
         /**
          * Types of orderby over $request
          * @param string order_by (name | ext | type)
@@ -55,7 +55,7 @@ class FileManagerController extends Controller
             $files = $files->search($request->query('q'), null, true);
         }
 
-        return $files->pageinate(12);
+        return $files->paginate(12);
     }
 
 
