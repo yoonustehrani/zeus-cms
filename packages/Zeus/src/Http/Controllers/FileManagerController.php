@@ -31,16 +31,21 @@ class FileManagerController extends Controller
         ]);
         
         $files = ($request->trash == 'true') ? ZeusFile::onlyTrashed() : new ZeusFile;
+        
+
+        if ($request->type && in_array($request->type, ['image', 'video', 'audio'])) {
+            $files = $files->whereType($request->type);
+        }
+
+        if ($request->ext) {
+            $files = $files->whereExt($request->ext);
+        }
+        
         /**
          * Types of orderby over $request
          * @param string order_by (name | ext | type)
          * @param string order (desc | asc)
         */
-
-        if (in_array($request->type, ['image', 'video', 'audio'])) {
-            $files = $files->whereType($request->type);
-        }
-
         if ($request->order_by) {
             $order = $request->order == 'desc' ? 'desc' : 'asc';
             $files = $files->orderBy($request->order_by, $order);
@@ -50,7 +55,7 @@ class FileManagerController extends Controller
             $files = $files->search($request->query('q'), null, true);
         }
 
-        return $files->get();
+        return $files->pageinate(12);
     }
 
 
