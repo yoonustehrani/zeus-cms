@@ -21,12 +21,12 @@ export default class ReactFiles extends Component {
 
     render() {
         let { files, query } = this.state
-        let { searchUrl, fileUrl } = this.props
+        let { searchUrl, fileUrl, uploadUrl } = this.props
 
         return (
             <div>
                 <div className="filterbox-uploader-container">
-                    <Uploader files={files} setNewResults={this.setNewResults.bind(this)} />
+                    <Uploader files={files} setNewResults={this.setNewResults.bind(this)} uploadUrl={uploadUrl} />
                     <FilterBox files={files} setNewResults={this.setNewResults.bind(this)} searchUrl={searchUrl} />
                 </div>
                 {/* <Media files={files} fileUrl={fileUrl} query={query} /> */}

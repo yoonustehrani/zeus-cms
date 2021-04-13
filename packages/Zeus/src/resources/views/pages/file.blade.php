@@ -77,6 +77,7 @@
     class="col-12 float-left p-3"
     search-url = {{ route('Romancamp.api.files.index') }}
     file-url = {{ route('Romancamp.api.files.show', ['file' => 'fileId']) }}
+    upload-url = {{ route('Romancamp.api.files.upload', ['type' => 'image']) }}
 >
 </div>
 @endsection

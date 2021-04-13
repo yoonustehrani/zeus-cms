@@ -35753,12 +35753,14 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
           query = _this$state.query;
       var _this$props = this.props,
           searchUrl = _this$props.searchUrl,
-          fileUrl = _this$props.fileUrl;
+          fileUrl = _this$props.fileUrl,
+          uploadUrl = _this$props.uploadUrl;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "filterbox-uploader-container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_uploader__WEBPACK_IMPORTED_MODULE_1__["default"], {
         files: files,
-        setNewResults: this.setNewResults.bind(this)
+        setNewResults: this.setNewResults.bind(this),
+        uploadUrl: uploadUrl
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filter_box__WEBPACK_IMPORTED_MODULE_2__["default"], {
         files: files,
         setNewResults: this.setNewResults.bind(this),
@@ -36069,12 +36071,17 @@ var Uploader = /*#__PURE__*/function (_Component) {
       var _this = this;
 
       //dropzone
+      var token = document.head.querySelector('meta[name="csrf-token"]');
       dropzone__WEBPACK_IMPORTED_MODULE_1___default.a.autoDiscover = false;
       var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_1___default.a("#dropzoneTarget", {
+        url: this.props.uploadUrl,
         createImageThumbnails: true,
         clickable: true,
         acceptedFiles: ".jpeg, .jpg, .png, .svg, .gif",
-        addRemoveLinks: true
+        addRemoveLinks: true,
+        headers: {
+          'X-CSRF-TOKEN': token.content
+        }
       });
       myDropzone.on("success", function (response) {
         var _this$props$files;
@@ -36090,7 +36097,6 @@ var Uploader = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-lg-8 float-right remove-sm-padding uploader-container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        action: "/",
         id: "dropzoneTarget",
         className: "dropzone"
       }));
@@ -36126,9 +36132,11 @@ var target = document.getElementById("react-files");
 if (target) {
   var searchUrl = target.getAttribute("search-url");
   var fileUrl = target.getAttribute("file-url");
+  var uploadUrl = target.getAttribute("upload-url");
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_files__WEBPACK_IMPORTED_MODULE_2__["default"], {
     searchUrl: searchUrl,
-    fileUrl: fileUrl
+    fileUrl: fileUrl,
+    uploadUrl: uploadUrl
   }), target);
 }
 
