@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { formatOptionWithIcon, formatOptionWithText } from '../../select2'
+import Axios from 'axios'
 
 export default class FilterBox extends Component {
     constructor(props) {
@@ -19,17 +20,32 @@ export default class FilterBox extends Component {
                 }
             }
         }
+        this.trashBtnRef = React.createRef()
+    }
+
+    filter = (e) => {
+        let { searchValue, filters } = this.state, q
+        let { searchUrl, setNewResults } = this.props
+        if (e.type === "click" || e.type === "change" || e.type === "select2:select" || e.keyCode === 13) {
+            let search_query = `${searchUrl}?type=${filters.file_type}${filters.format !== "all" ? `&ext=${filters.format}` : ""}&order_by=${filters.sort_by}&order=${filters.order}${filters.trash ? "&trash=true" : ""}${searchValue.replace(/\s/g, " ").trim().length >= 3 ? `&q=${searchValue.replace(/\s/g, " ").trim().replace(/\s/g, "+")}` : ""}`
+            Axios.get(`${search_query}&page=1`).then(res => {
+                let { data } = res.data
+                setNewResults(data, search_query)
+            })
+        }
     }
 
     changeFilter = (filter, e) => {
         e.persist()
+        filter === "trash" ? this.trashBtnRef.current.classList.toggle("btn-dark") : null
         this.setState(prevState => ({
             filters: {
                 ...prevState.filters,
-                [filter]: e.target.value
+                [filter]: filter === "trash" ? !prevState.filters.trash : e.target.value
             }
+        }), () => {
+            this.filter(e)
         })
-        )
     }
 
     componentDidMount() {
@@ -46,43 +62,41 @@ export default class FilterBox extends Component {
                 width: "100%"    
             })
         }
-        const setFileType = () => {
+        const setFileType = (e) => {
             this.setState(prevState => ({
                 filters: {
                     ...prevState.filters,
                     file_type: $("#file-type-select2").val(),
                     format: "all"
                 }
-            }))
+            }), () => {
+                this.filter(e)
+            })
             renderFileTypeWithSelect2()
             renderFileFormatWithSelect2()
+            
         }
-        const setFileFormat = () => {
+        const setFileFormat = (e) => {
             this.setState(prevState => ({
                 filters: {
                     ...prevState.filters,
                     format: $("#file-format-select2").val()
                 }
-            }))
+            }), () => {
+                this.filter(e)
+            })
             renderFileFormatWithSelect2()
         }
-
+        $('.select2-search__field').css('width', '100%')
+        $("#file-type-select2").on("select2:select", function (e) {
+            setFileType(e)
+        })
+        $("#file-format-select2").on("select2:select", function (e) {
+            setFileFormat(e)
+        })
+        // the next 2 lines are for the initial render
         renderFileTypeWithSelect2()
         renderFileFormatWithSelect2()
-        $('.select2-search__field').css('width', '100%')
-        $("#file-type-select2").on("select2:select", function () {
-            setFileType()
-        })
-        $("#file-format-select2").on("select2:select", function () {
-            setFileFormat()
-        })
-    }
-
-    filter = (e) => {
-        let { searchValue } = this.state
-        if (e.type === "click" || e.keyCode === 13) {
-            // here we will send the req
-        }
     }
 
     render() {
@@ -90,9 +104,14 @@ export default class FilterBox extends Component {
 
         return (
             <div className="col-lg-4 float-left remove-sm-padding">
-                <h4 className="d-none d-lg-block">Search media:</h4>
+                {/* <h4 className="d-none d-lg-block">Search media:</h4> */}
                 <div className="input-group mt-2 mt-lg-0">
-                    <input type="search" className="form-control" value={searchValue} onChange={(e) => this.setState({searchValue: e.target.value})} onKeyUp={this.filter.bind(this)} />
+                    <div className="input-group-prepend">
+                        <button type="button" className="btn btn-light" ref={this.trashBtnRef} onClick={this.changeFilter.bind(this, "trash")}>
+                            <i className="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <input type="search" className="form-control" value={searchValue} placeholder="3 characters or more (name or format)" onChange={(e) => this.setState({searchValue: e.target.value})} onKeyUp={this.filter.bind(this)} />
                     <div className="input-group-append">
                         <button type="button" className="btn btn-primary" onClick={this.filter.bind(this)}>
                             <i className="fas fa-search"></i>
@@ -110,10 +129,15 @@ export default class FilterBox extends Component {
                                     <i className={`fas fa-sort-alpha-${filters.order === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
                                 <div>
-                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="date-radio" value="date" onChange={this.changeFilter.bind(this, "sort_by")} />
+                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="date-radio" value="created_at" onChange={this.changeFilter.bind(this, "sort_by")} />
                                     <label className="form-check-label pointer" htmlFor="date-radio">date</label>
-                                    <i className={`fas fa-sort-amount-${filters.order === "asc" ? "down tada" : "up-alt wobble"} ml-2 animated`}></i>
+                                    <i className={`fas fa-sort-numeric-${filters.order === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
+                                {/* <div>
+                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="ext-radio" value="ext" onChange={this.changeFilter.bind(this, "sort_by")} />
+                                    <label className="form-check-label pointer" htmlFor="ext-radio">Format</label>
+                                    <i className={`fas fa-sort-numeric-${filters.order === "asc" ? "down-alt tada" : "up-alt wobble"} ml-2 animated`}></i>
+                                </div> */}
                             </div>
                         </div>
                         <div>

@@ -12,14 +12,14 @@ export default class Uploader extends Component {
             addRemoveLinks: true,
         })
         myDropzone.on("success", response => {
-            // here  we will add the uploaded file to the server
+            let NewResults = this.props.files.unshift(...response.data) 
+            this.props.setNewResults(NewResults)
         })
-        this.props.addNewFile("hello this is a test")
     }
     
     render() {
         return (
-            <div className="col-lg-8 float-right remove-sm-padding">
+            <div className="col-lg-8 float-right remove-sm-padding uploader-container">
                 <form action="/" id="dropzoneTarget" className="dropzone"></form>
             </div>
         )

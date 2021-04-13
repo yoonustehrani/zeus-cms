@@ -4,27 +4,32 @@ import FilterBox from './filter-box'
 import Media from './media'
 
 export default class ReactFiles extends Component {
-    state = {
-        files: []
+    constructor(props) {
+        super(props)
+        this.state = {
+            files: [],
+            query: `${this.props.searchUrl}?type=image&order_by=name&order=asc`
+        }
     }
 
-    addNewFile = (fileInfo) => {
-        this.setState(prevState => {
-            let newFiles = prevState.files
-            newFiles.unshift(fileInfo)
-            return {
-                ...prevState,
-                files: newFiles
-            }
-        })
+    setNewResults = (results, query) => {
+        this.setState(prevState => ({
+            files: results,
+            query: query ? query : prevState.query
+        }))
     }
 
     render() {
+        let { files, query } = this.state
+        let { searchUrl, fileUrl } = this.props
+
         return (
             <div>
-                <Uploader addNewFile={this.addNewFile.bind(this)} />
-                <FilterBox />
-                <Media />
+                <div className="filterbox-uploader-container">
+                    <Uploader files={files} setNewResults={this.setNewResults.bind(this)} />
+                    <FilterBox files={files} setNewResults={this.setNewResults.bind(this)} searchUrl={searchUrl} />
+                </div>
+                {/* <Media files={files} fileUrl={fileUrl} query={query} /> */}
             </div>
         )
     }

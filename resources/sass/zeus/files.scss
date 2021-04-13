@@ -50,7 +50,7 @@ div.filter-option {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     > div {
         min-width: 46%;
         margin-left: 2%;
@@ -74,20 +74,22 @@ div.filter-option {
         }
     }
 }
-div.scroll-parent {
-    overflow-y: auto;
-    height: 100%;
-    div.media-container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        div.media-item {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 100%;
+div.media-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    div.media-item::before {
+        content: "";
+        display: block;
+        padding-top: 100%;
+    }
+    div.media-item {
+        position: relative;
+        div.file-img-container {
+            position: absolute;
+            top: 0;
             > img {
                 width: 100%;
                 height: 100%;

@@ -15,69 +15,8 @@
 @csrf
 </form> --}}
 {{--  --}}
-@php
-    $url = route('Romancamp.api.files.index');
-@endphp
-<p class="mt-4">
-    <b>Main url :</b>
-    <a target="_blank" href="{{ $url }}" class="badge badge-info">
-        {{ $url }}
-    </a>
-</p>
-<table class="col-12 float-left table table-bordered text-center">
-    <thead class="thead-dark">
-        <th scope="col">#</th>
-        <th scope="col">parameter</th>
-        <th scope="col">value</th>
-        <th scope="col">required</th>
-        <th scope="col">info</th>
-        <th scope="col">example</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>type</td>
-            <td>'image' or 'video' or 'audio'</td>
-            <td><span class="badge badge-danger">no</span></td>
-            <td>SELECT * FROM `files` WHERE `type` = '$something'</td>
-            <td>
-                <a target="_blank" href="{{ $url }}?type=image">{{ $url }}?type=image</a>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>order_by</td>
-            <td>'name' or 'ext' or 'type' or 'created_at'</td>
-            <td><span class="badge badge-danger">no</span></td>
-            <td>SELECT * FROM `files` ORDER BY `$something` ASC</td>
-            <td>
-                <a target="_blank" href="{{ $url }}?order_by=name">{{ $url }}?order_by=name</a>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>order</td>
-            <td>'desc' or 'asc' (default to 'asc')</td>
-            <td><span class="badge badge-danger">no</span></td>
-            <td>SELECT * FROM `files` ORDER BY `column` $something</td>
-            <td>
-                <a target="_blank" href="{{ $url }}?order_by=created_at&order=desc">{{ $url }}?order_by=created_at&order=desc</a>
-            </td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>trash</td>
-            <td>'true'</td>
-            <td><span class="badge badge-danger">no</span></td>
-            <td>SELECT * FROM `files` WHERE NOT NULL `deleted_at`</td>
-            <td>
-                <a target="_blank" href="{{ $url }}?trash=true">{{ $url }}?trash=true</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
-@php
+{{-- @php
     $file_url = urldecode(route('Romancamp.api.files.show', ['file' => "\$fileId"]));
 @endphp
 <p class="mt-4">
@@ -92,7 +31,7 @@
         <th scope="col">info</th>
         <th scope="col">method</th>
         <th scope="col">parameters</th>
-        {{-- <th scope="col">example url</th> --}}
+        <th scope="col">example url</th>
     </thead>
     <tbody>
         <tr>
@@ -132,8 +71,13 @@
             </td>
         </tr>
     </tbody>
-</table>
-<div id="react-files" class="col-12 float-left p-3">
+</table> --}}
+<div 
+    id="react-files" 
+    class="col-12 float-left p-3"
+    search-url = {{ route('Romancamp.api.files.index') }}
+    file-url = {{ route('Romancamp.api.files.show', ['file' => 'fileId']) }}
+>
 </div>
 @endsection
 

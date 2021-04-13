@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import InfiniteScroller from 'react-infinite-scroller'
 import MediaItem from './media-item'
+import Axios from 'axios'
 
 export default class Media extends Component {
     constructor(props) {
@@ -10,42 +11,58 @@ export default class Media extends Component {
                 current_page: 1,
                 hasMore: true,
                 data: [],
-                loading: true
+                loading: false
             }
         }
-        this.scrollParentRef = React.createRef()
     }
 
     loadMore = () => {
         let { scroller } = this.state
-        if (!scroller.loading && scroller.hasMore) {
-            this.setState(prevState => ({
+        let { query, setNewResults } = this.props
+        if (scroller.hasMore) {
+            this.setState({
                 scroller: {
-                    ...prevState.scroller,
-                    data: [...prevState, ]
+                    ...scroller,
+                    loading: true
                 }
-            }))
+            }, () => {
+                Axios.get(`${query}&page=${scroller.current_page}`).then(res => {
+                    let { data } = res.data
+                    this.setState(prevState => ({
+                        scroller: {
+                            current_page: prevState.current_page++,
+                            hasMore: current_page !== last_page,
+                            data: [...prevState, ...data],
+                            loading: false
+                        }
+                    }), () => {
+                        setNewResults(this.state.scroller.data)
+                    })
+                })
+            })
         }
     }
 
     render() {
         let { scroller } = this.state 
+        let { files, fileUrl } = this.props
 
         return (
-            <div className="col-12 remove-sm-padding scroll-parent" ref={this.scrollParentRef}>
+            <div className="col-12 remove-sm-padding float-left">
                 <div className="media-container">
-                    {/* <InfiniteScroller
-                        pageStart={0}
-                        loadMore={this.loadMore.bind(this)}
-                        hasMore={scroller.hasMore}
-                        loader={<div>loading ...</div>}
-                        useWindow={false}
-                        getScrollParent={() => this.scrollParentRef}
-                    > */}
-                        {scroller.data.map((item, i) => (
-                            <MediaItem />
-                        ))}
-                    {/* </InfiniteScroller> */}
+                        <InfiniteScroller
+                            pageStart={0}
+                            loadMore={this.loadMore.bind(this)}
+                            hasMore={scroller.hasMore && !scroller.loading}
+                            loader={<div>loading ...</div>}
+                            useWindow={false}
+                            getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
+                        >
+                            {files.map((item, i) => (
+                                <MediaItem key={i} {...item} />
+                            ))}
+                        </InfiniteScroller>
+                    {!scroller.loading && files.length < 0 && <div className="alert alert-light mt-4 w-100 text-center">No Item to show</div>}
                 </div>
             </div>
         )
