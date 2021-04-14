@@ -27,12 +27,12 @@ export default class Media extends Component {
                 }
             }, () => {
                 Axios.get(`${query}&page=${scroller.current_page}`).then(res => {
-                    let { data } = res.data
+                    let { data, current_page, last_page } = res.data
                     this.setState(prevState => ({
                         scroller: {
-                            current_page: prevState.current_page++,
+                            current_page: current_page + 1,
                             hasMore: current_page !== last_page,
-                            data: [...prevState, ...data],
+                            data: [...prevState.scroller.data, ...data],
                             loading: false
                         }
                     }), () => {
@@ -49,21 +49,20 @@ export default class Media extends Component {
 
         return (
             <div className="col-12 remove-sm-padding float-left">
-                <div className="media-container">
-                        <InfiniteScroller
-                            pageStart={0}
-                            loadMore={this.loadMore.bind(this)}
-                            hasMore={scroller.hasMore && !scroller.loading}
-                            loader={<div>loading ...</div>}
-                            useWindow={false}
-                            getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
-                        >
-                            {files.map((item, i) => (
-                                <MediaItem key={i} {...item} />
-                            ))}
-                        </InfiniteScroller>
-                    {!scroller.loading && files.length < 0 && <div className="alert alert-light mt-4 w-100 text-center">No Item to show</div>}
-                </div>
+                <InfiniteScroller
+                    pageStart={0}
+                    loadMore={this.loadMore.bind(this)}
+                    hasMore={scroller.hasMore && !scroller.loading}
+                    loader={<div key={0}>loading ...</div>}
+                    useWindow={false}
+                    getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
+                    className="media-container"
+                >
+                    {files.map((item, i) => (
+                        <MediaItem key={i} {...item} />
+                    ))}
+                </InfiniteScroller>
+                {!scroller.loading && files.length < 0 && <div className="alert alert-light mt-4 w-100 text-center">No Item to show</div>}
             </div>
         )
     }

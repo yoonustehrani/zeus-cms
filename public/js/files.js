@@ -35765,7 +35765,12 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
         files: files,
         setNewResults: this.setNewResults.bind(this),
         searchUrl: searchUrl
-      })));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_media__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        files: files,
+        setNewResults: this.setNewResults.bind(this),
+        fileUrl: fileUrl,
+        query: query
+      }));
     }
   }]);
 
@@ -35836,7 +35841,9 @@ var MediaItem = /*#__PURE__*/function (_Component) {
         className: "file-img-container mr-lg-2"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: "".concat(APP_PATH).concat(path)
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, name, ".", ext)));
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "text-center text-primary"
+      }, name, ".", ext)));
     }
   }]);
 
@@ -35936,14 +35943,17 @@ var Media = /*#__PURE__*/function (_Component) {
           })
         }, function () {
           axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("".concat(query, "&page=").concat(scroller.current_page)).then(function (res) {
-            var data = res.data.data;
+            var _res$data = res.data,
+                data = _res$data.data,
+                current_page = _res$data.current_page,
+                last_page = _res$data.last_page;
 
             _this.setState(function (prevState) {
               return {
                 scroller: {
-                  current_page: prevState.current_page++,
+                  current_page: current_page + 1,
                   hasMore: current_page !== last_page,
-                  data: [].concat(_toConsumableArray(prevState), _toConsumableArray(data)),
+                  data: [].concat(_toConsumableArray(prevState.scroller.data), _toConsumableArray(data)),
                   loading: false
                 }
               };
@@ -35975,24 +35985,25 @@ var Media = /*#__PURE__*/function (_Component) {
           fileUrl = _this$props2.fileUrl;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-12 remove-sm-padding float-left"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "media-container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_infinite_scroller__WEBPACK_IMPORTED_MODULE_1___default.a, {
         pageStart: 0,
         loadMore: this.loadMore.bind(this),
         hasMore: scroller.hasMore && !scroller.loading,
-        loader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "loading ..."),
+        loader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: 0
+        }, "loading ..."),
         useWindow: false,
         getScrollParent: function getScrollParent() {
           return document.getElementsByClassName("contentbar")[0];
-        }
+        },
+        className: "media-container"
       }, files.map(function (item, i) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_media_item__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
           key: i
         }, item));
       })), !scroller.loading && files.length < 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "alert alert-light mt-4 w-100 text-center"
-      }, "No Item to show")));
+      }, "No Item to show"));
     }
   }]);
 
@@ -36018,18 +36029,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dropzone */ "./node_modules/dropzone/dist/dropzone.js");
 /* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(dropzone__WEBPACK_IMPORTED_MODULE_1__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36084,11 +36083,29 @@ var Uploader = /*#__PURE__*/function (_Component) {
         }
       });
       myDropzone.on("success", function (response) {
-        var _this$props$files;
+        var _JSON$parse = JSON.parse(response.xhr.responseText),
+            created_at = _JSON$parse.created_at,
+            ext = _JSON$parse.ext,
+            id = _JSON$parse.id,
+            name = _JSON$parse.name,
+            path = _JSON$parse.path,
+            thumbnail_path = _JSON$parse.thumbnail_path,
+            type = _JSON$parse.type,
+            updated_at = _JSON$parse.updated_at;
 
-        var NewResults = (_this$props$files = _this.props.files).unshift.apply(_this$props$files, _toConsumableArray(response.data));
+        var newResults = _this.props.files;
+        newResults.unshift({
+          id: id,
+          name: name,
+          ext: ext,
+          path: path,
+          thumbnail_path: thumbnail_path,
+          type: type,
+          created_at: created_at,
+          updated_at: updated_at
+        });
 
-        _this.props.setNewResults(NewResults);
+        _this.props.setNewResults(newResults);
       });
     }
   }, {
