@@ -11,20 +11,6 @@
 @endsection
 
 @section('pagecontent')
-{{-- <form action="{{ route('Romancamp.api.files.upload', ['type' => 'image']) }}" id="dropzoneTarget" class="dropzone">
-@csrf
-</form> --}}
-{{--  --}}
-
-{{-- @php
-    $file_url = urldecode(route('Romancamp.api.files.show', ['file' => "\$fileId"]));
-@endphp
-<p class="mt-4">
-    <b>Each File url :</b>
-    <a target="_blank" href="{{ $file_url }}" class="badge badge-dark">
-        {{ $file_url }}
-    </a>
-</p>
 <table class="col-12 float-left table table-bordered text-center">
     <thead class="thead-dark">
         <th scope="col">#</th>
@@ -71,7 +57,7 @@
             </td>
         </tr>
     </tbody>
-</table> --}}
+</table>
 <div 
     id="react-files" 
     class="col-12 float-left p-3"
