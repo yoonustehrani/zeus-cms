@@ -18,19 +18,21 @@ export default class FilterBox extends Component {
                     video: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
                     audio: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"]
                 }
-            }
+            },
         }
         this.trashBtnRef = React.createRef()
     }
 
     filter = (e) => {
         let { searchValue, filters } = this.state, q
-        let { searchUrl, setNewResults } = this.props
+        let { searchUrl, setNewResults, setLoading } = this.props
         if (e.type === "click" || e.type === "change" || e.type === "select2:select" || e.keyCode === 13) {
             let search_query = `${searchUrl}?type=${filters.file_type}${filters.format !== "all" ? `&ext=${filters.format}` : ""}&order_by=${filters.sort_by}&order=${filters.order}${filters.trash ? "&trash=true" : ""}${searchValue.replace(/\s/g, " ").trim().length >= 3 ? `&q=${searchValue.replace(/\s/g, " ").trim().replace(/\s/g, "+")}` : ""}`
+            setLoading(true)
             Axios.get(`${search_query}&page=1`).then(res => {
                 let { data } = res.data
                 setNewResults(data, search_query)
+                setLoading(false)
             })
         }
     }

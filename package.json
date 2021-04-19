@@ -38,6 +38,7 @@
         "lity": "^2.4.1",
         "moment": "^2.27.0",
         "persian-datepicker": "^1.2.0",
+        "react-activity": "^1.2.2",
         "react-infinite-scroller": "^1.2.4",
         "redux": "^4.0.5",
         "select2": "^4.0.13",
