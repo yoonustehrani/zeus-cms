@@ -35765,7 +35765,12 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
         files: files,
         setNewResults: this.setNewResults.bind(this),
         searchUrl: searchUrl
-      })));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_media__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        files: files,
+        setNewResults: this.setNewResults.bind(this),
+        fileUrl: fileUrl,
+        query: query
+      }));
     }
   }]);
 
@@ -35936,14 +35941,17 @@ var Media = /*#__PURE__*/function (_Component) {
           })
         }, function () {
           axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("".concat(query, "&page=").concat(scroller.current_page)).then(function (res) {
-            var data = res.data.data;
+            var _res$data = res.data,
+                data = _res$data.data,
+                current_page = _res$data.current_page,
+                last_page = _res$data.last_page;
 
             _this.setState(function (prevState) {
               return {
                 scroller: {
-                  current_page: prevState.current_page++,
+                  current_page: prevState.scroller.current_page++,
                   hasMore: current_page !== last_page,
-                  data: [].concat(_toConsumableArray(prevState), _toConsumableArray(data)),
+                  data: [].concat(_toConsumableArray(prevState.scroller.data), _toConsumableArray(data)),
                   loading: false
                 }
               };
@@ -35981,7 +35989,9 @@ var Media = /*#__PURE__*/function (_Component) {
         pageStart: 0,
         loadMore: this.loadMore.bind(this),
         hasMore: scroller.hasMore && !scroller.loading,
-        loader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "loading ..."),
+        loader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: 0
+        }, "loading ..."),
         useWindow: false,
         getScrollParent: function getScrollParent() {
           return document.getElementsByClassName("contentbar")[0];
@@ -36196,9 +36206,9 @@ var formatOptionWithText = function formatOptionWithText(option) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! I:\projects\zeuscms\resources\js\files.js */"./resources/js/files.js");
-__webpack_require__(/*! I:\projects\zeuscms\resources\sass\zeus\zeus.scss */"./resources/sass/zeus/zeus.scss");
-module.exports = __webpack_require__(/*! I:\projects\zeuscms\resources\sass\zeus\files.scss */"./resources/sass/zeus/files.scss");
+__webpack_require__(/*! W:\php\zeuscms\resources\js\files.js */"./resources/js/files.js");
+__webpack_require__(/*! W:\php\zeuscms\resources\sass\zeus\zeus.scss */"./resources/sass/zeus/zeus.scss");
+module.exports = __webpack_require__(/*! W:\php\zeuscms\resources\sass\zeus\files.scss */"./resources/sass/zeus/files.scss");
 
 
 /***/ })

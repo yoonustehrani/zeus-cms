@@ -27,12 +27,12 @@ export default class Media extends Component {
                 }
             }, () => {
                 Axios.get(`${query}&page=${scroller.current_page}`).then(res => {
-                    let { data } = res.data
+                    let { data, current_page, last_page } = res.data
                     this.setState(prevState => ({
                         scroller: {
-                            current_page: prevState.current_page++,
+                            current_page: prevState.scroller.current_page++,
                             hasMore: current_page !== last_page,
-                            data: [...prevState, ...data],
+                            data: [...prevState.scroller.data, ...data],
                             loading: false
                         }
                     }), () => {
@@ -54,7 +54,7 @@ export default class Media extends Component {
                             pageStart={0}
                             loadMore={this.loadMore.bind(this)}
                             hasMore={scroller.hasMore && !scroller.loading}
-                            loader={<div>loading ...</div>}
+                            loader={<div key={0}>loading ...</div>}
                             useWindow={false}
                             getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
                         >

@@ -29,7 +29,7 @@ export default class ReactFiles extends Component {
                     <Uploader files={files} setNewResults={this.setNewResults.bind(this)} uploadUrl={uploadUrl} />
                     <FilterBox files={files} setNewResults={this.setNewResults.bind(this)} searchUrl={searchUrl} />
                 </div>
-                {/* <Media files={files} fileUrl={fileUrl} query={query} /> */}
+                <Media files={files} setNewResults={this.setNewResults.bind(this)} fileUrl={fileUrl} query={query} />
             </div>
         )
     }
