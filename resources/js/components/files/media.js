@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import InfiniteScroller from 'react-infinite-scroller'
 import MediaItem from './media-item'
 import Axios from 'axios'
+import 'react-activity/lib/Spinner/Spinner.css'
+import { Spinner } from 'react-activity'
 
 export default class Media extends Component {
     constructor(props) {
@@ -30,7 +32,7 @@ export default class Media extends Component {
                     let { data, current_page, last_page } = res.data
                     this.setState(prevState => ({
                         scroller: {
-                            current_page: prevState.scroller.current_page++,
+                            current_page: current_page + 1,
                             hasMore: current_page !== last_page,
                             data: [...prevState.scroller.data, ...data],
                             loading: false
@@ -45,25 +47,26 @@ export default class Media extends Component {
 
     render() {
         let { scroller } = this.state 
-        let { files, fileUrl } = this.props
+        let { files, fileUrl, loading } = this.props
 
         return (
             <div className="col-12 remove-sm-padding float-left">
-                <div className="media-container">
-                        <InfiniteScroller
-                            pageStart={0}
-                            loadMore={this.loadMore.bind(this)}
-                            hasMore={scroller.hasMore && !scroller.loading}
-                            loader={<div key={0}>loading ...</div>}
-                            useWindow={false}
-                            getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
-                        >
-                            {files.map((item, i) => (
-                                <MediaItem key={i} {...item} />
-                            ))}
-                        </InfiniteScroller>
-                    {!scroller.loading && files.length < 0 && <div className="alert alert-light mt-4 w-100 text-center">No Item to show</div>}
-                </div>
+                {!loading &&
+                    <InfiniteScroller
+                    pageStart={0}
+                    loadMore={this.loadMore.bind(this)}
+                    hasMore={scroller.hasMore && !scroller.loading}
+                    useWindow={false}
+                    getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
+                    className="media-container"
+                    >
+                        {files.map((item, i) => (
+                            <MediaItem key={i} {...item} />
+                        ))}
+                    </InfiniteScroller>
+                }
+                {!scroller.loading && !loading && files.length === 0 && <div className="alert alert-light mt-4 w-100 text-center">No Item to show</div>}
+                {(scroller.loading || loading) && <div className="w-100 text-center mt-4"><Spinner color="#000000" size={30} /></div>}
             </div>
         )
     }

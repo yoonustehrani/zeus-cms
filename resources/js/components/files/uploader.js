@@ -17,8 +17,19 @@ export default class Uploader extends Component {
             }
         })
         myDropzone.on("success", response => {
-            let NewResults = this.props.files.unshift(...response.data) 
-            this.props.setNewResults(NewResults)
+            let { created_at, ext, id, name, path, thumbnail_path, type, updated_at } = JSON.parse(response.xhr.responseText)
+            let newResults = this.props.files
+            newResults.unshift({
+                id: id,
+                name: name,
+                ext: ext,
+                path: path,
+                thumbnail_path: thumbnail_path,
+                type: type,
+                created_at: created_at,
+                updated_at: updated_at
+            }) 
+            this.props.setNewResults(newResults)
         })
     }
     
