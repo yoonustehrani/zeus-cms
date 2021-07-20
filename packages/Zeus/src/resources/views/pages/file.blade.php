@@ -11,7 +11,7 @@
 @endsection
 
 @section('pagecontent')
-<table class="col-12 float-left table table-bordered text-center">
+{{-- <table class="col-12 float-left table table-bordered text-center">
     <thead class="thead-dark">
         <th scope="col">#</th>
         <th scope="col">info</th>
@@ -57,7 +57,7 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> --}}
 <div 
     id="react-files" 
     class="col-12 float-left p-3"

@@ -2367,19 +2367,42 @@ var MediaItem = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this$props = this.props,
           path = _this$props.path,
+          thumbnail_path = _this$props.thumbnail_path,
           name = _this$props.name,
           ext = _this$props.ext;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "media-item mt-4 col-4 col-md-3 col-lg-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-          className: "img-container mr-lg-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
-            src: "".concat(APP_PATH).concat(path)
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
-          className: "text-center text-primary",
-          children: [name, ".", ext]
-        })]
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        className: "media-item mt-4 col-4 col-md-3 col-lg-2 p-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          className: "img-container col-12 p-0",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
+            src: "".concat(APP_PATH).concat(thumbnail_path)
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            className: "data-container text-center col-12",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("a", {
+                href: "".concat(APP_PATH).concat(path),
+                target: "_blank",
+                className: "btn btn-outline-warning m-1",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+                  className: "fas fa-eye"
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+                className: "btn btn-outline-info m-1",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+                  className: "fas fa-info"
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+                className: "btn btn-outline-danger m-1",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+                  className: "fas fa-trash"
+                })
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+              className: "text-center text-small w-100",
+              children: [name, ".", ext]
+            })]
+          })]
+        })
       });
     }
   }]);

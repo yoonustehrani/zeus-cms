@@ -412,14 +412,22 @@ div.media-container {
   justify-content: flex-start;
   align-items: center;
 }
-div.media-container div.media-item div.img-container {
+div.media-container .media-item {
   position: relative;
+  background: transparent;
+}
+div.media-container .media-item .img-container {
+  position: relative;
+  z-index: 3;
   width: 100%;
   /* The size you want */
+  border-radius: 10px;
+  overflow: hidden;
 }
-div.media-container div.media-item div.img-container > img {
+div.media-container .media-item .img-container > img {
   position: absolute;
   /* Take your picture out of the flow */
+  z-index: 4;
   top: 0;
   bottom: 0;
   left: 0;
@@ -434,9 +442,29 @@ div.media-container div.media-item div.img-container > img {
   /* Equivalent of the background-size: cover; of a background-image */
   -o-object-position: center;
      object-position: center;
-  border-radius: 10px;
+  border-radius: inherit;
 }
-div.media-container div.media-item div.img-container::after {
+div.media-container .media-item .img-container .data-container {
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  border-radius: inherit;
+  padding: 3px;
+  color: #dfdfdf;
+  background: rgba(0, 0, 0, 0.925);
+}
+div.media-container .media-item .img-container:hover .data-container {
+  transition: 0.3s;
+  left: 0;
+}
+div.media-container .media-item .img-container::after {
   content: "";
   display: block;
   padding-bottom: 100%;
