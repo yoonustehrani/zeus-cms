@@ -29,7 +29,7 @@
         <div class="input-group col-lg-5 col-md-6 col-12 float-left mt-3 mb-3">
             <p class="w-100 float-left">Settings in Json Format: </p>
             <textarea class="form-control bg-dark text-warning json-code" style="resize: none;" name="settings" id="settings" spellcheck="false"
-            placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="10">{{ old('settings') ?: json_encode($service->details) }}</textarea>
+            placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="10">{{ old('settings') ?: json_encode($service->details, JSON_PRETTY_PRINT) }}</textarea>
         </div>
         <div class="col-12 float-left">
             <button type="submit" class="btn btn-primary">Save</button>

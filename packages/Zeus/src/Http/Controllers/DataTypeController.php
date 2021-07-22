@@ -211,7 +211,6 @@ class DataTypeController extends Controller
                 $datatype->{$field} = (! isset($request->{$field})) ? false : true;
             }
             $datatype->pushToDetails($request);
-            
             if ($datatype->save()) {
                 $datatype->updateDataRows($request->all());
             }

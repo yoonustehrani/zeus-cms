@@ -50,7 +50,7 @@
                         <span class="check-handle"></span>
                     </label>
                     @else
-                    {{ gettype($dt->{$column->field}) != 'array' ? $dt->{$column->field} : json_encode($dt->{$column->field}) }}
+                    {{ gettype($dt->{$column->field}) != 'array' ? $dt->{$column->field} : json_encode($dt->{$column->field}, JSON_PRETTY_PRINT) }}
                     @endif
                 </td>
                 @endforeach

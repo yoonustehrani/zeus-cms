@@ -50,10 +50,13 @@ class DataType extends Model
     {
         return $this->hasMany(DataRow::class)->whereEdit(true)->orderBy('order');
     }
-    public function getDetailsAttribute($details) {
+    public function getDetailsAttribute($details)
+    {
+        // $details = $this->excludeFromDetails(collect(json_decode($details)));
         return json_decode($details);
     }
-    public function setDetailsAttribute($details) {
+    public function setDetailsAttribute($details)
+    {
         $this->attributes['details'] = json_encode($details);
     }
     public function createDataRows($request_data)
@@ -93,9 +96,18 @@ class DataType extends Model
     public function pushToDetails($request_data)
     {
         $details = ['order_column','order_direction','default_search_key','scope'];
-        foreach ($details as $detaial) {
-            $this->details = collect($this->details)->put($detaial, $request_data[$detaial] ?: null);
+        foreach ($details as $detail) {
+            $assigned = $request_data[$detail] ?: null;
+            $this->details = collect($this->details)->put($detail, $assigned);
         }
+    }
+    public function excludeFromDetails($details_array)
+    {
+        $detail_keys = ['order_column','order_direction','default_search_key','scope'];
+        foreach ($detail_keys as $detail_key) {
+            $details_array->pull($detail_key);
+        }
+        return $details_array;
     }
     public function validation_rules($rows)
     {

@@ -14,8 +14,8 @@ class Item extends Component {
         }
     }
     componentDidMount() {
-        let {id} = this.props;
-        $('#' + `parent-with-child-${id}`).sortable();
+        // let {id} = this.props;
+        // $('#' + `parent-with-child-${id}`).sortable();
     }
     render() {
         let {title, url, route, target, icon_class} = this.state;
@@ -33,12 +33,12 @@ class Item extends Component {
                         <button className="btn btn-sm btn-info rounded-circle mr-2">
                             <i className="fas fa-pencil-alt"></i>
                         </button>
-                        <button className="btn btn-sm btn-danger rounded-circle">
+                        <button onClick={() => {this.props.destroyItem()}} className="btn btn-sm btn-danger rounded-circle">
                             <i className="fas fa-trash"></i>
                         </button>
                     </span>
                 </div>
-                {this.state.children.length > 0 &&
+                {/* {this.state.children.length > 0 &&
                     <div>
                         <ul id={`parent-with-child-${id}`} className="children-list">
                             {this.state.children.map((child, i) => {
@@ -46,7 +46,7 @@ class Item extends Component {
                             })}
                         </ul>
                     </div>
-                }
+                } */}
             </li>
         );
     }

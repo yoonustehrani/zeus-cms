@@ -1,7 +1,7 @@
 require('./tools/date')
 require('./tools/codemirror')
 
-$('.json-code').on('keydown', function(e) {
+$(document).on('keydown', '.json-code', function(e) {
     if (e.keyCode === 9) {
         e.preventDefault();
         var cursorPos = $(this).prop('selectionStart');

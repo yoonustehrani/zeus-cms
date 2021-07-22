@@ -2,6 +2,7 @@
 
 @section('head')
 <link rel="stylesheet" href="{{ asset('css/zeus.css') }}">
+<link rel="shortcut icon" href="{{ asset('images/zeus/zeus__favicon.ico') }}" type="image/x-icon">
 @yield('css')
 @endsection
 
