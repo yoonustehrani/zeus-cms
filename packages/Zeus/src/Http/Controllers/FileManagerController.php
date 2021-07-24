@@ -156,7 +156,6 @@ class FileManagerController extends Controller
         if ($request->force_delete == 'true') {
             return ['okay' => $file->forceDelete()];
         }
-
         return ['okay' => $file->delete()];
     }
 }
