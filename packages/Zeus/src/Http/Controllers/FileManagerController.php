@@ -5,6 +5,7 @@ namespace Zeus\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Rules\MustHaveExtension;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Zeus\Models\File as ZeusFile;
 use Zeus\Models\UploadedFile;
@@ -152,9 +153,14 @@ class FileManagerController extends Controller
     public function destroy(Request $request,$file)
     {
         $file = ($request->force_delete == 'true') ? ZeusFile::onlyTrashed()->findOrFail($file) : ZeusFile::findOrFail($file);
-        
         if ($request->force_delete == 'true') {
-            return ['okay' => $file->forceDelete()];
+            if($file->forceDelete()) {
+                if (Storage::exists($file->path)) {
+                    return ['okay' => Storage::delete($file->path)];
+                }
+                return ['okay' => true];
+            }
+            return ['okay' => false];
         }
         return ['okay' => $file->delete()];
     }
