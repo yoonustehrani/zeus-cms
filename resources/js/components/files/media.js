@@ -46,13 +46,13 @@ export default class Media extends Component {
     }
 
     deleteFile = (fileId, softDeleted) => {
-        let {setNewResults} = this.props;
+        let {setNewResults, files} = this.props;
         let path = this.props.fileUrl.replace('fileId', fileId) + `?force_delete=${softDeleted ? 'true' : ''}`;
         Axios.delete(path).then(res => {
             if (res.data.okay) {
                 this.setState(prevState => ({
                     scroller: {
-                        data: prevState.scroller.data.filter(x => x.id !== fileId)
+                        data: files.filter(x => x.id !== fileId)
                     }
                 }), () => {
                     setNewResults(this.state.scroller.data)
@@ -64,7 +64,6 @@ export default class Media extends Component {
     render() {
         let { scroller } = this.state 
         let { files, loading } = this.props
-
         return (
             <div className="col-12 remove-sm-padding float-left">
                 {!loading &&

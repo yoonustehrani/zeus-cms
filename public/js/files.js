@@ -2538,14 +2538,16 @@ var Media = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "deleteFile", function (fileId, softDeleted) {
-      var setNewResults = _this.props.setNewResults;
+      var _this$props2 = _this.props,
+          setNewResults = _this$props2.setNewResults,
+          files = _this$props2.files;
       var path = _this.props.fileUrl.replace('fileId', fileId) + "?force_delete=".concat(softDeleted ? 'true' : '');
       axios__WEBPACK_IMPORTED_MODULE_3___default().delete(path).then(function (res) {
         if (res.data.okay) {
           _this.setState(function (prevState) {
             return {
               scroller: {
-                data: prevState.scroller.data.filter(function (x) {
+                data: files.filter(function (x) {
                   return x.id !== fileId;
                 })
               }
@@ -2574,9 +2576,9 @@ var Media = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var scroller = this.state.scroller;
-      var _this$props2 = this.props,
-          files = _this$props2.files,
-          loading = _this$props2.loading;
+      var _this$props3 = this.props,
+          files = _this$props3.files,
+          loading = _this$props3.loading;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "col-12 remove-sm-padding float-left",
         children: [!loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)((react_infinite_scroller__WEBPACK_IMPORTED_MODULE_1___default()), {
