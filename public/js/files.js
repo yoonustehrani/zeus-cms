@@ -2551,7 +2551,7 @@ var Media = /*#__PURE__*/function (_Component) {
               }
             };
           }, function () {
-            setNewResults(_this.state.scroller.data, !softDeleted);
+            setNewResults(_this.state.scroller.data);
           });
         }
       });

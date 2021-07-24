@@ -55,7 +55,7 @@ export default class Media extends Component {
                         data: prevState.scroller.data.filter(x => x.id !== fileId)
                     }
                 }), () => {
-                    setNewResults(this.state.scroller.data, !softDeleted)
+                    setNewResults(this.state.scroller.data)
                 })
             }
         })
