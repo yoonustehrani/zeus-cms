@@ -16,9 +16,6 @@ class ZeusController extends Controller
      */
     public function index()
     {
-        // return Storage::files('/images/gallery/');
-        // return Storage::exists('/images/gallery/000-5-mi play-shirazmi-400x400_1626709939.jpg');
-        // return 'hello';
         return view("ZEV::pages.dashboard");
     }
 
