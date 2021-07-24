@@ -45,9 +45,25 @@ export default class Media extends Component {
         }
     }
 
+    deleteFile = (fileId, softDeleted) => {
+        let {setNewResults} = this.props;
+        let path = this.props.fileUrl.replace('fileId', fileId) + `?force_delete=${softDeleted ? 'true' : ''}`;
+        Axios.delete(path).then(res => {
+            if (res.data.okay) {
+                this.setState(prevState => ({
+                    scroller: {
+                        data: prevState.scroller.data.filter(x => x.id !== fileId)
+                    }
+                }), () => {
+                    setNewResults(this.state.scroller.data)
+                })
+            }
+        })
+    }
+
     render() {
         let { scroller } = this.state 
-        let { files, fileUrl, loading } = this.props
+        let { files, loading } = this.props
 
         return (
             <div className="col-12 remove-sm-padding float-left">
@@ -60,8 +76,8 @@ export default class Media extends Component {
                     getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
                     className="media-container"
                     >
-                        {files.map((item, i) => (
-                            <MediaItem key={i} {...item} />
+                        {files.map((file, i) => (
+                            <MediaItem key={i} deleteFile={this.deleteFile.bind(this)} {...file} />
                         ))}
                     </InfiniteScroller>
                 }
