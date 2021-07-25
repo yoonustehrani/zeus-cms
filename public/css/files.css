@@ -460,9 +460,26 @@ div.media-container .media-item .img-container .data-container {
   color: #dfdfdf;
   background: rgba(0, 0, 0, 0.925);
 }
+div.media-container .media-item .img-container > input[type=checkbox] {
+  display: none;
+  position: absolute;
+  z-index: 6;
+  top: 5px;
+  left: 5px;
+}
+div.media-container .media-item .img-container > input[type=checkbox].active {
+  display: block !important;
+}
+div.media-container .media-item .img-container > input[type=checkbox].active + .data-container {
+  left: 0 !important;
+}
 div.media-container .media-item .img-container:hover .data-container {
   transition: 0.3s;
   left: 0;
+}
+div.media-container .media-item .img-container:hover > input[type=checkbox] {
+  transition: 0.5s;
+  display: block;
 }
 div.media-container .media-item .img-container::after {
   content: "";

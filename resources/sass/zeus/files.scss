@@ -118,9 +118,26 @@ div.media-container {
                 color: #dfdfdf;
                 background: rgba(0,0,0,0.925);
             }
-            &:hover .data-container {
-                transition: 0.3s;
-                left: 0;
+            > input[type=checkbox] {
+                display: none;
+                position: absolute;
+                z-index: 6;
+                top: 5px;
+                left: 5px;
+                &.active {
+                    display: block !important;
+                    + .data-container { left: 0 !important; }
+                }
+            }
+            &:hover {
+                .data-container {
+                    transition: 0.3s;
+                    left: 0;
+                }
+                > input[type=checkbox] {
+                    transition: 0.5s;
+                    display: block;
+                }
             }
         } 
         .img-container::after {
