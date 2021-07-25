@@ -25,12 +25,18 @@ export default class FilterBox extends Component {
 
     filter = (e) => {
         let { searchValue, filters } = this.state, q
-        let { searchUrl, setNewResults, setLoading } = this.props
+        let { searchUrl, setNewResults, setLoading, setScroller } = this.props
         if (e.type === "click" || e.type === "change" || e.type === "select2:select" || e.keyCode === 13) {
             let search_query = `${searchUrl}?type=${filters.file_type}${filters.format !== "all" ? `&ext=${filters.format}` : ""}&order_by=${filters.sort_by}&order=${filters.order}${filters.trash ? "&trash=true" : ""}${searchValue.replace(/\s/g, " ").trim().length >= 3 ? `&q=${searchValue.replace(/\s/g, " ").trim().replace(/\s/g, "+")}` : ""}`
             setLoading(true)
             Axios.get(`${search_query}&page=1`).then(res => {
-                let { data } = res.data
+                let { data, current_page, last_page } = res.data
+                setScroller({
+                    hasMore: current_page !== last_page,
+                    current_page: current_page,
+                    data: data,
+                    loading: false
+                })
                 setNewResults(data, search_query)
                 setLoading(false)
             })

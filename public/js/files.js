@@ -1904,13 +1904,23 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       var _this$props = _this.props,
           searchUrl = _this$props.searchUrl,
           setNewResults = _this$props.setNewResults,
-          setLoading = _this$props.setLoading;
+          setLoading = _this$props.setLoading,
+          setScroller = _this$props.setScroller;
 
       if (e.type === "click" || e.type === "change" || e.type === "select2:select" || e.keyCode === 13) {
         var search_query = "".concat(searchUrl, "?type=").concat(filters.file_type).concat(filters.format !== "all" ? "&ext=".concat(filters.format) : "", "&order_by=").concat(filters.sort_by, "&order=").concat(filters.order).concat(filters.trash ? "&trash=true" : "").concat(searchValue.replace(/\s/g, " ").trim().length >= 3 ? "&q=".concat(searchValue.replace(/\s/g, " ").trim().replace(/\s/g, "+")) : "");
         setLoading(true);
         axios__WEBPACK_IMPORTED_MODULE_2___default().get("".concat(search_query, "&page=1")).then(function (res) {
-          var data = res.data.data;
+          var _res$data = res.data,
+              data = _res$data.data,
+              current_page = _res$data.current_page,
+              last_page = _res$data.last_page;
+          setScroller({
+            hasMore: current_page !== last_page,
+            current_page: current_page,
+            data: data,
+            loading: false
+          });
           setNewResults(data, search_query);
           setLoading(false);
         });
@@ -2262,6 +2272,11 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "setScroller", function (value) {
+      _this.mediaRef.current.setScroller(value);
+    });
+
+    _this.mediaRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
     _this.state = {
       files: [],
       query: "".concat(_this.props.searchUrl, "?type=image&order_by=name&order=asc"),
@@ -2276,7 +2291,8 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           files = _this$state.files,
           query = _this$state.query,
-          loading = _this$state.loading;
+          loading = _this$state.loading,
+          scroller = _this$state.scroller;
       var _this$props = this.props,
           searchUrl = _this$props.searchUrl,
           fileUrl = _this$props.fileUrl,
@@ -2292,14 +2308,16 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
             files: files,
             setNewResults: this.setNewResults.bind(this),
             searchUrl: searchUrl,
-            setLoading: this.setLoading.bind(this)
+            setLoading: this.setLoading.bind(this),
+            setScroller: this.setScroller.bind(this)
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_media__WEBPACK_IMPORTED_MODULE_3__.default, {
           files: files,
           setNewResults: this.setNewResults.bind(this),
           fileUrl: fileUrl,
           query: query,
-          loading: loading
+          loading: loading,
+          ref: this.mediaRef
         })]
       });
     }
@@ -2524,6 +2542,12 @@ var Media = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, Media);
 
     _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "setScroller", function (value) {
+      _this.setState({
+        scroller: value
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_this), "loadMore", function () {
       var scroller = _this.state.scroller;

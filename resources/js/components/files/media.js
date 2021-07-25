@@ -18,6 +18,12 @@ export default class Media extends Component {
         }
     }
 
+    setScroller = (value) => {
+        this.setState({
+            scroller: value
+        })
+    }
+
     loadMore = () => {
         let { scroller } = this.state
         let { query, setNewResults } = this.props
@@ -30,14 +36,15 @@ export default class Media extends Component {
             }, () => {
                 Axios.get(`${query}&page=${scroller.current_page}`).then(res => {
                     let { data, current_page, last_page } = res.data
-                    this.setState(prevState => ({
+                    this.setState(prevState => {
+                        return ({
                         scroller: {
                             current_page: current_page + 1,
                             hasMore: current_page !== last_page,
                             data: [...prevState.scroller.data, ...data],
                             loading: false
                         }
-                    }), () => {
+                    })}, () => {
                         setNewResults(this.state.scroller.data)
                     })
                 })
