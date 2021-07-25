@@ -5,9 +5,11 @@ namespace Zeus\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Rules\MustHaveExtension;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Zeus\Models\File as ZeusFile;
 use Zeus\Models\UploadedFile;
+use Illuminate\Database\Eloquent\Collection;
 
 class FileManagerController extends Controller
 {
@@ -151,12 +153,42 @@ class FileManagerController extends Controller
      */
     public function destroy(Request $request,$file)
     {
-        $file = ($request->force_delete == 'true') ? ZeusFile::onlyTrashed()->findOrFail($file) : ZeusFile::findOrFail($file);
+        $needle = strpos($file, ',') ? explode(',', $file) : $file;
+
+        if (is_array($needle)) {
+            $needle = collect($needle)->filter(function($id) {
+                return is_numeric($id);
+            });
+        }
         
-        if ($request->force_delete == 'true') {
-            return ['okay' => $file->forceDelete()];
+        $file = ($request->force_delete == 'true') ? ZeusFile::onlyTrashed()->find($needle) : ZeusFile::find($needle);
+
+        if (! $file || $file->count() == 0) {
+            return ['okay' => false];
         }
 
+        return $this->delete_file($file, $request->force_delete == 'true');
+    }
+
+    private function delete_file($file, $force_delete = false) {
+        if($file instanceof Collection) {
+            $results = collect([]);
+            foreach ($file as $item) {
+                $results->push([
+                    ((string) $item->id) => $this->delete_file($item, $force_delete)
+                ]);
+            }
+            return $results->toArray();
+        }
+        if ($force_delete) {
+            if($file->forceDelete()) {
+                if (Storage::exists($file->path)) {
+                    return ['okay' => Storage::delete($file->path)];
+                }
+                return ['okay' => true];
+            }
+            return ['okay' => false];
+        }
         return ['okay' => $file->delete()];
     }
 }
