@@ -40,6 +40,7 @@
         "persian-datepicker": "^1.2.0",
         "react-activity": "^1.2.2",
         "react-infinite-scroller": "^1.2.4",
+        "react-virtualized": "^9.22.3",
         "redux": "^4.0.5",
         "select2": "^4.0.13",
         "sweetalert2": "^9.17.1",
