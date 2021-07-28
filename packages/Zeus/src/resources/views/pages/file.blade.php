@@ -14,9 +14,10 @@
 <div 
     id="react-files" 
     class="col-12 float-left p-3"
-    search-url = {{ route('Romancamp.api.files.index') }}
-    file-url = {{ route('Romancamp.api.files.show', ['file' => 'fileId']) }}
-    upload-url = {{ route('Romancamp.api.files.upload', ['type' => 'image']) }}
+    data-search="{{ route('Romancamp.api.files.index') }}"
+    data-file="{{ route('Romancamp.api.files.show', ['file' => 'fileId']) }}"
+    data-upload="{{ route('Romancamp.api.files.upload', ['type' => 'image']) }}"
+    data-restore="{{ route('Romancamp.api.files.restore', ['file' => 'fileId']) }}"
 >
 </div>
 @endsection

@@ -4,11 +4,20 @@ import MediaItem from './media-item'
 import Axios from 'axios'
 import 'react-activity/lib/Spinner/Spinner.css'
 import { Spinner } from 'react-activity'
+import Actions from './Actions'
 
 export default class Media extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            selectedItems: [],
+            bulkActions: [
+                {
+                    title: 'Move to trash',
+                    icon: 'fas fa-trash',
+                    action: this.deleteFilesBulk,
+                }
+            ],
             scroller: {
                 current_page: 1,
                 hasMore: true,
@@ -68,11 +77,36 @@ export default class Media extends Component {
         })
     }
 
+    deleteFilesBulk = () => {
+        let {selectedItems} = this.state;
+        if (selectedItems.length > 1) {
+            let id_request = selectedItems.join(',');
+            let path = this.props.fileUrl.replace('fileId', id_request); // + `?force_delete=${softDeleted ? 'true' : ''}`
+            return
+        }
+        let {id , deleted_at} = this.state.scroller.data.filter(file => file.id === selectedItems[0])[0];
+        this.deleteFile(id, Boolean(deleted_at))
+        this.setState({ selectedItems: []})
+    }
+
+    selectFile = (fileId, unselect = false) => {
+        if (unselect) {
+            this.setState(prevState => ({
+                selectedItems: prevState.selectedItems.filter(x => x !== fileId)
+            }));
+            return;
+        }
+        this.setState(prevState => ({
+            selectedItems: [...prevState.selectedItems, fileId]
+        }));
+    }
+
     render() {
-        let { scroller } = this.state 
+        let { scroller, bulkActions, selectedItems } = this.state 
         let { files, loading } = this.props
         return (
             <div className="col-12 remove-sm-padding float-left">
+                <Actions selectedItems={selectedItems} bulkActions={bulkActions}/>
                 {!loading &&
                     <InfiniteScroller
                     pageStart={0}
@@ -80,10 +114,10 @@ export default class Media extends Component {
                     hasMore={scroller.hasMore && !scroller.loading}
                     useWindow={false}
                     getScrollParent={() => document.getElementsByClassName("contentbar")[0]}
-                    className="media-container"
+                    className="media-container w-100"
                     >
                         {files.map((file, i) => (
-                            <MediaItem key={i} deleteFile={this.deleteFile.bind(this)} {...file} />
+                            <MediaItem id={file.id} key={i} selectFile={this.selectFile.bind(this)} deleteFile={this.deleteFile.bind(this)} {...file} />
                         ))}
                     </InfiniteScroller>
                 }

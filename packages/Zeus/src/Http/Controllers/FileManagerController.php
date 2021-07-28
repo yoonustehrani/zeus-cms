@@ -145,6 +145,11 @@ class FileManagerController extends Controller
         return $file;
     }
 
+    public function restore(Request $request, $file)
+    {
+        $file = ZeusFile::onlyTrashed()->findOrFail($file);
+        return ['okay' => $file->restore()];
+    }
     /**
      * Remove the specified resource from storage.
      *

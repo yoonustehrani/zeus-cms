@@ -1834,6 +1834,116 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./resources/js/components/files/Actions.js":
+/*!**************************************************!*\
+  !*** ./resources/js/components/files/Actions.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var Actions = /*#__PURE__*/function (_Component) {
+  _inherits(Actions, _Component);
+
+  var _super = _createSuper(Actions);
+
+  function Actions(props) {
+    var _this;
+
+    _classCallCheck(this, Actions);
+
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "handleSelect", function (e) {
+      _this.setState({
+        selectedAction: e.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleActionSubmit", function () {
+      _this.props.bulkActions[Number(_this.state.selectedAction) - 1].action();
+    });
+
+    _this.state = {
+      selectedAction: "1"
+    };
+    return _this;
+  }
+
+  _createClass(Actions, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          bulkActions = _this$props.bulkActions,
+          selectedItems = _this$props.selectedItems;
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "w-100 float-left p-3 bg-light ".concat(selectedItems.length < 1 ? 'd-none' : ''),
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+          className: "float-left mr-2",
+          children: ["Bulk Actions ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            className: "badge badge-pill badge-primary",
+            children: selectedItems.length
+          }), " :"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("select", {
+          className: "float-left",
+          onChange: this.handleSelect,
+          value: this.state.selectedAction,
+          children: bulkActions.map(function (action, i) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("option", {
+              value: i + 1,
+              children: action.title
+            }, i);
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          type: "button",
+          onClick: this.handleActionSubmit,
+          className: "btn btn-sm btn-outline-dark",
+          children: "submit"
+        })]
+      });
+    }
+  }]);
+
+  return Actions;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Actions);
+
+/***/ }),
+
 /***/ "./resources/js/components/files/filter-box.js":
 /*!*****************************************************!*\
   !*** ./resources/js/components/files/filter-box.js ***!
@@ -2384,11 +2494,16 @@ var MediaItem = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "toggleCheck", function (e) {
+      var _this$props = _this.props,
+          id = _this$props.id,
+          selectFile = _this$props.selectFile;
       if (e.target !== e.currentTarget) return;
 
       _this.setState({
         selected: !_this.state.selected
       });
+
+      selectFile(id, _this.state.selected);
     });
 
     _this.state = {
@@ -2400,16 +2515,17 @@ var MediaItem = /*#__PURE__*/function (_Component) {
   _createClass(MediaItem, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          id = _this$props.id,
-          path = _this$props.path,
-          thumbnail_path = _this$props.thumbnail_path,
-          name = _this$props.name,
-          ext = _this$props.ext,
-          deleted_at = _this$props.deleted_at,
-          deleteFile = _this$props.deleteFile;
+      var _this$props2 = this.props,
+          id = _this$props2.id,
+          path = _this$props2.path,
+          thumbnail_path = _this$props2.thumbnail_path,
+          name = _this$props2.name,
+          ext = _this$props2.ext,
+          deleted_at = _this$props2.deleted_at,
+          deleteFile = _this$props2.deleteFile;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
         className: "media-item mt-4 col-4 col-md-3 col-lg-2 p-1",
+        id: "file-number-".concat(id),
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
           className: "img-container col-12 p-0",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
@@ -2481,7 +2597,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_activity_lib_Spinner_Spinner_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-activity/lib/Spinner/Spinner.css */ "./node_modules/react-activity/lib/Spinner/Spinner.css");
 /* harmony import */ var react_activity__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-activity */ "./node_modules/react-activity/dist/react-activity.js");
 /* harmony import */ var react_activity__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_activity__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Actions */ "./resources/js/components/files/Actions.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -2521,6 +2638,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -2606,7 +2724,60 @@ var Media = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "deleteFilesBulk", function () {
+      var selectedItems = _this.state.selectedItems;
+
+      if (selectedItems.length > 1) {
+        var id_request = selectedItems.join(',');
+
+        var path = _this.props.fileUrl.replace('fileId', id_request); // + `?force_delete=${softDeleted ? 'true' : ''}`
+
+
+        return;
+      }
+
+      var _this$state$scroller$ = _this.state.scroller.data.filter(function (file) {
+        return file.id === selectedItems[0];
+      })[0],
+          id = _this$state$scroller$.id,
+          deleted_at = _this$state$scroller$.deleted_at;
+
+      _this.deleteFile(id, Boolean(deleted_at));
+
+      _this.setState({
+        selectedItems: []
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "selectFile", function (fileId) {
+      var unselect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      if (unselect) {
+        _this.setState(function (prevState) {
+          return {
+            selectedItems: prevState.selectedItems.filter(function (x) {
+              return x !== fileId;
+            })
+          };
+        });
+
+        return;
+      }
+
+      _this.setState(function (prevState) {
+        return {
+          selectedItems: [].concat(_toConsumableArray(prevState.selectedItems), [fileId])
+        };
+      });
+    });
+
     _this.state = {
+      selectedItems: [],
+      bulkActions: [{
+        title: 'Move to trash',
+        icon: 'fas fa-trash',
+        action: _this.deleteFilesBulk
+      }],
       scroller: {
         current_page: 1,
         hasMore: true,
@@ -2622,13 +2793,19 @@ var Media = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var scroller = this.state.scroller;
+      var _this$state = this.state,
+          scroller = _this$state.scroller,
+          bulkActions = _this$state.bulkActions,
+          selectedItems = _this$state.selectedItems;
       var _this$props3 = this.props,
           files = _this$props3.files,
           loading = _this$props3.loading;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "col-12 remove-sm-padding float-left",
-        children: [!loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)((react_infinite_scroller__WEBPACK_IMPORTED_MODULE_1___default()), {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Actions__WEBPACK_IMPORTED_MODULE_6__.default, {
+          selectedItems: selectedItems,
+          bulkActions: bulkActions
+        }), !loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)((react_infinite_scroller__WEBPACK_IMPORTED_MODULE_1___default()), {
           pageStart: 0,
           loadMore: this.loadMore.bind(this),
           hasMore: scroller.hasMore && !scroller.loading,
@@ -2636,18 +2813,20 @@ var Media = /*#__PURE__*/function (_Component) {
           getScrollParent: function getScrollParent() {
             return document.getElementsByClassName("contentbar")[0];
           },
-          className: "media-container",
+          className: "media-container w-100",
           children: files.map(function (file, i) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_media_item__WEBPACK_IMPORTED_MODULE_2__.default, _objectSpread({
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_media_item__WEBPACK_IMPORTED_MODULE_2__.default, _objectSpread({
+              id: file.id,
+              selectFile: _this2.selectFile.bind(_this2),
               deleteFile: _this2.deleteFile.bind(_this2)
             }, file), i);
           })
-        }), !scroller.loading && !loading && files.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        }), !scroller.loading && !loading && files.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "alert alert-light mt-4 w-100 text-center",
           children: "No Item to show"
-        }), (scroller.loading || loading) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        }), (scroller.loading || loading) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "w-100 text-center mt-4",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_activity__WEBPACK_IMPORTED_MODULE_5__.Spinner, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_activity__WEBPACK_IMPORTED_MODULE_5__.Spinner, {
             color: "#000000",
             size: 30
           })
@@ -2798,13 +2977,15 @@ __webpack_require__.r(__webpack_exports__);
 var target = document.getElementById("react-files");
 
 if (target) {
-  var searchUrl = target.getAttribute("search-url");
-  var fileUrl = target.getAttribute("file-url");
-  var uploadUrl = target.getAttribute("upload-url");
+  var searchUrl = target.getAttribute("data-search"),
+      fileUrl = target.getAttribute("data-file"),
+      uploadUrl = target.getAttribute("data-upload"),
+      restoreUrl = target.getAttribute("data-restore");
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_files__WEBPACK_IMPORTED_MODULE_2__.default, {
     searchUrl: searchUrl,
     fileUrl: fileUrl,
-    uploadUrl: uploadUrl
+    uploadUrl: uploadUrl,
+    restoreUrl: restoreUrl
   }), target);
 }
 

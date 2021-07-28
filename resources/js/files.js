@@ -6,15 +6,12 @@ import ReactFiles from './components/files'
 const target = document.getElementById("react-files")
 
 if (target) {
-    let searchUrl = target.getAttribute("search-url")
-    let fileUrl = target.getAttribute("file-url") 
-    let uploadUrl = target.getAttribute("upload-url")
+    let searchUrl = target.getAttribute("data-search"),
+    fileUrl = target.getAttribute("data-file"),
+    uploadUrl  = target.getAttribute("data-upload"),
+    restoreUrl = target.getAttribute("data-restore");
 
     ReactDOM.render(
-        <ReactFiles
-            searchUrl = {searchUrl}
-            fileUrl = {fileUrl}
-            uploadUrl = {uploadUrl}
-        />
+        <ReactFiles searchUrl={searchUrl} fileUrl={fileUrl} uploadUrl={uploadUrl} restoreUrl={restoreUrl}/>
     , target)
 }

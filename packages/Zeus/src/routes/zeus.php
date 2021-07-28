@@ -60,5 +60,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Romancamp.api.', 'middleware' => ['
     Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
     Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
     Route::resource('file-manager/files',  $namespace_prefix . 'FileManagerController')->except(['store']);
+    Route::patch('file-manager/files/{file}/restore', $namespace_prefix . 'FileManagerController@restore')->name('files.restore');
     Route::post('file-manager/files/{type}/upload', $namespace_prefix . 'FileManagerController@store')->name('files.upload')->middleware('api');
 });

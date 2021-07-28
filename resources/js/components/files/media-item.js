@@ -8,15 +8,17 @@ export default class MediaItem extends Component {
         }
     }
     toggleCheck = (e) => {
+        let {id, selectFile} = this.props;
         if(e.target !== e.currentTarget) return;
         this.setState({
             selected: ! this.state.selected
         })
+        selectFile(id, this.state.selected)
     }
     render() {
         let { id, path, thumbnail_path, name, ext, deleted_at, deleteFile } = this.props
         return (
-            <div className="media-item mt-4 col-4 col-md-3 col-lg-2 p-1">
+            <div className="media-item mt-4 col-4 col-md-3 col-lg-2 p-1" id={`file-number-${id}`}>
                 <div className="img-container col-12 p-0">
                     <img src={`${APP_PATH}${thumbnail_path}`} />
                     <input type="checkbox" className={`${this.state.selected ? 'active' : ''}`} onChange={this.toggleCheck} checked={this.state.selected}/>
