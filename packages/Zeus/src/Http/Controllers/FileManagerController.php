@@ -179,9 +179,7 @@ class FileManagerController extends Controller
         if($file instanceof Collection) {
             $results = collect([]);
             foreach ($file as $item) {
-                $results->push([
-                    ((string) $item->id) => $this->delete_file($item, $force_delete)
-                ]);
+                $results->put(((string) $item->id) , $this->delete_file($item, $force_delete));
             }
             return $results->toArray();
         }

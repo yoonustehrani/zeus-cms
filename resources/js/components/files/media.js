@@ -79,13 +79,27 @@ export default class Media extends Component {
 
     deleteFilesBulk = () => {
         let {selectedItems} = this.state;
+        let {setNewResults, files} = this.props;
         if (selectedItems.length > 1) {
             let id_request = selectedItems.join(',');
             let path = this.props.fileUrl.replace('fileId', id_request); // + `?force_delete=${softDeleted ? 'true' : ''}`
-            return
+            Axios.delete(path).then(res => {
+                let deleted = [];
+                Object.entries(res.data).map(file => {
+                    deleted.push(Number(file[0]))
+                });
+                this.setState(prevState => ({
+                    scroller: {
+                        data: files.filter(x => ! deleted.includes(x.id))
+                    }
+                }), () => {
+                    setNewResults(this.state.scroller.data)
+                })
+            })
+        } else {
+            let {id , deleted_at} = this.state.scroller.data.filter(file => file.id === selectedItems[0])[0];
+            this.deleteFile(id, Boolean(deleted_at))
         }
-        let {id , deleted_at} = this.state.scroller.data.filter(file => file.id === selectedItems[0])[0];
-        this.deleteFile(id, Boolean(deleted_at))
         this.setState({ selectedItems: []})
     }
 

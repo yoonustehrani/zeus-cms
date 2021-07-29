@@ -2726,6 +2726,9 @@ var Media = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "deleteFilesBulk", function () {
       var selectedItems = _this.state.selectedItems;
+      var _this$props3 = _this.props,
+          setNewResults = _this$props3.setNewResults,
+          files = _this$props3.files;
 
       if (selectedItems.length > 1) {
         var id_request = selectedItems.join(',');
@@ -2733,16 +2736,33 @@ var Media = /*#__PURE__*/function (_Component) {
         var path = _this.props.fileUrl.replace('fileId', id_request); // + `?force_delete=${softDeleted ? 'true' : ''}`
 
 
-        return;
+        axios__WEBPACK_IMPORTED_MODULE_3___default().delete(path).then(function (res) {
+          var deleted = [];
+          Object.entries(res.data).map(function (file) {
+            deleted.push(Number(file[0]));
+          });
+
+          _this.setState(function (prevState) {
+            return {
+              scroller: {
+                data: files.filter(function (x) {
+                  return !deleted.includes(x.id);
+                })
+              }
+            };
+          }, function () {
+            setNewResults(_this.state.scroller.data);
+          });
+        });
+      } else {
+        var _this$state$scroller$ = _this.state.scroller.data.filter(function (file) {
+          return file.id === selectedItems[0];
+        })[0],
+            id = _this$state$scroller$.id,
+            deleted_at = _this$state$scroller$.deleted_at;
+
+        _this.deleteFile(id, Boolean(deleted_at));
       }
-
-      var _this$state$scroller$ = _this.state.scroller.data.filter(function (file) {
-        return file.id === selectedItems[0];
-      })[0],
-          id = _this$state$scroller$.id,
-          deleted_at = _this$state$scroller$.deleted_at;
-
-      _this.deleteFile(id, Boolean(deleted_at));
 
       _this.setState({
         selectedItems: []
@@ -2797,9 +2817,9 @@ var Media = /*#__PURE__*/function (_Component) {
           scroller = _this$state.scroller,
           bulkActions = _this$state.bulkActions,
           selectedItems = _this$state.selectedItems;
-      var _this$props3 = this.props,
-          files = _this$props3.files,
-          loading = _this$props3.loading;
+      var _this$props4 = this.props,
+          files = _this$props4.files,
+          loading = _this$props4.loading;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "col-12 remove-sm-padding float-left",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Actions__WEBPACK_IMPORTED_MODULE_6__.default, {
