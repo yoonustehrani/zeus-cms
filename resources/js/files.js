@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ReactFiles from './components/files'
+import ReactFiles from './components/ReactFiles'
 
 
 const target = document.getElementById("react-files")

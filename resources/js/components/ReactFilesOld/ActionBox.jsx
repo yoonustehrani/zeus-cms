@@ -2,23 +2,11 @@ import React, { Component } from 'react'
 import { formatOptionWithIcon, formatOptionWithText } from '../../select2'
 import Axios from 'axios'
 
-export default class FilterBox extends Component {
+export default class ActionBox extends Component {
     constructor(props) {
         super(props)
         this.state = {
             searchValue: "",
-            filters: {
-                sort_by: "name",
-                file_type: "image",
-                format: "all",
-                order: "asc",
-                trash: false,
-                available_formats: {
-                    image: ["jpeg", "jpg", "png", "svg", "gif"],
-                    video: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
-                    audio: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"]
-                }
-            },
         }
         this.trashBtnRef = React.createRef()
     }
@@ -108,14 +96,15 @@ export default class FilterBox extends Component {
     }
 
     render() {
-        let { filters, searchValue } = this.state 
+        let { searchValue } = this.state 
+        let {filterList, dispatch} = this.props;
 
         return (
             <div className="col-lg-4 float-left remove-sm-padding">
                 {/* <h4 className="d-none d-lg-block">Search media:</h4> */}
                 <div className="input-group mt-2 mt-lg-0">
                     <div className="input-group-prepend">
-                        <button type="button" className="btn btn-light" ref={this.trashBtnRef} onClick={this.changeFilter.bind(this, "trash")}>
+                        <button type="button" className="btn btn-light" ref={this.trashBtnRef} onClick={() => dispatch(filterList.slice().trash)} >
                             <i className="fas fa-trash-alt"></i>
                         </button>
                     </div>
@@ -134,17 +123,17 @@ export default class FilterBox extends Component {
                                 <div>
                                     <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="name-radio" value="name" onChange={this.changeFilter.bind(this, "sort_by")} defaultChecked />
                                     <label className="form-check-label pointer" htmlFor="name-radio">Name</label>
-                                    <i className={`fas fa-sort-alpha-${filters.order === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
+                                    <i className={`fas fa-sort-alpha-${filterList.order === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
                                 <div>
                                     <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="date-radio" value="created_at" onChange={this.changeFilter.bind(this, "sort_by")} />
                                     <label className="form-check-label pointer" htmlFor="date-radio">date</label>
-                                    <i className={`fas fa-sort-numeric-${filters.order === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
+                                    <i className={`fas fa-sort-numeric-${filterList.order === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
                                 {/* <div>
                                     <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="ext-radio" value="ext" onChange={this.changeFilter.bind(this, "sort_by")} />
                                     <label className="form-check-label pointer" htmlFor="ext-radio">Format</label>
-                                    <i className={`fas fa-sort-numeric-${filters.order === "asc" ? "down-alt tada" : "up-alt wobble"} ml-2 animated`}></i>
+                                    <i className={`fas fa-sort-numeric-${filterList.order === "asc" ? "down-alt tada" : "up-alt wobble"} ml-2 animated`}></i>
                                 </div> */}
                             </div>
                         </div>
@@ -175,7 +164,7 @@ export default class FilterBox extends Component {
                             <span className="mb-1 mb-md-0">Format: </span>
                             <select id="file-format-select2" defaultValue="all">
                                 <option value="all">all</option>
-                                {filters.available_formats[filters.file_type].map((format, i) => (
+                                {filterList.available_formats[filterList.file_type].map((format, i) => (
                                     <option value={format} key={i}>{format}</option>
                                 ))
                                 }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import InfiniteScroller from 'react-infinite-scroller'
-import MediaItem from './media-item'
+import Item from './Item'
 import Axios from 'axios'
 import 'react-activity/lib/Spinner/Spinner.css'
 import { Spinner } from 'react-activity'
 import Actions from './Actions'
 
-export default class Media extends Component {
+export default class Gallery extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -16,6 +16,11 @@ export default class Media extends Component {
                     title: 'Move to trash',
                     icon: 'fas fa-trash',
                     action: this.deleteFilesBulk,
+                },
+                {
+                    title: 'Restore',
+                    icon: 'fas fa-reset',
+                    action: this.restore
                 }
             ],
             scroller: {
@@ -62,8 +67,8 @@ export default class Media extends Component {
     }
 
     deleteFile = (fileId, softDeleted) => {
-        let {setNewResults, files} = this.props;
-        let path = this.props.fileUrl.replace('fileId', fileId) + `?force_delete=${softDeleted ? 'true' : ''}`;
+        let {setNewResults, files, fileUrl} = this.props;
+        let path = fileUrl.replace('fileId', fileId) + `?force_delete=${softDeleted ? 'true' : ''}`;
         Axios.delete(path).then(res => {
             if (res.data.okay) {
                 this.setState(prevState => ({
@@ -103,6 +108,12 @@ export default class Media extends Component {
         this.setState({ selectedItems: []})
     }
 
+    restore = (fileId) => {
+        let {selectedItems} = this.state;
+        let {setNewResults, files} = this.props;
+        console.log(fileId);
+    }
+
     selectFile = (fileId, unselect = false) => {
         if (unselect) {
             this.setState(prevState => ({
@@ -131,7 +142,13 @@ export default class Media extends Component {
                     className="media-container w-100"
                     >
                         {files.map((file, i) => (
-                            <MediaItem id={file.id} key={i} selectFile={this.selectFile.bind(this)} deleteFile={this.deleteFile.bind(this)} {...file} />
+                            <Item 
+                            key={i}
+                            restoreFile={this.restore.bind(this)}
+                            selectFile={this.selectFile.bind(this)}
+                            deleteFile={this.deleteFile.bind(this)}
+                            selected={this.state.selectedItems.includes(file.id)}
+                            {...file} />
                         ))}
                     </InfiniteScroller>
                 }
