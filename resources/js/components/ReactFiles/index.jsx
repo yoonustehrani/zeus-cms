@@ -11,7 +11,14 @@ class ReactFiles extends Component {
             files: [],
             selectedFiles: [],
             loading: false,
-            defaultQuery: this.props.searchUrl + '?type=image&order_by=created_at&order=desc'
+            defaultQuery: this.props.searchUrl + '?type=image&order_by=created_at&order=desc',
+            filters: {
+                trash: false,
+                orderBy: 'asc',
+                sortBy: 'name',
+                file_type: 'image',
+                filterList: []
+            }
         }
         this.mediaRef = React.createRef()
     }
@@ -41,6 +48,8 @@ class ReactFiles extends Component {
                 ? iniState.selectedFiles.filter(x => x !== action.fileId)
                 : [...iniState.selectedFiles, action.fileId];
                 break;
+            case 'filter/toggleTrash':
+                iniState.filters.trash = ! iniState.filters.trash
             default:
                 break;
         }
@@ -49,11 +58,11 @@ class ReactFiles extends Component {
 
     render() {
         let {uploadUrl, searchUrl, fileUrl, restoreUrl} = this.props
-        let {files, selectedFiles, loading, defaultQuery} = this.state;
+        let {files, selectedFiles, loading, defaultQuery, filters} = this.state;
         return (
             <div>
                 <div className="filterbox-uploader-container">
-                    <FilterBox />
+                    <FilterBox filters={filters} searchUrl={searchUrl}  dispatch={this.dispatch}/>
                     <Uploader uploadUrl={uploadUrl} dispatch={this.dispatch}/>
                 </div>
                 <Gallery files={files} fileUrl={fileUrl} selectedFiles={selectedFiles}

@@ -1856,8 +1856,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/components/ReactFiles/actions.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1880,6 +1883,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
 
 
 
@@ -1888,21 +1896,94 @@ var FilterBox = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(FilterBox);
 
-  function FilterBox() {
+  function FilterBox(props) {
+    var _this;
+
     _classCallCheck(this, FilterBox);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "prepareQuery", function () {
+      var _this$props = _this.props,
+          searchUrl = _this$props.searchUrl,
+          filters = _this$props.filters;
+      var file_type = filters.file_type,
+          orderBy = filters.orderBy,
+          sortBy = filters.sortBy,
+          trash = filters.trash;
+      var query = "".concat(searchUrl, "?type=").concat(file_type, "&order_by=").concat(sortBy, "&order=").concat(orderBy);
+      query += trash ? '&trash=true' : '';
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "filter", function () {});
+
+    _defineProperty(_assertThisInitialized(_this), "handleTrashToggle", function () {
+      var _this$props2 = _this.props,
+          searchUrl = _this$props2.searchUrl,
+          dispatch = _this$props2.dispatch;
+
+      _this.trashBtnRef.current.classList.toggle("btn-dark");
+
+      dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.trashMode)()); // dispatch()
+    });
+
+    _this.trashBtnRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createRef();
+    _this.state = {
+      searchText: ""
+    };
+    return _this;
   }
 
   _createClass(FilterBox, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {});
+      var _this2 = this;
+
+      var searchText = this.state.searchText;
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "col-lg-4 float-left remove-sm-padding",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "input-group mt-2 mt-lg-0",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "input-group-prepend",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              type: "button",
+              className: "btn btn-light",
+              ref: this.trashBtnRef,
+              onClick: this.handleTrashToggle,
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                className: "fas fa-trash-alt"
+              })
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+            type: "search",
+            className: "form-control",
+            value: searchText,
+            placeholder: "3 characters or more (name or format)",
+            onChange: function onChange(e) {
+              return _this2.setState({
+                searchText: e.target.value
+              });
+            } // onKeyUp={this.filter.bind(this)} 
+
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "input-group-append",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              type: "button",
+              className: "btn btn-primary" // onClick={this.filter.bind(this)}
+              ,
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                className: "fas fa-search"
+              })
+            })
+          })]
+        })
+      });
     }
   }]);
 
   return FilterBox;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+}(react__WEBPACK_IMPORTED_MODULE_1__.Component);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FilterBox);
 
@@ -2307,7 +2388,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "addFile": () => (/* binding */ addFile),
 /* harmony export */   "addFiles": () => (/* binding */ addFiles),
 /* harmony export */   "deleteFile": () => (/* binding */ deleteFile),
-/* harmony export */   "toggleSelectFile": () => (/* binding */ toggleSelectFile)
+/* harmony export */   "toggleSelectFile": () => (/* binding */ toggleSelectFile),
+/* harmony export */   "trashMode": () => (/* binding */ trashMode)
 /* harmony export */ });
 var addFile = function addFile(file) {
   var end = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -2337,6 +2419,11 @@ var toggleSelectFile = function toggleSelectFile(fileId) {
   return {
     type: 'files/toggleSelect',
     fileId: fileId
+  };
+};
+var trashMode = function trashMode() {
+  return {
+    type: 'filter/toggleTrash'
   };
 };
 
@@ -2433,16 +2520,16 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
               case 0:
                 iniState = Object.assign({}, _this.state);
                 _context.t0 = action.type;
-                _context.next = _context.t0 === 'files/add' ? 4 : _context.t0 === 'files/addMultiple' ? 6 : _context.t0 === 'file/delete' ? 8 : _context.t0 === 'files/toggleSelect' ? 13 : 15;
+                _context.next = _context.t0 === 'files/add' ? 4 : _context.t0 === 'files/addMultiple' ? 6 : _context.t0 === 'file/delete' ? 8 : _context.t0 === 'files/toggleSelect' ? 13 : _context.t0 === 'filter/toggleTrash' ? 15 : 16;
                 break;
 
               case 4:
                 iniState.files = action.end ? [].concat(_toConsumableArray(iniState.files), [action.file]) : [action.file].concat(_toConsumableArray(iniState.files));
-                return _context.abrupt("break", 16);
+                return _context.abrupt("break", 17);
 
               case 6:
                 iniState.files = [].concat(_toConsumableArray(iniState.files), _toConsumableArray(action.files));
-                return _context.abrupt("break", 16);
+                return _context.abrupt("break", 17);
 
               case 8:
                 fileUrl = _this.props.fileUrl;
@@ -2461,21 +2548,24 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 });
 
               case 12:
-                return _context.abrupt("break", 16);
+                return _context.abrupt("break", 17);
 
               case 13:
                 iniState.selectedFiles = iniState.selectedFiles.includes(action.fileId) ? iniState.selectedFiles.filter(function (x) {
                   return x !== action.fileId;
                 }) : [].concat(_toConsumableArray(iniState.selectedFiles), [action.fileId]);
-                return _context.abrupt("break", 16);
+                return _context.abrupt("break", 17);
 
               case 15:
-                return _context.abrupt("break", 16);
+                iniState.filters.trash = !iniState.filters.trash;
 
               case 16:
-                _this.setState(iniState);
+                return _context.abrupt("break", 17);
 
               case 17:
+                _this.setState(iniState);
+
+              case 18:
               case "end":
                 return _context.stop();
             }
@@ -2492,7 +2582,14 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
       files: [],
       selectedFiles: [],
       loading: false,
-      defaultQuery: _this.props.searchUrl + '?type=image&order_by=created_at&order=desc'
+      defaultQuery: _this.props.searchUrl + '?type=image&order_by=created_at&order=desc',
+      filters: {
+        trash: false,
+        orderBy: 'asc',
+        sortBy: 'name',
+        file_type: 'image',
+        filterList: []
+      }
     };
     _this.mediaRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createRef();
     return _this;
@@ -2510,11 +2607,16 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
           files = _this$state.files,
           selectedFiles = _this$state.selectedFiles,
           loading = _this$state.loading,
-          defaultQuery = _this$state.defaultQuery;
+          defaultQuery = _this$state.defaultQuery,
+          filters = _this$state.filters;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           className: "filterbox-uploader-container",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_FilterBox__WEBPACK_IMPORTED_MODULE_5__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Uploader__WEBPACK_IMPORTED_MODULE_3__.default, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_FilterBox__WEBPACK_IMPORTED_MODULE_5__.default, {
+            filters: filters,
+            searchUrl: searchUrl,
+            dispatch: this.dispatch
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Uploader__WEBPACK_IMPORTED_MODULE_3__.default, {
             uploadUrl: uploadUrl,
             dispatch: this.dispatch
           })]
