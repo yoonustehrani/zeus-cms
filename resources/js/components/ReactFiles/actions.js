@@ -1,5 +1,7 @@
 export const addFile = (file, end = true) => ({type: 'files/add', file: file, end: end})
 export const addFiles = (files, end = true) => ({type: 'files/addMultiple', files: files, end: end})
+export const resetFiles = (query, setting = null) => ({type: 'files/reset', setting: setting, query: query})
 export const deleteFile = (fileId, softDeleted = false) => ({type: 'file/delete', fileId: fileId, softDeleted: softDeleted}) 
 export const toggleSelectFile = (fileId) => ({type: 'files/toggleSelect', fileId: fileId})
-export const trashMode = () => ({type: 'filter/toggleTrash'});
+export const trashMode = () => ({type: 'filter/toggleTrash'})
+export const changeFilter = (payload) => ({type: 'filter/change', payload: payload})

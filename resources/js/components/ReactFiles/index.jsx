@@ -14,8 +14,8 @@ class ReactFiles extends Component {
             defaultQuery: this.props.searchUrl + '?type=image&order_by=created_at&order=desc',
             filters: {
                 trash: false,
-                orderBy: 'asc',
-                sortBy: 'name',
+                orderBy: 'desc',
+                sortBy: 'created_at',
                 file_type: 'image',
                 filterList: []
             }
@@ -26,34 +26,43 @@ class ReactFiles extends Component {
     dispatch = async (action) => {
         var iniState = Object.assign({}, this.state);
         switch (action.type) {
+            case 'filter/change':
+                Object.assign(iniState.filters, action.payload)
+                break
+            case 'files/reset':
+                iniState.files = []
+                iniState.defaultQuery = action.query
+                this.mediaRef.current.reset()
+                break
             case 'files/add':
                 iniState.files = (action.end) ? [...iniState.files, action.file] : [action.file, ...iniState.files]
-                break;
+                break
             case 'files/addMultiple':
                 iniState.files = [...iniState.files, ...action.files]
-                break;
+                break
             case 'file/delete':
                 let {fileUrl} = this.props;
                 if (action.softDeleted) {
                     fileUrl += '?force_delete=true'
                 }
-                await Axios.delete(fileUrl.replace('fileId', action.fileId)).then((res) => {
+                await Axios.delete(fileUrl.replace('fileId', action.fileId)).then((res) => { // await
                     if (res.data.okay) {
                         iniState.files = iniState.files.filter(x => x.id !== action.fileId)
                     }
                 })
-                break;
+                break
             case 'files/toggleSelect':
                 iniState.selectedFiles = iniState.selectedFiles.includes(action.fileId)
                 ? iniState.selectedFiles.filter(x => x !== action.fileId)
                 : [...iniState.selectedFiles, action.fileId];
-                break;
+                break
             case 'filter/toggleTrash':
                 iniState.filters.trash = ! iniState.filters.trash
             default:
-                break;
+                break
         }
         this.setState(iniState)
+        return
     }
 
     render() {

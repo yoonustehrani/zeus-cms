@@ -20,10 +20,10 @@ class Gallery extends Component {
                 loading: true
             }, () => {
                 Axios.get(`${query}&page=${this.state.currentPage}`).then(res => {
-                    let { data, current_page, last_page } = res.data
+                    let { data, current_page, next_page_url } = res.data
                     this.setState(prevState => ({
                         currentPage: current_page + 1,
-                        hasMore: current_page !== last_page,
+                        hasMore: !! next_page_url,
                         loading: false
                     }), () => {
                         dispatch(addFiles(data))
@@ -32,9 +32,19 @@ class Gallery extends Component {
             })
         }
     }
+
+    reset = () => {
+        this.setState({
+            hasMore: true,
+            loading: false,
+            currentPage: 1,
+        })
+    }
+
     render() {
         let {files, dispatch, selectedFiles} = this.props
         let {hasMore, loading } = this.state
+
         return (
             <div className="col-12 remove-sm-padding float-left">
                 <InfiniteScroll

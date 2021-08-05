@@ -1904,6 +1904,8 @@ var FilterBox = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "prepareQuery", function () {
+      var searchText = _this.state.searchText.trim().replace(/\s{2,}/g, " ").replace(/\s/g, "+");
+
       var _this$props = _this.props,
           searchUrl = _this$props.searchUrl,
           filters = _this$props.filters;
@@ -1912,19 +1914,31 @@ var FilterBox = /*#__PURE__*/function (_Component) {
           sortBy = filters.sortBy,
           trash = filters.trash;
       var query = "".concat(searchUrl, "?type=").concat(file_type, "&order_by=").concat(sortBy, "&order=").concat(orderBy);
+      query += searchText.length > 2 ? "&q=".concat(searchText) : '';
       query += trash ? '&trash=true' : '';
+      return query;
     });
 
-    _defineProperty(_assertThisInitialized(_this), "filter", function () {});
+    _defineProperty(_assertThisInitialized(_this), "reset", function () {
+      _this.props.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.resetFiles)(_this.prepareQuery()));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "filter", function () {
+      var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      _this.props.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.changeFilter)(payload));
+
+      _this.reset();
+    });
 
     _defineProperty(_assertThisInitialized(_this), "handleTrashToggle", function () {
-      var _this$props2 = _this.props,
-          searchUrl = _this$props2.searchUrl,
-          dispatch = _this$props2.dispatch;
+      var dispatch = _this.props.dispatch;
 
       _this.trashBtnRef.current.classList.toggle("btn-dark");
 
-      dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.trashMode)()); // dispatch()
+      dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.trashMode)());
+
+      _this.reset();
     });
 
     _this.trashBtnRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createRef();
@@ -1940,9 +1954,12 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var searchText = this.state.searchText;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      var _this$props2 = this.props,
+          filters = _this$props2.filters,
+          dispatch = _this$props2.dispatch;
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "col-lg-4 float-left remove-sm-padding",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "input-group mt-2 mt-lg-0",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "input-group-prepend",
@@ -1964,20 +1981,118 @@ var FilterBox = /*#__PURE__*/function (_Component) {
               return _this2.setState({
                 searchText: e.target.value
               });
-            } // onKeyUp={this.filter.bind(this)} 
-
+            },
+            onKeyUp: function onKeyUp(e) {
+              if (e.key == 'Enter') {
+                _this2.filter();
+              }
+            }
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "input-group-append",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
               type: "button",
-              className: "btn btn-primary" // onClick={this.filter.bind(this)}
-              ,
+              className: "btn btn-primary",
+              onClick: this.filter.bind(this),
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
                 className: "fas fa-search"
               })
             })
           })]
-        })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          className: "filter-box mt-2 pt-2 pb-2",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: "col-12 inline-flex",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                children: "Sort By:"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                className: "form-check",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    className: "pointer form-check-input",
+                    type: "radio",
+                    name: "sort-by-radios",
+                    id: "name-radio",
+                    value: "name",
+                    onChange: function onChange(e) {
+                      return _this2.filter({
+                        sortBy: e.target.value
+                      });
+                    }
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                    className: "form-check-label pointer",
+                    htmlFor: "name-radio",
+                    children: "Name"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                    className: "fas fa-sort-alpha-".concat(filters.orderBy === "asc" ? "down tada" : "up wobble", " ml-2 animated")
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    className: "pointer form-check-input",
+                    type: "radio",
+                    name: "sort-by-radios",
+                    id: "date-radio",
+                    value: "created_at",
+                    onChange: function onChange(e) {
+                      return _this2.filter({
+                        sortBy: e.target.value
+                      });
+                    },
+                    defaultChecked: true
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                    className: "form-check-label pointer",
+                    htmlFor: "date-radio",
+                    children: "date"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                    className: "fas fa-sort-numeric-".concat(filters.orderBy === "asc" ? "down tada" : "up wobble", " ml-2 animated")
+                  })]
+                })]
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                children: "Order: "
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                className: "form-check",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    className: "pointer form-check-input",
+                    type: "radio",
+                    name: "order-radios",
+                    id: "asc-radio",
+                    value: "asc",
+                    onChange: function onChange(e) {
+                      return _this2.filter({
+                        orderBy: e.target.value
+                      });
+                    }
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                    className: "form-check-label pointer",
+                    htmlFor: "asc-radio",
+                    children: "ascending"
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    className: "pointer form-check-input",
+                    type: "radio",
+                    name: "order-radios",
+                    id: "desc-radio",
+                    value: "desc",
+                    onChange: function onChange(e) {
+                      return _this2.filter({
+                        orderBy: e.target.value
+                      });
+                    },
+                    defaultChecked: true
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                    className: "form-check-label pointer",
+                    htmlFor: "desc-radio",
+                    children: "descending"
+                  })]
+                })]
+              })]
+            })]
+          })
+        })]
       });
     }
   }]);
@@ -2069,12 +2184,12 @@ var Gallery = /*#__PURE__*/function (_Component) {
             var _res$data = res.data,
                 data = _res$data.data,
                 current_page = _res$data.current_page,
-                last_page = _res$data.last_page;
+                next_page_url = _res$data.next_page_url;
 
             _this.setState(function (prevState) {
               return {
                 currentPage: current_page + 1,
-                hasMore: current_page !== last_page,
+                hasMore: !!next_page_url,
                 loading: false
               };
             }, function () {
@@ -2083,6 +2198,14 @@ var Gallery = /*#__PURE__*/function (_Component) {
           });
         });
       }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "reset", function () {
+      _this.setState({
+        hasMore: true,
+        loading: false,
+        currentPage: 1
+      });
     });
 
     _this.state = {
@@ -2387,9 +2510,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addFile": () => (/* binding */ addFile),
 /* harmony export */   "addFiles": () => (/* binding */ addFiles),
+/* harmony export */   "resetFiles": () => (/* binding */ resetFiles),
 /* harmony export */   "deleteFile": () => (/* binding */ deleteFile),
 /* harmony export */   "toggleSelectFile": () => (/* binding */ toggleSelectFile),
-/* harmony export */   "trashMode": () => (/* binding */ trashMode)
+/* harmony export */   "trashMode": () => (/* binding */ trashMode),
+/* harmony export */   "changeFilter": () => (/* binding */ changeFilter)
 /* harmony export */ });
 var addFile = function addFile(file) {
   var end = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -2405,6 +2530,14 @@ var addFiles = function addFiles(files) {
     type: 'files/addMultiple',
     files: files,
     end: end
+  };
+};
+var resetFiles = function resetFiles(query) {
+  var setting = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  return {
+    type: 'files/reset',
+    setting: setting,
+    query: query
   };
 };
 var deleteFile = function deleteFile(fileId) {
@@ -2424,6 +2557,12 @@ var toggleSelectFile = function toggleSelectFile(fileId) {
 var trashMode = function trashMode() {
   return {
     type: 'filter/toggleTrash'
+  };
+};
+var changeFilter = function changeFilter(payload) {
+  return {
+    type: 'filter/change',
+    payload: payload
   };
 };
 
@@ -2520,26 +2659,39 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
               case 0:
                 iniState = Object.assign({}, _this.state);
                 _context.t0 = action.type;
-                _context.next = _context.t0 === 'files/add' ? 4 : _context.t0 === 'files/addMultiple' ? 6 : _context.t0 === 'file/delete' ? 8 : _context.t0 === 'files/toggleSelect' ? 13 : _context.t0 === 'filter/toggleTrash' ? 15 : 16;
+                _context.next = _context.t0 === 'filter/change' ? 4 : _context.t0 === 'files/reset' ? 6 : _context.t0 === 'files/add' ? 10 : _context.t0 === 'files/addMultiple' ? 12 : _context.t0 === 'file/delete' ? 14 : _context.t0 === 'files/toggleSelect' ? 19 : _context.t0 === 'filter/toggleTrash' ? 21 : 22;
                 break;
 
               case 4:
-                iniState.files = action.end ? [].concat(_toConsumableArray(iniState.files), [action.file]) : [action.file].concat(_toConsumableArray(iniState.files));
-                return _context.abrupt("break", 17);
+                Object.assign(iniState.filters, action.payload);
+                return _context.abrupt("break", 23);
 
               case 6:
-                iniState.files = [].concat(_toConsumableArray(iniState.files), _toConsumableArray(action.files));
-                return _context.abrupt("break", 17);
+                iniState.files = [];
+                iniState.defaultQuery = action.query;
 
-              case 8:
+                _this.mediaRef.current.reset();
+
+                return _context.abrupt("break", 23);
+
+              case 10:
+                iniState.files = action.end ? [].concat(_toConsumableArray(iniState.files), [action.file]) : [action.file].concat(_toConsumableArray(iniState.files));
+                return _context.abrupt("break", 23);
+
+              case 12:
+                iniState.files = [].concat(_toConsumableArray(iniState.files), _toConsumableArray(action.files));
+                return _context.abrupt("break", 23);
+
+              case 14:
                 fileUrl = _this.props.fileUrl;
 
                 if (action.softDeleted) {
                   fileUrl += '?force_delete=true';
                 }
 
-                _context.next = 12;
+                _context.next = 18;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().delete(fileUrl.replace('fileId', action.fileId)).then(function (res) {
+                  // await
                   if (res.data.okay) {
                     iniState.files = iniState.files.filter(function (x) {
                       return x.id !== action.fileId;
@@ -2547,25 +2699,27 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                   }
                 });
 
-              case 12:
-                return _context.abrupt("break", 17);
+              case 18:
+                return _context.abrupt("break", 23);
 
-              case 13:
+              case 19:
                 iniState.selectedFiles = iniState.selectedFiles.includes(action.fileId) ? iniState.selectedFiles.filter(function (x) {
                   return x !== action.fileId;
                 }) : [].concat(_toConsumableArray(iniState.selectedFiles), [action.fileId]);
-                return _context.abrupt("break", 17);
+                return _context.abrupt("break", 23);
 
-              case 15:
+              case 21:
                 iniState.filters.trash = !iniState.filters.trash;
 
-              case 16:
-                return _context.abrupt("break", 17);
+              case 22:
+                return _context.abrupt("break", 23);
 
-              case 17:
+              case 23:
                 _this.setState(iniState);
 
-              case 18:
+                return _context.abrupt("return");
+
+              case 25:
               case "end":
                 return _context.stop();
             }
@@ -2585,8 +2739,8 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
       defaultQuery: _this.props.searchUrl + '?type=image&order_by=created_at&order=desc',
       filters: {
         trash: false,
-        orderBy: 'asc',
-        sortBy: 'name',
+        orderBy: 'desc',
+        sortBy: 'created_at',
         file_type: 'image',
         filterList: []
       }
@@ -42751,9 +42905,9 @@ var runtime = (function (exports) {
   // This is a polyfill for %IteratorPrototype% for environments that
   // don't natively support it.
   var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
+  define(IteratorPrototype, iteratorSymbol, function () {
     return this;
-  };
+  });
 
   var getProto = Object.getPrototypeOf;
   var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
@@ -42767,8 +42921,9 @@ var runtime = (function (exports) {
 
   var Gp = GeneratorFunctionPrototype.prototype =
     Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunction.prototype = GeneratorFunctionPrototype;
+  define(Gp, "constructor", GeneratorFunctionPrototype);
+  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
   GeneratorFunction.displayName = define(
     GeneratorFunctionPrototype,
     toStringTagSymbol,
@@ -42882,9 +43037,9 @@ var runtime = (function (exports) {
   }
 
   defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
     return this;
-  };
+  });
   exports.AsyncIterator = AsyncIterator;
 
   // Note that simple async functions are implemented on top of
@@ -43077,13 +43232,13 @@ var runtime = (function (exports) {
   // iterator prototype chain incorrectly implement this, causing the Generator
   // object to not be returned from this call. This ensures that doesn't happen.
   // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
+  define(Gp, iteratorSymbol, function() {
     return this;
-  };
+  });
 
-  Gp.toString = function() {
+  define(Gp, "toString", function() {
     return "[object Generator]";
-  };
+  });
 
   function pushTryEntry(locs) {
     var entry = { tryLoc: locs[0] };
@@ -43402,14 +43557,19 @@ try {
 } catch (accidentalStrictMode) {
   // This module should not be running in strict mode, so the above
   // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, we can escape
+  // in case runtime.js accidentally runs in strict mode, in modern engines
+  // we can explicitly access globalThis. In older engines we can escape
   // strict mode using a global Function call. This could conceivably fail
   // if a Content Security Policy forbids using Function, but in that case
   // the proper solution is to fix the accidental strict mode problem. If
   // you've misconfigured your bundler to force strict mode and applied a
   // CSP to forbid Function, and you're not willing to fix either of those
   // problems, please detail your unique predicament in a GitHub issue.
-  Function("r", "regeneratorRuntime = r")(runtime);
+  if (typeof globalThis === "object") {
+    globalThis.regeneratorRuntime = runtime;
+  } else {
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
 }
 
 
