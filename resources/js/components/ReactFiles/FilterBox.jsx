@@ -1,5 +1,5 @@
-import Axios from 'axios';
 import React, { Component } from 'react';
+import { formatOptionWithIcon, formatOptionWithText } from '../../select2'
 import {trashMode, resetFiles, changeFilter} from './actions'
 
 class FilterBox extends Component {
@@ -14,29 +14,26 @@ class FilterBox extends Component {
     prepareQuery = () => {
         let searchText = this.state.searchText.trim().replace(/\s{2,}/g, " ").replace(/\s/g, "+")
         let {searchUrl, filters} = this.props
-        let {file_type, orderBy, sortBy, trash} = filters
-        let query = `${searchUrl}?type=${file_type}&order_by=${sortBy}&order=${orderBy}`
+        let {fileType, orderBy, sortBy, trash, extention} = filters
+        let query = `${searchUrl}?type=${fileType}&order_by=${sortBy}&order=${orderBy}`
         query += searchText.length > 2 ? `&q=${searchText}` : ''
         query += trash ? '&trash=true' : ''
+        query += extention !== "all" ? `&ext=${extention}` : ''
         return query
     }
 
-    reset = () => {
-        this.props.dispatch(resetFiles(this.prepareQuery()))
-    }
+    resetFilesState = () => this.props.dispatch(resetFiles(this.prepareQuery()))
 
-    filter = (payload = null) => {
+    filter = (payload) => {
         this.props.dispatch(changeFilter(payload))
-        this.reset()
+        this.resetFilesState()
     }
 
     handleTrashToggle = () => {
-        let { dispatch } = this.props
         this.trashBtnRef.current.classList.toggle("btn-dark")
-        dispatch(trashMode())
-        this.reset()
+        this.props.dispatch(trashMode())
+        this.resetFilesState()
     }
-
 
     render() {
         let {searchText} = this.state
@@ -49,32 +46,29 @@ class FilterBox extends Component {
                             <i className="fas fa-trash-alt"></i>
                         </button>
                     </div>
-                    <input type="search" className="form-control" value={searchText} placeholder="3 characters or more (name or format)" 
+                    <input type="search" className="form-control" value={searchText}
+                    placeholder="3 characters or more (name or format)" 
                     onChange={(e) => this.setState({searchText: e.target.value})} 
-                    onKeyUp={(e) => {
-                        if (e.key == 'Enter') {
-                            this.filter()
-                        }
-                    }}
+                    onKeyUp={(e) => (e.key == 'Enter') ? this.filter() : null}
                     />
                     <div className="input-group-append">
-                        <button type="button" className="btn btn-primary" onClick={this.filter.bind(this)}>
+                        <button type="button" className="btn btn-primary" disabled={searchText.length < 3} onClick={this.reset}>
                             <i className="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
                 <div className="filter-box mt-2 pt-2 pb-2">
-                <div className="col-12 inline-flex">
+                    <div className="col-12 inline-flex">
                         <div>
                             <span>Sort By:</span>
                             <div className="form-check">
                                 <div>
-                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="name-radio" value="name" onChange={(e) => this.filter({sortBy: e.target.value})} />
+                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="name-radio" value="name" onChange={e => this.filter({sortBy: e.target.value})} />
                                     <label className="form-check-label pointer" htmlFor="name-radio">Name</label>
                                     <i className={`fas fa-sort-alpha-${filters.orderBy === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
                                 <div>
-                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="date-radio" value="created_at" onChange={(e) => this.filter({sortBy: e.target.value})} defaultChecked/>
+                                    <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="date-radio" value="created_at" onChange={e => this.filter({sortBy: e.target.value})} defaultChecked/>
                                     <label className="form-check-label pointer" htmlFor="date-radio">date</label>
                                     <i className={`fas fa-sort-numeric-${filters.orderBy === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
@@ -84,14 +78,33 @@ class FilterBox extends Component {
                             <span>Order: </span>
                             <div className="form-check">
                                 <div>
-                                    <input className="pointer form-check-input" type="radio" name="order-radios" id="asc-radio" value="asc" onChange={(e) => this.filter({orderBy: e.target.value})} />
+                                    <input className="pointer form-check-input" type="radio" name="order-radios" id="asc-radio" value="asc" onChange={e => this.filter({orderBy: e.target.value})} />
                                     <label className="form-check-label pointer" htmlFor="asc-radio">ascending</label>
                                 </div>
                                 <div>
-                                    <input className="pointer form-check-input" type="radio" name="order-radios" id="desc-radio" value="desc" onChange={(e) => this.filter({orderBy: e.target.value})} defaultChecked/>
+                                    <input className="pointer form-check-input" type="radio" name="order-radios" id="desc-radio" value="desc" onChange={e => this.filter({orderBy: e.target.value})} defaultChecked/>
                                     <label className="form-check-label pointer" htmlFor="desc-radio">descending</label>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div className="col-12 mt-2 inline-flex inline-flex-100">
+                        <div className="filter-option">
+                            <span className="mb-1 mb-md-0">File type: </span>
+                            <select id="file-type-select2" defaultValue="image" onChange={e => this.filter({fileType: e.target.value})}>
+                                <option value="image" icon_name="fas fa-image">image</option>
+                                <option value="video" icon_name="fas fa-video">video</option>
+                                <option value="audio" icon_name="fas fa-microphone">audio</option>
+                            </select>
+                        </div>
+                        <div className="filter-option format-select2">
+                            <span className="mb-1 mb-md-0">Format: </span>
+                            <select id="file-format-select2" defaultValue="all" onChange={e => this.filter({extention: e.target.value})}>
+                                <option value="all">all</option>
+                                {filters.filterList.fileTypes[filters.fileType].map((format, i) => (
+                                    <option value={format} key={i}>{format}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                 </div>

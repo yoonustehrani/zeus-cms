@@ -16,8 +16,15 @@ class ReactFiles extends Component {
                 trash: false,
                 orderBy: 'desc',
                 sortBy: 'created_at',
-                file_type: 'image',
-                filterList: []
+                fileType: 'image',
+                extention: "all",
+                filterList: {
+                    fileTypes: {
+                        image: ["jpeg", "jpg", "png", "svg", "gif"],
+                        video: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
+                        audio: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"]
+                    }
+                }
             }
         }
         this.mediaRef = React.createRef()

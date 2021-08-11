@@ -1856,9 +1856,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _select2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../select2 */ "./resources/js/select2.js");
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/components/ReactFiles/actions.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1909,39 +1908,37 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       var _this$props = _this.props,
           searchUrl = _this$props.searchUrl,
           filters = _this$props.filters;
-      var file_type = filters.file_type,
+      var fileType = filters.fileType,
           orderBy = filters.orderBy,
           sortBy = filters.sortBy,
-          trash = filters.trash;
-      var query = "".concat(searchUrl, "?type=").concat(file_type, "&order_by=").concat(sortBy, "&order=").concat(orderBy);
+          trash = filters.trash,
+          extention = filters.extention;
+      var query = "".concat(searchUrl, "?type=").concat(fileType, "&order_by=").concat(sortBy, "&order=").concat(orderBy);
       query += searchText.length > 2 ? "&q=".concat(searchText) : '';
       query += trash ? '&trash=true' : '';
+      query += extention !== "all" ? "&ext=".concat(extention) : '';
       return query;
     });
 
-    _defineProperty(_assertThisInitialized(_this), "reset", function () {
-      _this.props.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.resetFiles)(_this.prepareQuery()));
+    _defineProperty(_assertThisInitialized(_this), "resetFilesState", function () {
+      return _this.props.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.resetFiles)(_this.prepareQuery()));
     });
 
-    _defineProperty(_assertThisInitialized(_this), "filter", function () {
-      var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
+    _defineProperty(_assertThisInitialized(_this), "filter", function (payload) {
       _this.props.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.changeFilter)(payload));
 
-      _this.reset();
+      _this.resetFilesState();
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleTrashToggle", function () {
-      var dispatch = _this.props.dispatch;
-
       _this.trashBtnRef.current.classList.toggle("btn-dark");
 
-      dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.trashMode)());
+      _this.props.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.trashMode)());
 
-      _this.reset();
+      _this.resetFilesState();
     });
 
-    _this.trashBtnRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createRef();
+    _this.trashBtnRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
     _this.state = {
       searchText: ""
     };
@@ -1983,24 +1980,23 @@ var FilterBox = /*#__PURE__*/function (_Component) {
               });
             },
             onKeyUp: function onKeyUp(e) {
-              if (e.key == 'Enter') {
-                _this2.filter();
-              }
+              return e.key == 'Enter' ? _this2.filter() : null;
             }
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "input-group-append",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
               type: "button",
               className: "btn btn-primary",
-              onClick: this.filter.bind(this),
+              disabled: searchText.length < 3,
+              onClick: this.reset,
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
                 className: "fas fa-search"
               })
             })
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "filter-box mt-2 pt-2 pb-2",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "col-12 inline-flex",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
@@ -2091,14 +2087,67 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                 })]
               })]
             })]
-          })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: "col-12 mt-2 inline-flex inline-flex-100",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "filter-option",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                className: "mb-1 mb-md-0",
+                children: "File type: "
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+                id: "file-type-select2",
+                defaultValue: "image",
+                onChange: function onChange(e) {
+                  return _this2.filter({
+                    fileType: e.target.value
+                  });
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "image",
+                  icon_name: "fas fa-image",
+                  children: "image"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "video",
+                  icon_name: "fas fa-video",
+                  children: "video"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "audio",
+                  icon_name: "fas fa-microphone",
+                  children: "audio"
+                })]
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "filter-option format-select2",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                className: "mb-1 mb-md-0",
+                children: "Format: "
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+                id: "file-format-select2",
+                defaultValue: "all",
+                onChange: function onChange(e) {
+                  return _this2.filter({
+                    extention: e.target.value
+                  });
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "all",
+                  children: "all"
+                }), filters.filterList.fileTypes[filters.fileType].map(function (format, i) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                    value: format,
+                    children: format
+                  }, i);
+                })]
+              })]
+            })]
+          })]
         })]
       });
     }
   }]);
 
   return FilterBox;
-}(react__WEBPACK_IMPORTED_MODULE_1__.Component);
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FilterBox);
 
@@ -2741,8 +2790,15 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
         trash: false,
         orderBy: 'desc',
         sortBy: 'created_at',
-        file_type: 'image',
-        filterList: []
+        fileType: 'image',
+        extention: "all",
+        filterList: {
+          fileTypes: {
+            image: ["jpeg", "jpg", "png", "svg", "gif"],
+            video: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
+            audio: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"]
+          }
+        }
       }
     };
     _this.mediaRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createRef();
@@ -2824,6 +2880,32 @@ if (target) {
     restoreUrl: restoreUrl
   }), target);
 }
+
+/***/ }),
+
+/***/ "./resources/js/select2.js":
+/*!*********************************!*\
+  !*** ./resources/js/select2.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formatOptionWithIcon": () => (/* binding */ formatOptionWithIcon),
+/* harmony export */   "formatOptionWithText": () => (/* binding */ formatOptionWithText)
+/* harmony export */ });
+var formatOptionWithIcon = function formatOptionWithIcon(option) {
+  if (option.element) {
+    var icon_name = option.element.attributes.icon_name.nodeValue;
+    return $("<div class=\"select-option\"><i class=\"".concat(icon_name, "\"></i>").concat(option.text, "</div>"));
+  }
+};
+var formatOptionWithText = function formatOptionWithText(option) {
+  if (option.element) {
+    return $("<div class=\"select-option\">".concat(option.text, "</div>"));
+  }
+};
 
 /***/ }),
 
