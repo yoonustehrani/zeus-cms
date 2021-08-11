@@ -78,11 +78,10 @@ class ReactFiles extends Component {
         return (
             <div>
                 <div className="filterbox-uploader-container">
-                    <FilterBox filters={filters} searchUrl={searchUrl}  dispatch={this.dispatch}/>
+                    <FilterBox filters={filters} searchUrl={searchUrl} dispatch={this.dispatch}/>
                     <Uploader uploadUrl={uploadUrl} dispatch={this.dispatch}/>
                 </div>
-                <Gallery files={files} fileUrl={fileUrl} selectedFiles={selectedFiles}
-                query={defaultQuery} loading={loading} dispatch={this.dispatch} ref={this.mediaRef}/>
+                <Gallery files={files} fileUrl={fileUrl} selectedFiles={selectedFiles} query={defaultQuery} loading={loading} dispatch={this.dispatch} ref={this.mediaRef}/>
             </div>
         );
     }

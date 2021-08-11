@@ -7,6 +7,7 @@ class FilterBox extends Component {
         super(props)
         this.trashBtnRef = React.createRef()
         this.fileTypeRef = React.createRef()
+        this.extentionRef = React.createRef()
         this.state = {
             searchText: ""
         }
@@ -36,14 +37,17 @@ class FilterBox extends Component {
         this.resetFilesState()
     }
 
-    handleChange = () => {
-        console.log('hey select2 has changed');
-    }
+    handleChangeFileType = e => this.filter({fileType: e.target.value})
+    handleChangeExtention = e => this.filter({extention: e.target.value})
 
     componentDidMount = () => {
+        let options = {templateResult: formatOptionWithText, width: "100%"}
         let fileTypeSelect2 = $(this.fileTypeRef.current)
-        fileTypeSelect2.select2()
-        fileTypeSelect2.on("select2:select", this.handleChange)
+        let extentionSelect2 = $(this.extentionRef.current)
+        fileTypeSelect2.select2(options)
+        extentionSelect2.select2(options)
+        fileTypeSelect2.on("select2:select", this.handleChangeFileType)
+        extentionSelect2.on("select2:select", this.handleChangeFileType)
     }
 
     render() {
@@ -102,7 +106,7 @@ class FilterBox extends Component {
                     <div className="col-12 mt-2 inline-flex inline-flex-100">
                         <div className="filter-option">
                             <span className="mb-1 mb-md-0">File type: </span>
-                            <select id="file-type-select2" ref={this.fileTypeRef} defaultValue="image" onChange={e => this.filter({fileType: e.target.value})}>
+                            <select id="file-type-select2" ref={this.fileTypeRef} defaultValue="image">
                                 {Object.keys(filterList.fileTypes).map((type, i) => (
                                     <option value={type} key={i} icon_name={filterList.fileTypes[type].icon}>{type}</option>
                                 ))}
@@ -110,7 +114,7 @@ class FilterBox extends Component {
                         </div>
                         <div className="filter-option format-select2">
                             <span className="mb-1 mb-md-0">Format: </span>
-                            <select id="file-format-select2" defaultValue="all" onChange={e => this.filter({extention: e.target.value})}>
+                            <select id="file-format-select2" ref={this.extentionRef} defaultValue="all">
                                 <option value="all">all</option>
                                 {filterList.fileTypes[fileType].extentions.map((format, i) => (
                                     <option value={format} key={i}>{format}</option>
