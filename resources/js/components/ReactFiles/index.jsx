@@ -20,9 +20,9 @@ class ReactFiles extends Component {
                 extention: "all",
                 filterList: {
                     fileTypes: {
-                        image: ["jpeg", "jpg", "png", "svg", "gif"],
-                        video: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
-                        audio: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"]
+                        image: {extentions: ["jpeg", "jpg", "png", "svg", "gif"], icon: "fas fa-image"},
+                        video: {extentions:["mp4", "mov", "wmv", "flv", "avi", "mkv"], icon: "fas fa-video"},
+                        audio: {extentions:["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"], icon: "fas fa-microphone"}
                     }
                 }
             }

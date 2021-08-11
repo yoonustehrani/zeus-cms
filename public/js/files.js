@@ -1951,9 +1951,10 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var searchText = this.state.searchText;
-      var _this$props2 = this.props,
-          filters = _this$props2.filters,
-          dispatch = _this$props2.dispatch;
+      var _this$props$filters = this.props.filters,
+          orderBy = _this$props$filters.orderBy,
+          fileType = _this$props$filters.fileType,
+          filterList = _this$props$filters.filterList;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "col-lg-4 float-left remove-sm-padding",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -2020,7 +2021,7 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                     htmlFor: "name-radio",
                     children: "Name"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-                    className: "fas fa-sort-alpha-".concat(filters.orderBy === "asc" ? "down tada" : "up wobble", " ml-2 animated")
+                    className: "fas fa-sort-alpha-".concat(orderBy === "asc" ? "down tada" : "up wobble", " ml-2 animated")
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
@@ -2040,7 +2041,7 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                     htmlFor: "date-radio",
                     children: "date"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-                    className: "fas fa-sort-numeric-".concat(filters.orderBy === "asc" ? "down tada" : "up wobble", " ml-2 animated")
+                    className: "fas fa-sort-numeric-".concat(orderBy === "asc" ? "down tada" : "up wobble", " ml-2 animated")
                   })]
                 })]
               })]
@@ -2094,7 +2095,7 @@ var FilterBox = /*#__PURE__*/function (_Component) {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                 className: "mb-1 mb-md-0",
                 children: "File type: "
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("select", {
                 id: "file-type-select2",
                 defaultValue: "image",
                 onChange: function onChange(e) {
@@ -2102,19 +2103,13 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                     fileType: e.target.value
                   });
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-                  value: "image",
-                  icon_name: "fas fa-image",
-                  children: "image"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-                  value: "video",
-                  icon_name: "fas fa-video",
-                  children: "video"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-                  value: "audio",
-                  icon_name: "fas fa-microphone",
-                  children: "audio"
-                })]
+                children: Object.keys(filterList.fileTypes).map(function (type, i) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                    value: type,
+                    icon_name: filterList.fileTypes[type].icon,
+                    children: type
+                  }, i);
+                })
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "filter-option format-select2",
@@ -2132,7 +2127,7 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                   value: "all",
                   children: "all"
-                }), filters.filterList.fileTypes[filters.fileType].map(function (format, i) {
+                }), filterList.fileTypes[fileType].extentions.map(function (format, i) {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                     value: format,
                     children: format
@@ -2794,9 +2789,18 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
         extention: "all",
         filterList: {
           fileTypes: {
-            image: ["jpeg", "jpg", "png", "svg", "gif"],
-            video: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
-            audio: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"]
+            image: {
+              extentions: ["jpeg", "jpg", "png", "svg", "gif"],
+              icon: "fas fa-image"
+            },
+            video: {
+              extentions: ["mp4", "mov", "wmv", "flv", "avi", "mkv"],
+              icon: "fas fa-video"
+            },
+            audio: {
+              extentions: ["mp3", "pcm", "wav", "aiff", "aac", "ogg", "wma", "falc"],
+              icon: "fas fa-microphone"
+            }
           }
         }
       }

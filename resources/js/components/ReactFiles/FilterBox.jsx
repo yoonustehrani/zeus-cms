@@ -10,7 +10,7 @@ class FilterBox extends Component {
             searchText: ""
         }
     }
-
+    
     prepareQuery = () => {
         let searchText = this.state.searchText.trim().replace(/\s{2,}/g, " ").replace(/\s/g, "+")
         let {searchUrl, filters} = this.props
@@ -37,7 +37,7 @@ class FilterBox extends Component {
 
     render() {
         let {searchText} = this.state
-        let {filters, dispatch} = this.props
+        let {orderBy, fileType, filterList} = this.props.filters
         return (
             <div className="col-lg-4 float-left remove-sm-padding">
                 <div className="input-group mt-2 mt-lg-0">
@@ -65,12 +65,12 @@ class FilterBox extends Component {
                                 <div>
                                     <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="name-radio" value="name" onChange={e => this.filter({sortBy: e.target.value})} />
                                     <label className="form-check-label pointer" htmlFor="name-radio">Name</label>
-                                    <i className={`fas fa-sort-alpha-${filters.orderBy === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
+                                    <i className={`fas fa-sort-alpha-${orderBy === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
                                 <div>
                                     <input className="pointer form-check-input" type="radio" name="sort-by-radios" id="date-radio" value="created_at" onChange={e => this.filter({sortBy: e.target.value})} defaultChecked/>
                                     <label className="form-check-label pointer" htmlFor="date-radio">date</label>
-                                    <i className={`fas fa-sort-numeric-${filters.orderBy === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
+                                    <i className={`fas fa-sort-numeric-${orderBy === "asc" ? "down tada" : "up wobble"} ml-2 animated`}></i>
                                 </div>
                             </div>
                         </div>
@@ -92,16 +92,16 @@ class FilterBox extends Component {
                         <div className="filter-option">
                             <span className="mb-1 mb-md-0">File type: </span>
                             <select id="file-type-select2" defaultValue="image" onChange={e => this.filter({fileType: e.target.value})}>
-                                <option value="image" icon_name="fas fa-image">image</option>
-                                <option value="video" icon_name="fas fa-video">video</option>
-                                <option value="audio" icon_name="fas fa-microphone">audio</option>
+                                {Object.keys(filterList.fileTypes).map((type, i) => (
+                                    <option value={type} key={i} icon_name={filterList.fileTypes[type].icon}>{type}</option>
+                                ))}
                             </select>
                         </div>
                         <div className="filter-option format-select2">
                             <span className="mb-1 mb-md-0">Format: </span>
                             <select id="file-format-select2" defaultValue="all" onChange={e => this.filter({extention: e.target.value})}>
                                 <option value="all">all</option>
-                                {filters.filterList.fileTypes[filters.fileType].map((format, i) => (
+                                {filterList.fileTypes[fileType].extentions.map((format, i) => (
                                     <option value={format} key={i}>{format}</option>
                                 ))}
                             </select>
