@@ -6,6 +6,7 @@ class FilterBox extends Component {
     constructor(props) {
         super(props)
         this.trashBtnRef = React.createRef()
+        this.fileTypeRef = React.createRef()
         this.state = {
             searchText: ""
         }
@@ -33,6 +34,16 @@ class FilterBox extends Component {
         this.trashBtnRef.current.classList.toggle("btn-dark")
         this.props.dispatch(trashMode())
         this.resetFilesState()
+    }
+
+    handleChange = () => {
+        console.log('hey select2 has changed');
+    }
+
+    componentDidMount = () => {
+        let fileTypeSelect2 = $(this.fileTypeRef.current)
+        fileTypeSelect2.select2()
+        fileTypeSelect2.on("select2:select", this.handleChange)
     }
 
     render() {
@@ -91,7 +102,7 @@ class FilterBox extends Component {
                     <div className="col-12 mt-2 inline-flex inline-flex-100">
                         <div className="filter-option">
                             <span className="mb-1 mb-md-0">File type: </span>
-                            <select id="file-type-select2" defaultValue="image" onChange={e => this.filter({fileType: e.target.value})}>
+                            <select id="file-type-select2" ref={this.fileTypeRef} defaultValue="image" onChange={e => this.filter({fileType: e.target.value})}>
                                 {Object.keys(filterList.fileTypes).map((type, i) => (
                                     <option value={type} key={i} icon_name={filterList.fileTypes[type].icon}>{type}</option>
                                 ))}
