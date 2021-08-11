@@ -1960,7 +1960,7 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       fileTypeSelect2.select2(options);
       extentionSelect2.select2(options);
       fileTypeSelect2.on("select2:select", _this.handleChangeFileType);
-      extentionSelect2.on("select2:select", _this.handleChangeFileType);
+      extentionSelect2.on("select2:select", _this.handleChangeExtention);
     });
 
     _this.trashBtnRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
@@ -2126,6 +2126,11 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                 id: "file-type-select2",
                 ref: this.fileTypeRef,
                 defaultValue: "image",
+                onChange: function onChange(e) {
+                  return _this2.filter({
+                    fileType: e.target.value
+                  });
+                },
                 children: Object.keys(filterList.fileTypes).map(function (type, i) {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                     value: type,
@@ -2143,6 +2148,11 @@ var FilterBox = /*#__PURE__*/function (_Component) {
                 id: "file-format-select2",
                 ref: this.extentionRef,
                 defaultValue: "all",
+                onChange: function onChange(e) {
+                  return _this2.filter({
+                    extention: e.target.value
+                  });
+                },
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                   value: "all",
                   children: "all"
