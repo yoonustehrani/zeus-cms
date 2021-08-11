@@ -37,17 +37,17 @@ class FilterBox extends Component {
         this.resetFilesState()
     }
 
-    handleChangeFileType = e => this.filter({fileType: e.target.value})
+    handleChangeFileType = (e) => this.filter({fileType: e.target.value})
     handleChangeExtention = e => this.filter({extention: e.target.value})
 
     componentDidMount = () => {
         let options = {templateResult: formatOptionWithText, width: "100%"}
-        let fileTypeSelect2 = $(this.fileTypeRef.current)
-        let extentionSelect2 = $(this.extentionRef.current)
-        fileTypeSelect2.select2(options)
-        extentionSelect2.select2(options)
-        fileTypeSelect2.on("select2:select", this.handleChangeFileType)
-        extentionSelect2.on("select2:select", this.handleChangeExtention)
+        // let fileTypeSelect2 = $(this.fileTypeRef.current)
+        // let extentionSelect2 = $(this.extentionRef.current)
+        // fileTypeSelect2.select2(options)
+        // extentionSelect2.select2(options)
+        // fileTypeSelect2.on("select2:select", this.handleChangeFileType)
+        // extentionSelect2.on("select2:select", this.handleChangeExtention)
     }
 
     render() {

@@ -1954,13 +1954,12 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       var options = {
         templateResult: _select2__WEBPACK_IMPORTED_MODULE_1__.formatOptionWithText,
         width: "100%"
-      };
-      var fileTypeSelect2 = $(_this.fileTypeRef.current);
-      var extentionSelect2 = $(_this.extentionRef.current);
-      fileTypeSelect2.select2(options);
-      extentionSelect2.select2(options);
-      fileTypeSelect2.on("select2:select", _this.handleChangeFileType);
-      extentionSelect2.on("select2:select", _this.handleChangeExtention);
+      }; // let fileTypeSelect2 = $(this.fileTypeRef.current)
+      // let extentionSelect2 = $(this.extentionRef.current)
+      // fileTypeSelect2.select2(options)
+      // extentionSelect2.select2(options)
+      // fileTypeSelect2.on("select2:select", this.handleChangeFileType)
+      // extentionSelect2.on("select2:select", this.handleChangeExtention)
     });
 
     _this.trashBtnRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
