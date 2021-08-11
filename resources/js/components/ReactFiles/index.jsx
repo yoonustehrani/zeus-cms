@@ -32,12 +32,14 @@ class ReactFiles extends Component {
 
     dispatch = async (action) => {
         var iniState = Object.assign({}, this.state);
+        let {fileUrl} = this.props;
         switch (action.type) {
             case 'filter/change':
                 Object.assign(iniState.filters, action.payload)
                 break
             case 'files/reset':
                 iniState.files = []
+                iniState.selectedFiles = []
                 iniState.defaultQuery = action.query
                 this.mediaRef.current.reset()
                 break
@@ -48,7 +50,6 @@ class ReactFiles extends Component {
                 iniState.files = [...iniState.files, ...action.files]
                 break
             case 'file/delete':
-                let {fileUrl} = this.props;
                 if (action.softDeleted) {
                     fileUrl += '?force_delete=true'
                 }
@@ -56,6 +57,15 @@ class ReactFiles extends Component {
                     if (res.data.okay) {
                         iniState.files = iniState.files.filter(x => x.id !== action.fileId)
                     }
+                })
+                break
+            case 'file/bulkDelete':
+                let id_request = iniState.selectedFiles.join(',');
+                let path = fileUrl.replace('fileId', id_request);
+                path += + iniState.filters.trash ? '?force_delete=true' : ''
+                await Axios.delete(path).then(res => {
+                    iniState.files = iniState.files.filter(x => ! id_request.includes(x.id))
+                    iniState.selectedFiles = []
                 })
                 break
             case 'files/toggleSelect':
@@ -78,7 +88,7 @@ class ReactFiles extends Component {
         return (
             <div>
                 <div className="filterbox-uploader-container">
-                    <FilterBox filters={filters} searchUrl={searchUrl} dispatch={this.dispatch}/>
+                    <FilterBox filters={filters} selectedFiles={selectedFiles} searchUrl={searchUrl} dispatch={this.dispatch}/>
                     <Uploader uploadUrl={uploadUrl} dispatch={this.dispatch}/>
                 </div>
                 <Gallery files={files} fileUrl={fileUrl} selectedFiles={selectedFiles} query={defaultQuery} loading={loading} dispatch={this.dispatch} ref={this.mediaRef}/>

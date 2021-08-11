@@ -27,7 +27,7 @@ class FileManagerController extends Controller
             ],
             'order_by' => [
                 'nullable',
-                Rule::in(['name', 'ext', 'type', 'created_at'])
+                Rule::in(['name', 'ext', 'type', 'created_at', 'deleted_at'])
             ],
             'type' => 'nullable|string'
         ]);
@@ -71,7 +71,7 @@ class FileManagerController extends Controller
     public function store(Request $request, $type)
     {
         $types = ['image', 'video', 'audio'];
-        $type_extentions = ['image' => 'jpeg,jpg,png,svg,gif'];
+        $type_extentions = ['image' => 'jpeg,jpg,png,svg,gif', 'video' => 'gif'];
         if (! in_array($type, ['image'])) {
             abort(404);
         }
