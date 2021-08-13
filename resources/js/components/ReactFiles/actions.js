@@ -3,6 +3,8 @@ export const addFiles = (files, end = true) => ({type: 'files/addMultiple', file
 export const resetFiles = (query, setting = null) => ({type: 'files/reset', setting: setting, query: query})
 export const deleteFile = (fileId, softDeleted = false) => ({type: 'file/delete', fileId: fileId, softDeleted: softDeleted}) 
 export const deleteFileBulk = () => ({type: 'file/bulkDelete'})
+export const restoreFile = (fileId) => ({type: 'file/restore', fileId: fileId})
+export const restoreFileBulk = () => ({type: 'file/bulkRestore'})
 export const toggleSelectFile = (fileId) => ({type: 'files/toggleSelect', fileId: fileId})
 export const trashMode = () => ({type: 'filter/toggleTrash'})
 export const changeFilter = (payload) => ({type: 'filter/change', payload: payload})

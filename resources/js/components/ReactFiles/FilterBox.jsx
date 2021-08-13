@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { formatOptionWithIcon, formatOptionWithText } from '../../select2'
-import {trashMode, resetFiles, changeFilter, deleteFileBulk} from './actions'
+import {trashMode, resetFiles, changeFilter, deleteFileBulk, restoreFileBulk} from './actions'
 
 class FilterBox extends Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class FilterBox extends Component {
                 {
                     title: 'Restore',
                     icon: 'fas fa-reset',
-                    action: null,
+                    action: restoreFileBulk,
                     enabled: this.restoreCondition
                 }
             ]

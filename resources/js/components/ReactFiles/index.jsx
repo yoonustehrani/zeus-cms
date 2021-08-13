@@ -32,7 +32,7 @@ class ReactFiles extends Component {
 
     dispatch = async (action) => {
         var iniState = Object.assign({}, this.state);
-        let {fileUrl} = this.props;
+        let {fileUrl, restoreUrl} = this.props;
         switch (action.type) {
             case 'filter/change':
                 Object.assign(iniState.filters, action.payload)
@@ -59,10 +59,27 @@ class ReactFiles extends Component {
                     }
                 })
                 break
+            case 'file/restore':
+                await Axios.patch(restoreUrl.replace('fileId', action.fileId)).then(res => {
+                    if (res.data.okay && iniState.filters.trash) {
+                        iniState.files = iniState.files.filter(x => x.id !== action.fileId)
+                    }
+                })
+                break
+            case 'file/bulkRestore':
+                let id_requested = iniState.selectedFiles.join(',');
+                let restorePath = restoreUrl.replace('fileId', id_requested);
+                if (iniState.filters.trash) {
+                    await Axios.patch(restorePath).then(res => {
+                        iniState.files = iniState.files.filter(x => ! id_requested.includes(x.id))
+                        iniState.selectedFiles = []
+                    })
+                }
+                break
             case 'file/bulkDelete':
                 let id_request = iniState.selectedFiles.join(',');
                 let path = fileUrl.replace('fileId', id_request);
-                path += + iniState.filters.trash ? '?force_delete=true' : ''
+                path += iniState.filters.trash ? '?force_delete=true' : ''
                 await Axios.delete(path).then(res => {
                     iniState.files = iniState.files.filter(x => ! id_request.includes(x.id))
                     iniState.selectedFiles = []

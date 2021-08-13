@@ -147,8 +147,16 @@ class FileManagerController extends Controller
 
     public function restore(Request $request, $file)
     {
-        $file = ZeusFile::onlyTrashed()->findOrFail($file);
-        return ['okay' => $file->restore()];
+        $needle = strpos($file, ',') ? explode(',', $file) : $file;
+
+        if (is_array($needle)) {
+            $needle = collect($needle)->filter(function($id) {
+                return is_numeric($id);
+            });
+        }
+        $restored = is_array($needle) ? ZeusFile::onlyTrashed()->whereIn('id',$needle)->restore() : ZeusFile::onlyTrashed()->whereId($needle)->restore();
+
+        return ['okay' => $restored > 0];
     }
     /**
      * Remove the specified resource from storage.

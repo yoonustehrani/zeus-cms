@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {toggleSelectFile, deleteFile} from './actions'
+import {toggleSelectFile, deleteFile, restoreFile} from './actions'
 class GalleryItem extends Component {
     toggleCheck = (e) => {
         let {id, dispatch} = this.props;
@@ -8,8 +8,6 @@ class GalleryItem extends Component {
     }
     render() {
         let { id, path, thumbnail_path, name, ext, deleted_at, selected, dispatch } = this.props 
-        // deleteFile deleteFile(id, Boolean(deleted_at))
-        // restoreFile restoreFile(id)
         return (
             <div className="media-item mt-4 col-4 col-md-3 col-lg-2 p-1">
                 <div className="img-container col-12 p-0">
@@ -21,11 +19,11 @@ class GalleryItem extends Component {
                                 <i className="fas fa-eye"></i>
                             </a>
                             <button className="btn btn-sm btn-outline-info m-1"><i className="fas fa-info"></i></button>
-                            <button className="btn btn-sm btn-outline-danger m-1" onClick={() => dispatch(deleteFile(id, Boolean(deleted_at)))}>
-                                <i className="fas fa-trash"></i>
+                            <button title={`delete ${deleted_at ? 'forever': ''}`} className="btn btn-sm btn-outline-danger m-1" onClick={() => dispatch(deleteFile(id, Boolean(deleted_at)))}>
+                                <i className={`fas ${deleted_at ? 'fa-fire' : 'fa-trash'}`}></i>
                             </button>
                             {deleted_at &&
-                                <button className="btn btn-sm btn-outline-primary m-1" onClick={() => {}}><i className="fas fa-reset"></i></button>
+                                <button title="restore" className="btn btn-sm btn-outline-primary m-1" onClick={() => dispatch(restoreFile(id))}><i className="fas fa-undo"></i></button>
                             }
                         </p>
                         <br />

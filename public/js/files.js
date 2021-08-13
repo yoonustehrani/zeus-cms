@@ -1964,7 +1964,7 @@ var FilterBox = /*#__PURE__*/function (_Component) {
       }, {
         title: 'Restore',
         icon: 'fas fa-reset',
-        action: null,
+        action: _actions__WEBPACK_IMPORTED_MODULE_2__.restoreFileBulk,
         enabled: _this.restoreCondition
       }]
     };
@@ -2476,9 +2476,7 @@ var GalleryItem = /*#__PURE__*/function (_Component) {
           ext = _this$props2.ext,
           deleted_at = _this$props2.deleted_at,
           selected = _this$props2.selected,
-          dispatch = _this$props2.dispatch; // deleteFile deleteFile(id, Boolean(deleted_at))
-      // restoreFile restoreFile(id)
-
+          dispatch = _this$props2.dispatch;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: "media-item mt-4 col-4 col-md-3 col-lg-2 p-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
@@ -2507,18 +2505,22 @@ var GalleryItem = /*#__PURE__*/function (_Component) {
                   className: "fas fa-info"
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                title: "delete ".concat(deleted_at ? 'forever' : ''),
                 className: "btn btn-sm btn-outline-danger m-1",
                 onClick: function onClick() {
                   return dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_1__.deleteFile)(id, Boolean(deleted_at)));
                 },
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
-                  className: "fas fa-trash"
+                  className: "fas ".concat(deleted_at ? 'fa-fire' : 'fa-trash')
                 })
               }), deleted_at && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                title: "restore",
                 className: "btn btn-sm btn-outline-primary m-1",
-                onClick: function onClick() {},
+                onClick: function onClick() {
+                  return dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_1__.restoreFile)(id));
+                },
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
-                  className: "fas fa-reset"
+                  className: "fas fa-undo"
                 })
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
@@ -2649,6 +2651,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "resetFiles": () => (/* binding */ resetFiles),
 /* harmony export */   "deleteFile": () => (/* binding */ deleteFile),
 /* harmony export */   "deleteFileBulk": () => (/* binding */ deleteFileBulk),
+/* harmony export */   "restoreFile": () => (/* binding */ restoreFile),
+/* harmony export */   "restoreFileBulk": () => (/* binding */ restoreFileBulk),
 /* harmony export */   "toggleSelectFile": () => (/* binding */ toggleSelectFile),
 /* harmony export */   "trashMode": () => (/* binding */ trashMode),
 /* harmony export */   "changeFilter": () => (/* binding */ changeFilter)
@@ -2688,6 +2692,17 @@ var deleteFile = function deleteFile(fileId) {
 var deleteFileBulk = function deleteFileBulk() {
   return {
     type: 'file/bulkDelete'
+  };
+};
+var restoreFile = function restoreFile(fileId) {
+  return {
+    type: 'file/restore',
+    fileId: fileId
+  };
+};
+var restoreFileBulk = function restoreFileBulk() {
+  return {
+    type: 'file/bulkRestore'
   };
 };
 var toggleSelectFile = function toggleSelectFile(fileId) {
@@ -2794,20 +2809,21 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "dispatch", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(action) {
-        var iniState, fileUrl, id_request, path;
+        var iniState, _this$props, fileUrl, restoreUrl, id_requested, restorePath, id_request, path;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 iniState = Object.assign({}, _this.state);
-                fileUrl = _this.props.fileUrl;
+                _this$props = _this.props, fileUrl = _this$props.fileUrl, restoreUrl = _this$props.restoreUrl;
                 _context.t0 = action.type;
-                _context.next = _context.t0 === 'filter/change' ? 5 : _context.t0 === 'files/reset' ? 7 : _context.t0 === 'files/add' ? 12 : _context.t0 === 'files/addMultiple' ? 14 : _context.t0 === 'file/delete' ? 16 : _context.t0 === 'file/bulkDelete' ? 20 : _context.t0 === 'files/toggleSelect' ? 26 : _context.t0 === 'filter/toggleTrash' ? 28 : 29;
+                _context.next = _context.t0 === 'filter/change' ? 5 : _context.t0 === 'files/reset' ? 7 : _context.t0 === 'files/add' ? 12 : _context.t0 === 'files/addMultiple' ? 14 : _context.t0 === 'file/delete' ? 16 : _context.t0 === 'file/restore' ? 20 : _context.t0 === 'file/bulkRestore' ? 23 : _context.t0 === 'file/bulkDelete' ? 29 : _context.t0 === 'files/toggleSelect' ? 35 : _context.t0 === 'filter/toggleTrash' ? 37 : 38;
                 break;
 
               case 5:
                 Object.assign(iniState.filters, action.payload);
-                return _context.abrupt("break", 30);
+                return _context.abrupt("break", 39);
 
               case 7:
                 iniState.files = [];
@@ -2816,15 +2832,15 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
 
                 _this.mediaRef.current.reset();
 
-                return _context.abrupt("break", 30);
+                return _context.abrupt("break", 39);
 
               case 12:
                 iniState.files = action.end ? [].concat(_toConsumableArray(iniState.files), [action.file]) : [action.file].concat(_toConsumableArray(iniState.files));
-                return _context.abrupt("break", 30);
+                return _context.abrupt("break", 39);
 
               case 14:
                 iniState.files = [].concat(_toConsumableArray(iniState.files), _toConsumableArray(action.files));
-                return _context.abrupt("break", 30);
+                return _context.abrupt("break", 39);
 
               case 16:
                 if (action.softDeleted) {
@@ -2842,13 +2858,46 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 });
 
               case 19:
-                return _context.abrupt("break", 30);
+                return _context.abrupt("break", 39);
 
               case 20:
+                _context.next = 22;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().patch(restoreUrl.replace('fileId', action.fileId)).then(function (res) {
+                  if (res.data.okay && iniState.filters.trash) {
+                    iniState.files = iniState.files.filter(function (x) {
+                      return x.id !== action.fileId;
+                    });
+                  }
+                });
+
+              case 22:
+                return _context.abrupt("break", 39);
+
+              case 23:
+                id_requested = iniState.selectedFiles.join(',');
+                restorePath = restoreUrl.replace('fileId', id_requested);
+
+                if (!iniState.filters.trash) {
+                  _context.next = 28;
+                  break;
+                }
+
+                _context.next = 28;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().patch(restorePath).then(function (res) {
+                  iniState.files = iniState.files.filter(function (x) {
+                    return !id_requested.includes(x.id);
+                  });
+                  iniState.selectedFiles = [];
+                });
+
+              case 28:
+                return _context.abrupt("break", 39);
+
+              case 29:
                 id_request = iniState.selectedFiles.join(',');
                 path = fileUrl.replace('fileId', id_request);
-                path += +iniState.filters.trash ? '?force_delete=true' : '';
-                _context.next = 25;
+                path += iniState.filters.trash ? '?force_delete=true' : '';
+                _context.next = 34;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().delete(path).then(function (res) {
                   iniState.files = iniState.files.filter(function (x) {
                     return !id_request.includes(x.id);
@@ -2856,27 +2905,27 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                   iniState.selectedFiles = [];
                 });
 
-              case 25:
-                return _context.abrupt("break", 30);
+              case 34:
+                return _context.abrupt("break", 39);
 
-              case 26:
+              case 35:
                 iniState.selectedFiles = iniState.selectedFiles.includes(action.fileId) ? iniState.selectedFiles.filter(function (x) {
                   return x !== action.fileId;
                 }) : [].concat(_toConsumableArray(iniState.selectedFiles), [action.fileId]);
-                return _context.abrupt("break", 30);
+                return _context.abrupt("break", 39);
 
-              case 28:
+              case 37:
                 iniState.filters.trash = !iniState.filters.trash;
 
-              case 29:
-                return _context.abrupt("break", 30);
+              case 38:
+                return _context.abrupt("break", 39);
 
-              case 30:
+              case 39:
                 _this.setState(iniState);
 
                 return _context.abrupt("return");
 
-              case 32:
+              case 41:
               case "end":
                 return _context.stop();
             }
@@ -2925,11 +2974,11 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
   _createClass(ReactFiles, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          uploadUrl = _this$props.uploadUrl,
-          searchUrl = _this$props.searchUrl,
-          fileUrl = _this$props.fileUrl,
-          restoreUrl = _this$props.restoreUrl;
+      var _this$props2 = this.props,
+          uploadUrl = _this$props2.uploadUrl,
+          searchUrl = _this$props2.searchUrl,
+          fileUrl = _this$props2.fileUrl,
+          restoreUrl = _this$props2.restoreUrl;
       var _this$state = this.state,
           files = _this$state.files,
           selectedFiles = _this$state.selectedFiles,
