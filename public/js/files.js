@@ -2655,6 +2655,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "restoreFileBulk": () => (/* binding */ restoreFileBulk),
 /* harmony export */   "toggleSelectFile": () => (/* binding */ toggleSelectFile),
 /* harmony export */   "trashMode": () => (/* binding */ trashMode),
+/* harmony export */   "selectAll": () => (/* binding */ selectAll),
 /* harmony export */   "changeFilter": () => (/* binding */ changeFilter)
 /* harmony export */ });
 var addFile = function addFile(file) {
@@ -2716,6 +2717,11 @@ var trashMode = function trashMode() {
     type: 'filter/toggleTrash'
   };
 };
+var selectAll = function selectAll() {
+  return {
+    type: 'filter/toggleSelectAll'
+  };
+};
 var changeFilter = function changeFilter(payload) {
   return {
     type: 'filter/change',
@@ -2744,7 +2750,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Uploader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Uploader */ "./resources/js/components/ReactFiles/Uploader.jsx");
 /* harmony import */ var _Gallery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Gallery */ "./resources/js/components/ReactFiles/Gallery.jsx");
 /* harmony import */ var _FilterBox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./FilterBox */ "./resources/js/components/ReactFiles/FilterBox.jsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./actions */ "./resources/js/components/ReactFiles/actions.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -2795,6 +2802,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var ReactFiles = /*#__PURE__*/function (_Component) {
   _inherits(ReactFiles, _Component);
 
@@ -2818,12 +2826,12 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 iniState = Object.assign({}, _this.state);
                 _this$props = _this.props, fileUrl = _this$props.fileUrl, restoreUrl = _this$props.restoreUrl;
                 _context.t0 = action.type;
-                _context.next = _context.t0 === 'filter/change' ? 5 : _context.t0 === 'files/reset' ? 7 : _context.t0 === 'files/add' ? 12 : _context.t0 === 'files/addMultiple' ? 14 : _context.t0 === 'file/delete' ? 16 : _context.t0 === 'file/restore' ? 20 : _context.t0 === 'file/bulkRestore' ? 23 : _context.t0 === 'file/bulkDelete' ? 29 : _context.t0 === 'files/toggleSelect' ? 35 : _context.t0 === 'filter/toggleTrash' ? 37 : 38;
+                _context.next = _context.t0 === 'filter/change' ? 5 : _context.t0 === 'files/reset' ? 7 : _context.t0 === 'files/add' ? 12 : _context.t0 === 'files/addMultiple' ? 14 : _context.t0 === 'file/delete' ? 16 : _context.t0 === 'file/restore' ? 20 : _context.t0 === 'file/bulkRestore' ? 23 : _context.t0 === 'file/bulkDelete' ? 29 : _context.t0 === 'files/toggleSelect' ? 35 : _context.t0 === 'filter/toggleTrash' ? 37 : _context.t0 === 'filter/toggleSelectAll' ? 39 : 42;
                 break;
 
               case 5:
                 Object.assign(iniState.filters, action.payload);
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 7:
                 iniState.files = [];
@@ -2832,15 +2840,15 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
 
                 _this.mediaRef.current.reset();
 
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 12:
                 iniState.files = action.end ? [].concat(_toConsumableArray(iniState.files), [action.file]) : [action.file].concat(_toConsumableArray(iniState.files));
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 14:
                 iniState.files = [].concat(_toConsumableArray(iniState.files), _toConsumableArray(action.files));
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 16:
                 if (action.softDeleted) {
@@ -2858,7 +2866,7 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 });
 
               case 19:
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 20:
                 _context.next = 22;
@@ -2871,7 +2879,7 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 });
 
               case 22:
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 23:
                 id_requested = iniState.selectedFiles.join(',');
@@ -2891,7 +2899,7 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 });
 
               case 28:
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 29:
                 id_request = iniState.selectedFiles.join(',');
@@ -2906,26 +2914,34 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 });
 
               case 34:
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 35:
                 iniState.selectedFiles = iniState.selectedFiles.includes(action.fileId) ? iniState.selectedFiles.filter(function (x) {
                   return x !== action.fileId;
                 }) : [].concat(_toConsumableArray(iniState.selectedFiles), [action.fileId]);
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 37:
                 iniState.filters.trash = !iniState.filters.trash;
-
-              case 38:
-                return _context.abrupt("break", 39);
+                return _context.abrupt("break", 43);
 
               case 39:
+                iniState.filters.selectAll = !iniState.filters.selectAll;
+                iniState.selectedFiles = iniState.filters.selectAll ? iniState.files.map(function (file) {
+                  return file.id;
+                }) : [];
+                return _context.abrupt("break", 43);
+
+              case 42:
+                return _context.abrupt("break", 43);
+
+              case 43:
                 _this.setState(iniState);
 
                 return _context.abrupt("return");
 
-              case 41:
+              case 45:
               case "end":
                 return _context.stop();
             }
@@ -2949,6 +2965,7 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
         sortBy: 'created_at',
         fileType: 'image',
         extention: "all",
+        selectAll: false,
         filterList: {
           fileTypes: {
             image: {
@@ -2974,6 +2991,8 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
   _createClass(ReactFiles, [{
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var _this$props2 = this.props,
           uploadUrl = _this$props2.uploadUrl,
           searchUrl = _this$props2.searchUrl,
@@ -2985,19 +3004,28 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
           loading = _this$state.loading,
           defaultQuery = _this$state.defaultQuery,
           filters = _this$state.filters;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "filterbox-uploader-container",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_FilterBox__WEBPACK_IMPORTED_MODULE_5__.default, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_FilterBox__WEBPACK_IMPORTED_MODULE_5__.default, {
             filters: filters,
             selectedFiles: selectedFiles,
             searchUrl: searchUrl,
             dispatch: this.dispatch
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Uploader__WEBPACK_IMPORTED_MODULE_3__.default, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Uploader__WEBPACK_IMPORTED_MODULE_3__.default, {
             uploadUrl: uploadUrl,
             dispatch: this.dispatch
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Gallery__WEBPACK_IMPORTED_MODULE_4__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          className: "col-12 p-2 remove-sm-padding float-left",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("button", {
+            className: "btn btn-sm btn-light float-right",
+            onClick: function onClick() {
+              return _this2.dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_6__.selectAll)());
+            },
+            children: [filters.selectAll ? 'un' : '', "select all"]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Gallery__WEBPACK_IMPORTED_MODULE_4__.default, {
           files: files,
           fileUrl: fileUrl,
           selectedFiles: selectedFiles,

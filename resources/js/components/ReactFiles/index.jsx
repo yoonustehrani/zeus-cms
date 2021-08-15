@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Uploader from './Uploader';
 import Gallery from './Gallery';
 import FilterBox from './FilterBox';
+import {selectAll} from './actions'
 
 class ReactFiles extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class ReactFiles extends Component {
                 sortBy: 'created_at',
                 fileType: 'image',
                 extention: "all",
+                selectAll: false,
                 filterList: {
                     fileTypes: {
                         image: {extentions: ["jpeg", "jpg", "png", "svg", "gif"], icon: "fas fa-image"},
@@ -92,6 +94,11 @@ class ReactFiles extends Component {
                 break
             case 'filter/toggleTrash':
                 iniState.filters.trash = ! iniState.filters.trash
+                break
+            case 'filter/toggleSelectAll':
+                iniState.filters.selectAll = ! iniState.filters.selectAll
+                iniState.selectedFiles = iniState.filters.selectAll ? iniState.files.map(file => file.id) : []
+                break
             default:
                 break
         }
@@ -107,6 +114,9 @@ class ReactFiles extends Component {
                 <div className="filterbox-uploader-container">
                     <FilterBox filters={filters} selectedFiles={selectedFiles} searchUrl={searchUrl} dispatch={this.dispatch}/>
                     <Uploader uploadUrl={uploadUrl} dispatch={this.dispatch}/>
+                </div>
+                <div className="col-12 p-2 remove-sm-padding float-left">
+                    <button className="btn btn-sm btn-light float-right" onClick={() => this.dispatch(selectAll())}>{filters.selectAll ? 'un' : ''}select all</button>
                 </div>
                 <Gallery files={files} fileUrl={fileUrl} selectedFiles={selectedFiles} query={defaultQuery} loading={loading} dispatch={this.dispatch} ref={this.mediaRef}/>
             </div>
