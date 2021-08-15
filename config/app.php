@@ -177,6 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
 
     ],
 
@@ -232,6 +233,8 @@ return [
         'Zeus' => Zeus\Facades\ZeusFacade::class,
         'MailMarketer' => \ZeusMailMarketer\Facades\ZeusMailMarketerFacade::class,
         'NormalizeTags' => \ZeusMailMarketer\Facades\NormalizeTagsFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class
+        
     ],
 
 ];

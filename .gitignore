@@ -1,7 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/images/*
+/public/images/gallery/*
 /storage/*.key
 .env.backup
 .env
@@ -10,6 +10,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+composer.lock
+package-lock.json
 !/vendor
 /vendor/*
 !/vendor/laravel

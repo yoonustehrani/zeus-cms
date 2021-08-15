@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Zeus\Models\File as ZeusFile;
 
-class File extends Model
+class File extends ZeusFile
 {
     public function __str()
     {

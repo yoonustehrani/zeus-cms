@@ -9,7 +9,7 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     Route::get('extentions', $namespace_prefix . 'ExtentionController@index');
 
     Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['show','create', 'store']);
-
+    Route::view('file-manager', 'ZEV::pages.file');
     Route::get('datatypes/{datatype}/create', $namespace_prefix . 'DataTypeController@create')->name('datatypes.create');
     Route::post('datatypes/{datatype}/add', $namespace_prefix . 'DataTypeController@store')->name('datatypes.store');
     Route::resource('datatypes/{datatype}/datarows', $namespace_prefix . 'DataRowController');
@@ -36,13 +36,6 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
         // do nothing, might just be because table not yet migrated.
     }
 
-    Route::group(['prefix' => 'api/v1', 'as' => 'api.'], function() use($namespace_prefix) {
-        Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
-        Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
-        Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');
-        Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
-        Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
-    });
     try {
         \Zeus::load_extentions();
         Route::group(['prefix' => 'extention', 'as' => 'extention.'], function() {
@@ -57,4 +50,16 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     } catch(\Exception $e) {
 
     }
+});
+
+Route::group(['prefix' => 'api/v1', 'as' => 'Romancamp.api.', 'middleware' => ['api']], function() {
+    $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\';
+    Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
+    Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
+    Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');
+    Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
+    Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
+    Route::resource('file-manager/files',  $namespace_prefix . 'FileManagerController')->except(['store']);
+    Route::patch('file-manager/files/{file}/restore', $namespace_prefix . 'FileManagerController@restore')->name('files.restore');
+    Route::post('file-manager/files/{type}/upload', $namespace_prefix . 'FileManagerController@store')->name('files.upload')->middleware('api');
 });
