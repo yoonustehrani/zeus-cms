@@ -2294,6 +2294,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var Gallery = /*#__PURE__*/function (_Component) {
   _inherits(Gallery, _Component);
 
@@ -2362,9 +2363,9 @@ var Gallery = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           hasMore = _this$state.hasMore,
           loading = _this$state.loading;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "col-12 remove-sm-padding float-left",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default()), {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_infinite_scroller__WEBPACK_IMPORTED_MODULE_2___default()), {
           className: "media-container w-100",
           pageStart: 0,
           loadMore: this.loadMore // .bind(this)
@@ -2383,7 +2384,10 @@ var Gallery = /*#__PURE__*/function (_Component) {
               selected: selectedFiles.includes(file.id)
             }, file), i);
           })
-        })
+        }), !loading && files.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "alert alert-light mt-4 w-100 text-center",
+          children: "No Item to show"
+        })]
       });
     }
   }]);
@@ -2826,36 +2830,37 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                 iniState = Object.assign({}, _this.state);
                 _this$props = _this.props, fileUrl = _this$props.fileUrl, restoreUrl = _this$props.restoreUrl;
                 _context.t0 = action.type;
-                _context.next = _context.t0 === 'filter/change' ? 5 : _context.t0 === 'files/reset' ? 7 : _context.t0 === 'files/add' ? 12 : _context.t0 === 'files/addMultiple' ? 14 : _context.t0 === 'file/delete' ? 16 : _context.t0 === 'file/restore' ? 20 : _context.t0 === 'file/bulkRestore' ? 23 : _context.t0 === 'file/bulkDelete' ? 29 : _context.t0 === 'files/toggleSelect' ? 35 : _context.t0 === 'filter/toggleTrash' ? 37 : _context.t0 === 'filter/toggleSelectAll' ? 39 : 42;
+                _context.next = _context.t0 === 'filter/change' ? 5 : _context.t0 === 'files/reset' ? 7 : _context.t0 === 'files/add' ? 13 : _context.t0 === 'files/addMultiple' ? 15 : _context.t0 === 'file/delete' ? 17 : _context.t0 === 'file/restore' ? 21 : _context.t0 === 'file/bulkRestore' ? 24 : _context.t0 === 'file/bulkDelete' ? 30 : _context.t0 === 'files/toggleSelect' ? 36 : _context.t0 === 'filter/toggleTrash' ? 38 : _context.t0 === 'filter/toggleSelectAll' ? 40 : 43;
                 break;
 
               case 5:
                 Object.assign(iniState.filters, action.payload);
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
               case 7:
                 iniState.files = [];
                 iniState.selectedFiles = [];
+                iniState.filters.selectAll = false;
                 iniState.defaultQuery = action.query;
 
                 _this.mediaRef.current.reset();
 
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
-              case 12:
+              case 13:
                 iniState.files = action.end ? [].concat(_toConsumableArray(iniState.files), [action.file]) : [action.file].concat(_toConsumableArray(iniState.files));
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
-              case 14:
+              case 15:
                 iniState.files = [].concat(_toConsumableArray(iniState.files), _toConsumableArray(action.files));
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
-              case 16:
+              case 17:
                 if (action.softDeleted) {
                   fileUrl += '?force_delete=true';
                 }
 
-                _context.next = 19;
+                _context.next = 20;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().delete(fileUrl.replace('fileId', action.fileId)).then(function (res) {
                   // await
                   if (res.data.okay) {
@@ -2865,11 +2870,11 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                   }
                 });
 
-              case 19:
-                return _context.abrupt("break", 43);
-
               case 20:
-                _context.next = 22;
+                return _context.abrupt("break", 44);
+
+              case 21:
+                _context.next = 23;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().patch(restoreUrl.replace('fileId', action.fileId)).then(function (res) {
                   if (res.data.okay && iniState.filters.trash) {
                     iniState.files = iniState.files.filter(function (x) {
@@ -2878,70 +2883,72 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
                   }
                 });
 
-              case 22:
-                return _context.abrupt("break", 43);
-
               case 23:
+                return _context.abrupt("break", 44);
+
+              case 24:
                 id_requested = iniState.selectedFiles.join(',');
                 restorePath = restoreUrl.replace('fileId', id_requested);
 
                 if (!iniState.filters.trash) {
-                  _context.next = 28;
+                  _context.next = 29;
                   break;
                 }
 
-                _context.next = 28;
+                _context.next = 29;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().patch(restorePath).then(function (res) {
                   iniState.files = iniState.files.filter(function (x) {
                     return !id_requested.includes(x.id);
                   });
                   iniState.selectedFiles = [];
+                  iniState.filters.selectAll = false;
                 });
 
-              case 28:
-                return _context.abrupt("break", 43);
-
               case 29:
+                return _context.abrupt("break", 44);
+
+              case 30:
                 id_request = iniState.selectedFiles.join(',');
                 path = fileUrl.replace('fileId', id_request);
                 path += iniState.filters.trash ? '?force_delete=true' : '';
-                _context.next = 34;
+                _context.next = 35;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().delete(path).then(function (res) {
                   iniState.files = iniState.files.filter(function (x) {
                     return !id_request.includes(x.id);
                   });
                   iniState.selectedFiles = [];
+                  iniState.filters.selectAll = false;
                 });
 
-              case 34:
-                return _context.abrupt("break", 43);
-
               case 35:
+                return _context.abrupt("break", 44);
+
+              case 36:
                 iniState.selectedFiles = iniState.selectedFiles.includes(action.fileId) ? iniState.selectedFiles.filter(function (x) {
                   return x !== action.fileId;
                 }) : [].concat(_toConsumableArray(iniState.selectedFiles), [action.fileId]);
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
-              case 37:
+              case 38:
                 iniState.filters.trash = !iniState.filters.trash;
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
-              case 39:
+              case 40:
                 iniState.filters.selectAll = !iniState.filters.selectAll;
                 iniState.selectedFiles = iniState.filters.selectAll ? iniState.files.map(function (file) {
                   return file.id;
                 }) : [];
-                return _context.abrupt("break", 43);
-
-              case 42:
-                return _context.abrupt("break", 43);
+                return _context.abrupt("break", 44);
 
               case 43:
+                return _context.abrupt("break", 44);
+
+              case 44:
                 _this.setState(iniState);
 
                 return _context.abrupt("return");
 
-              case 45:
+              case 46:
               case "end":
                 return _context.stop();
             }

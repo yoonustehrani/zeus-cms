@@ -42,6 +42,7 @@ class ReactFiles extends Component {
             case 'files/reset':
                 iniState.files = []
                 iniState.selectedFiles = []
+                iniState.filters.selectAll = false
                 iniState.defaultQuery = action.query
                 this.mediaRef.current.reset()
                 break
@@ -75,6 +76,7 @@ class ReactFiles extends Component {
                     await Axios.patch(restorePath).then(res => {
                         iniState.files = iniState.files.filter(x => ! id_requested.includes(x.id))
                         iniState.selectedFiles = []
+                        iniState.filters.selectAll = false
                     })
                 }
                 break
@@ -85,6 +87,7 @@ class ReactFiles extends Component {
                 await Axios.delete(path).then(res => {
                     iniState.files = iniState.files.filter(x => ! id_request.includes(x.id))
                     iniState.selectedFiles = []
+                    iniState.filters.selectAll = false
                 })
                 break
             case 'files/toggleSelect':

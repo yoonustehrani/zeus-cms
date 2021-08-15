@@ -66,6 +66,7 @@ class Gallery extends Component {
                     {...file} />
                 ))}
                 </InfiniteScroll>
+                {!loading && files.length === 0 && <div className="alert alert-light mt-4 w-100 text-center">No Item to show</div>}
             </div>
         );
     }
