@@ -7,7 +7,7 @@
     $current_url = url()->current();
 @endphp
 @section('pagecontent')
-<div class="col-12 float-left p-3">
+<div class="col-12 float-left table-responsive p-3">
     <h3 class="col-12 p-0 float-left">
         <a href="{{ route('RomanCamp.' . $datatype->slug . '.create') }}" class="btn btn-sm btn-info"><i class="fas fa-plus"></i> <i class="{{ $datatype->icon }}"></i></a>
         List of {{ $datatype->display_name_plural }}

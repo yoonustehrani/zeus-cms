@@ -21,39 +21,39 @@ use ZeusMailMarketer\Services\NormalizeTags;
 |
 */
 
-Route::get('/', function () {
-    // $cssToInlineStyles = new CssToInlineStyles();
-    // $fullname = "yoonus tehrani";
-    // $html = file_get_contents(__DIR__ . '/../examples/index.html');
-    // $content = (new NormalizeTags)
-    //             ->content($html)
-    //             ->tags(['fullname'])
-    //             ->values(compact('fullname'))
-    //             ->normalize();
-    // output
-    // $content = $cssToInlineStyles->convert($content); // , $css
-    // $mailable = (new CampaignMailer($content))->subject('به ال ناول خوش آمدید')->from('newsletter@Elnovel.net', 'یونس طهرانی - دپارتمان فروش');
-    // return $mailable;
-    // try {
-    //     Mail::manual_mailer('yoonus_gmail', [
-    //         'transport' => 'smtp',
-    //         'host' => 'smtp.gmail.com',
-    //         'port' => 587,
-    //         'encryption' => 'tls',
-    //         'username' => 'yoonustehrani28@gmail.com',
-    //         'password' => 'koplsiucclqsfbvn',
-    //         'timeout' => 60,
-    //         'auth_mode' => null,
-    //         'pretend' => false,
-    //         ])
-    //         ->to('elnovelofficial@gmail.com')
-    //         ->send($mailable);
-    // } catch (\Throwable $th) {
-    //     throw $th;
-    //     return 'error';
-    // }
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     // $cssToInlineStyles = new CssToInlineStyles();
+//     // $fullname = "yoonus tehrani";
+//     // $html = file_get_contents(__DIR__ . '/../examples/index.html');
+//     // $content = (new NormalizeTags)
+//     //             ->content($html)
+//     //             ->tags(['fullname'])
+//     //             ->values(compact('fullname'))
+//     //             ->normalize();
+//     // output
+//     // $content = $cssToInlineStyles->convert($content); // , $css
+//     // $mailable = (new CampaignMailer($content))->subject('به ال ناول خوش آمدید')->from('newsletter@Elnovel.net', 'یونس طهرانی - دپارتمان فروش');
+//     // return $mailable;
+//     // try {
+//     //     Mail::manual_mailer('yoonus_gmail', [
+//     //         'transport' => 'smtp',
+//     //         'host' => 'smtp.gmail.com',
+//     //         'port' => 587,
+//     //         'encryption' => 'tls',
+//     //         'username' => 'yoonustehrani28@gmail.com',
+//     //         'password' => 'koplsiucclqsfbvn',
+//     //         'timeout' => 60,
+//     //         'auth_mode' => null,
+//     //         'pretend' => false,
+//     //         ])
+//     //         ->to('elnovelofficial@gmail.com')
+//     //         ->send($mailable);
+//     // } catch (\Throwable $th) {
+//     //     throw $th;
+//     //     return 'error';
+//     // }
+//     return view('welcome');
+// });
 
 Route::prefix('zeus')->group(function() {
     Zeus::routes();

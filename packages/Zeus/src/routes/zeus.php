@@ -20,7 +20,6 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 
     try {
         foreach (ZeusFacade::model('DataType')::all() as $dataType) {
-            // print($dataType . "\n\n\n\n");
             $breadController = $dataType->controller ? \Illuminate\Support\Str::start($dataType->controller, '\\') : $namespace_prefix.'ZeusBaseController';
             // Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
             // Route::post($dataType->slug.'/action', $breadController.'@action')->name($dataType->slug.'.action');
@@ -52,7 +51,7 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     }
 });
 
-Route::group(['prefix' => 'api/v1', 'as' => 'Romancamp.api.', 'middleware' => ['api']], function() {
+Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['api']], function() {
     $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\';
     Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
     Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
