@@ -191,8 +191,8 @@ class FileManagerController extends Controller
         }
         if ($force_delete) {
             if($file->forceDelete()) {
-                if (Storage::exists($file->path)) {
-                    return ['okay' => Storage::delete($file->path)];
+                if (Storage::exists($file->path) && Storage::exists($file->thumbnail_path)) {
+                    return ['okay' => Storage::delete($file->path), 'thumbnail' => Storage::delete($file->thumbnail_path)];
                 }
                 return ['okay' => true];
             }

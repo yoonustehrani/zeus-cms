@@ -2500,6 +2500,8 @@ var GalleryItem = /*#__PURE__*/function (_Component) {
                 href: "".concat(APP_PATH).concat(path),
                 target: "_blank",
                 className: "btn btn-sm btn-outline-warning m-1",
+                "data-lity": true,
+                "data-lity-desc": name,
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
                   className: "fas fa-eye"
                 })

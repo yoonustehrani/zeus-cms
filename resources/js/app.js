@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 require('select2');
+require('lity');
 /**
  * Next, we will create a fresh React component instance and attach it to
  * the page. Then, you may begin adding components to this application

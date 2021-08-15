@@ -15,7 +15,7 @@ class GalleryItem extends Component {
                     <input type="checkbox" className={`${selected ? 'active' : ''}`} onChange={this.toggleCheck} checked={selected}/>
                     <div className="data-container text-center col-12" onClick={this.toggleCheck}>
                         <p>
-                            <a href={`${APP_PATH}${path}`} target="_blank" className="btn btn-sm btn-outline-warning m-1">
+                            <a href={`${APP_PATH}${path}`} target="_blank" className="btn btn-sm btn-outline-warning m-1" data-lity data-lity-desc={name}>
                                 <i className="fas fa-eye"></i>
                             </a>
                             <button className="btn btn-sm btn-outline-info m-1"><i className="fas fa-info"></i></button>
