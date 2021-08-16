@@ -8,9 +8,10 @@ if (target) {
     let searchUrl = target.getAttribute("data-search"),
     fileUrl = target.getAttribute("data-file"),
     uploadUrl  = target.getAttribute("data-upload"),
+    editFormUrl  = target.getAttribute("data-edit"),
     restoreUrl = target.getAttribute("data-restore");
 
     ReactDOM.render(
-        <ReactFiles searchUrl={searchUrl} fileUrl={fileUrl} uploadUrl={uploadUrl} restoreUrl={restoreUrl}/>
+        <ReactFiles editFormUrl={editFormUrl} searchUrl={searchUrl} fileUrl={fileUrl} uploadUrl={uploadUrl} restoreUrl={restoreUrl}/>
     , target)
 }

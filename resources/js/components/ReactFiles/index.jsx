@@ -110,7 +110,7 @@ class ReactFiles extends Component {
     }
 
     render() {
-        let {uploadUrl, searchUrl, fileUrl, restoreUrl} = this.props
+        let {uploadUrl, searchUrl, fileUrl, restoreUrl, editFormUrl} = this.props
         let {files, selectedFiles, loading, defaultQuery, filters} = this.state;
         return (
             <div>
@@ -121,7 +121,7 @@ class ReactFiles extends Component {
                 <div className="col-12 p-2 remove-sm-padding float-left">
                     <button className="btn btn-sm btn-light float-right" onClick={() => this.dispatch(selectAll())}>{filters.selectAll ? 'un' : ''}select all</button>
                 </div>
-                <Gallery files={files} fileUrl={fileUrl} selectedFiles={selectedFiles} query={defaultQuery} loading={loading} dispatch={this.dispatch} ref={this.mediaRef}/>
+                <Gallery editFormUrl={editFormUrl} files={files} fileUrl={fileUrl} selectedFiles={selectedFiles} query={defaultQuery} loading={loading} dispatch={this.dispatch} ref={this.mediaRef}/>
             </div>
         );
     }

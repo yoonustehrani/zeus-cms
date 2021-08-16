@@ -2359,7 +2359,8 @@ var Gallery = /*#__PURE__*/function (_Component) {
       var _this$props2 = this.props,
           files = _this$props2.files,
           dispatch = _this$props2.dispatch,
-          selectedFiles = _this$props2.selectedFiles;
+          selectedFiles = _this$props2.selectedFiles,
+          editFormUrl = _this$props2.editFormUrl;
       var _this$state = this.state,
           hasMore = _this$state.hasMore,
           loading = _this$state.loading;
@@ -2381,7 +2382,8 @@ var Gallery = /*#__PURE__*/function (_Component) {
               selectFile: null,
               deleteFile: null,
               dispatch: dispatch,
-              selected: selectedFiles.includes(file.id)
+              selected: selectedFiles.includes(file.id),
+              editFormUrl: editFormUrl.replace('fileId', file.id)
             }, file), i);
           })
         }), !loading && files.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
@@ -2480,7 +2482,8 @@ var GalleryItem = /*#__PURE__*/function (_Component) {
           ext = _this$props2.ext,
           deleted_at = _this$props2.deleted_at,
           selected = _this$props2.selected,
-          dispatch = _this$props2.dispatch;
+          dispatch = _this$props2.dispatch,
+          editFormUrl = _this$props2.editFormUrl;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: "media-item mt-4 col-4 col-md-3 col-lg-2 p-1",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
@@ -2505,8 +2508,10 @@ var GalleryItem = /*#__PURE__*/function (_Component) {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
                   className: "fas fa-eye"
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
                 className: "btn btn-sm btn-outline-info m-1",
+                href: editFormUrl,
+                "data-lity": true,
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
                   className: "fas fa-info"
                 })
@@ -3006,7 +3011,8 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
           uploadUrl = _this$props2.uploadUrl,
           searchUrl = _this$props2.searchUrl,
           fileUrl = _this$props2.fileUrl,
-          restoreUrl = _this$props2.restoreUrl;
+          restoreUrl = _this$props2.restoreUrl,
+          editFormUrl = _this$props2.editFormUrl;
       var _this$state = this.state,
           files = _this$state.files,
           selectedFiles = _this$state.selectedFiles,
@@ -3035,6 +3041,7 @@ var ReactFiles = /*#__PURE__*/function (_Component) {
             children: [filters.selectAll ? 'un' : '', "select all"]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Gallery__WEBPACK_IMPORTED_MODULE_4__.default, {
+          editFormUrl: editFormUrl,
           files: files,
           fileUrl: fileUrl,
           selectedFiles: selectedFiles,
@@ -3076,8 +3083,10 @@ if (target) {
   var searchUrl = target.getAttribute("data-search"),
       fileUrl = target.getAttribute("data-file"),
       uploadUrl = target.getAttribute("data-upload"),
+      editFormUrl = target.getAttribute("data-edit"),
       restoreUrl = target.getAttribute("data-restore");
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_ReactFiles__WEBPACK_IMPORTED_MODULE_2__.default, {
+    editFormUrl: editFormUrl,
     searchUrl: searchUrl,
     fileUrl: fileUrl,
     uploadUrl: uploadUrl,
@@ -13562,6 +13571,19 @@ window.Dropzone = Dropzone;
 /*!****************************************!*\
   !*** ./resources/sass/zeus/files.scss ***!
   \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./resources/sass/zeus/zeus.scss":
+/*!***************************************!*\
+  !*** ./resources/sass/zeus/zeus.scss ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -45233,6 +45255,7 @@ if (false) {} else {
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/files": 0,
+/******/ 			"css/zeus": 0,
 /******/ 			"css/files": 0
 /******/ 		};
 /******/ 		
@@ -45281,8 +45304,9 @@ if (false) {} else {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/files"], () => (__webpack_require__("./resources/js/files.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/files"], () => (__webpack_require__("./resources/sass/zeus/files.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/zeus","css/files"], () => (__webpack_require__("./resources/js/files.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/zeus","css/files"], () => (__webpack_require__("./resources/sass/zeus/files.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/zeus","css/files"], () => (__webpack_require__("./resources/sass/zeus/zeus.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

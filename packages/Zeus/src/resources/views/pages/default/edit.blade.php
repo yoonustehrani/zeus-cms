@@ -6,8 +6,8 @@
 
 @section('pagecontent')
 <div class="col-12 float-left p-3">
-    <h3 class="col-12 p-0 float-left">Adding a new {{ $datatype->display_name_singular }}</h3>
-    <form action="{{ route('RomanCamp.' . $datatype->slug . '.update', ['id' => $editable->id]) }}" class="col-12 float-left p-0 form-group" method="post">
+    <h3 class="col-12 p-0 float-left">Editing {{ $datatype->display_name_singular }} #{{ $editable->{$datatype->details->order_column} }}</h3>
+    <form action="{{ route('RomanCamp.' . $datatype->slug . '.update', ['id' => $editable->id]) }}" class="col-12 float-left p-0 form-group form-children-set" method="post">
         @csrf
         @method('PUT')
         @foreach ($datatype->rows as $row)

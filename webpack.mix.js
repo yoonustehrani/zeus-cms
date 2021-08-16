@@ -28,6 +28,7 @@ mix.disableNotifications()
 // .js(res.js + 'tools.js', pub.js)
 // mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
 mix.sass(res.sass + 'zeus/files.scss', pub.css);
+// .sass(res.sass + 'zeus/zeus.scss', pub.css);
 
 mix.js(res.js + 'files.js', pub.js).react();
 mix.js(res.js + 'app.js', pub.js)

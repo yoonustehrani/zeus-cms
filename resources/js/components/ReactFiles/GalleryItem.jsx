@@ -7,7 +7,7 @@ class GalleryItem extends Component {
         dispatch(toggleSelectFile(id))
     }
     render() {
-        let { id, path, thumbnail_path, name, ext, deleted_at, selected, dispatch } = this.props 
+        let { id, path, thumbnail_path, name, ext, deleted_at, selected, dispatch, editFormUrl } = this.props 
         return (
             <div className="media-item mt-4 col-4 col-md-3 col-lg-2 p-1">
                 <div className="img-container col-12 p-0">
@@ -18,7 +18,7 @@ class GalleryItem extends Component {
                             <a href={`${APP_PATH}${path}`} target="_blank" className="btn btn-sm btn-outline-warning m-1" data-lity data-lity-desc={name}>
                                 <i className="fas fa-eye"></i>
                             </a>
-                            <button className="btn btn-sm btn-outline-info m-1"><i className="fas fa-info"></i></button>
+                            <a className="btn btn-sm btn-outline-info m-1" href={editFormUrl} data-lity><i className="fas fa-info"></i></a>
                             <button title={`delete ${deleted_at ? 'forever': ''}`} className="btn btn-sm btn-outline-danger m-1" onClick={() => dispatch(deleteFile(id, Boolean(deleted_at)))}>
                                 <i className={`fas ${deleted_at ? 'fa-fire' : 'fa-trash'}`}></i>
                             </button>

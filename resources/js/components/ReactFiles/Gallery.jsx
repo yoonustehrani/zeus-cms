@@ -42,7 +42,7 @@ class Gallery extends Component {
     }
 
     render() {
-        let {files, dispatch, selectedFiles} = this.props
+        let {files, dispatch, selectedFiles, editFormUrl} = this.props
         let {hasMore, loading } = this.state
 
         return (
@@ -63,6 +63,7 @@ class Gallery extends Component {
                     deleteFile={null}
                     dispatch={dispatch}
                     selected={selectedFiles.includes(file.id)}
+                    editFormUrl={editFormUrl.replace('fileId', file.id)}
                     {...file} />
                 ))}
                 </InfiniteScroll>

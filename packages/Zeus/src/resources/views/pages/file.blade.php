@@ -18,6 +18,7 @@
     data-file="{{ route('RomanCamp.api.files.show', ['file' => 'fileId']) }}"
     data-upload="{{ route('RomanCamp.api.files.upload', ['type' => 'image']) }}"
     data-restore="{{ route('RomanCamp.api.files.restore', ['file' => 'fileId']) }}"
+    data-edit="{{ route('RomanCamp.files.edit', ['id' => 'fileId']) }}"
 >
 </div>
 @endsection

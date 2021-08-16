@@ -14124,3 +14124,7 @@ div.drop-down-container div.dropdown-menu a {
   top: 3px !important;
   padding-top: 3px;
 }
+
+.form-children-set > div.input-group {
+  float: left;
+}
