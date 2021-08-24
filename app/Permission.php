@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Zeus\Models\Permission as ModelsPermission;
 
-class Permission extends Model
+class Permission extends ModelsPermission
 {
     public function __str()
     {

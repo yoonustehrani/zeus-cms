@@ -15,7 +15,7 @@
                 
             @endcomponent
         @endforeach
-        <div class="col-12 mt-3">
+        <div class="col-12 float-left mt-3">
             <button type="submit" class="btn btn-primary">Update</button>
         </div>
     </form>

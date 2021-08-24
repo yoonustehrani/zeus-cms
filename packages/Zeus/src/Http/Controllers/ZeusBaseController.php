@@ -75,6 +75,13 @@ class ZeusBaseController extends Controller
                         $row->data = $data;
                     }
                     break;
+                case 'relationship__morphToMany':
+                    $row->type = 'selectbox-multiple';
+                    if (optional($row->details)->target_method && $datatype->model_name) {
+                        $data = \Zeus::getModel($row->details->target_model)->get();
+                        $row->data = $data;
+                    }
+                    break;
             }
         }
         if ($request->debug) {
@@ -149,6 +156,13 @@ class ZeusBaseController extends Controller
                     }
                     break;
                 case 'relationship__belongsToMany':
+                    $row->type = 'selectbox-multiple';
+                    if (optional($row->details)->target_method && $datatype->model_name) {
+                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->get();
+                        $row->data = \Zeus::getModel($row->details->target_model)->get();
+                    }
+                    break;
+                case 'relationship__morphToMany':
                     $row->type = 'selectbox-multiple';
                     if (optional($row->details)->target_method && $datatype->model_name) {
                         $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->get();

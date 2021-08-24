@@ -29,8 +29,9 @@ class DataTypeController extends Controller
         'relationship__hasMany' => 'Has Many Relationship',
         'relationship__belongsTo' => 'Belongs To Relationship',
         'relationship__belongsToMany' => 'Belongs To Many Relationship',
-        'relationship__morphOne' => 'Morph One Relationship',
-        'relationship__morphMany' => 'Morph Many Relationship',
+        'relationship__morphOne' => 'Polymeric One to One Relationship',
+        'relationship__morphMany' => 'Polymeric One to Many Relationship',
+        'relationship__morphToMany' => 'Polymeric Many to Many Relationship',
     ];
     public $relations = [
         'hasOne',
@@ -39,6 +40,7 @@ class DataTypeController extends Controller
         'belongsToMany',
         'morphOne',
         'morphMany',
+        'morphToMany'
     ];
     public $visibility = [
         'browse' => 'field will show up when you browse the current data',

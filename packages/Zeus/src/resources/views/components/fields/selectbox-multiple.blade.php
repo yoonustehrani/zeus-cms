@@ -2,17 +2,22 @@
     <div class="input-group-prepend">
         <span class="input-group-text">@if($row->details && isset($row->details->icon)) <i class="{{ $row->details->icon }}"></i> @else {{ $row->display_name }} @endif</span>
     </div>
-    <select multiple name="{{ $row->field }}[]" id="selectbox" class="form-control must_be_select2" 
+    <select multiple name="{{ $row->field }}[]" class="form-control must_be_select2" 
     @if($row->required) required @endif
     @if($row->details && isset($row->details->place_holder)) data-placeholder="{{ $row->details->place_holder }}" @endif>
         <option></option>
         @foreach ($row->data as $item)
             <option 
-            @foreach ($edit['value'] as $selected)
-            @if ($selected->id === $item->id)
-                selected
+            @if (isset($edit))
+                @foreach ($edit['value'] as $selected)
+                    @if ($selected->id === $item->id)
+                        selected
+                    @endif
+                @endforeach
+            @else
+                {{-- to be fixed --}}
+                {{-- old('') --}}
             @endif
-            @endforeach
             value="{{ $item->id }}">{{ method_exists($item, '__str') ? $item->__str() : $item->id }}</option>
         @endforeach
     </select>

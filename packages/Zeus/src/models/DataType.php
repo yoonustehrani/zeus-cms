@@ -152,6 +152,7 @@ class DataType extends Model
                         $model->{$row->details->target_method}()->associate($target);
                         break;
                     case 'relationship__belongsToMany':
+                    case 'relationship__morphToMany':
                         break;
                     default:
                         $model->{$row->field} = $request->{$row->field};
@@ -168,6 +169,16 @@ class DataType extends Model
                 switch ($row->type) {
                     case 'relationship__belongsToMany':
                         $model->{$row->details->target_method}()->sync($request->input($row->field));
+                        break;
+                    case 'relationship__morphToMany':
+                        $items = collect([]);
+                        foreach ($request->input($row->field) as $item) {
+                            $items->put($item, [
+                                // 'alt' => \Illuminate\Support\Str::random(rand(5,20)),
+                                // 'title' => \Illuminate\Support\Str::random(rand(3, 8))
+                            ]);
+                        }
+                        $model->{$row->details->target_method}()->withTimestamps()->sync($items->toArray());
                         break;
                 }
             }

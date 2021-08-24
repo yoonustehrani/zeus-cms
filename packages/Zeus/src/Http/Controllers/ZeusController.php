@@ -16,6 +16,7 @@ class ZeusController extends Controller
      */
     public function index()
     {
+        // return auth()->user()->photos()->with('file')->get();
         return view("ZEV::pages.dashboard");
     }
 

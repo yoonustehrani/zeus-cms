@@ -16,7 +16,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
-
+    public function photos()
+    {
+        return $this->morphToMany(File::class, 'photoable', 'photos'); // ->withPivot('title', 'alt')
+    }
     /**
      * returns true if a user has the target permission(s)
      * @param array|string $permission

@@ -9,7 +9,6 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 class File extends Model
 {
     use SoftDeletes, SearchableTrait;
-
     protected $searchable = [
         'columns' => [
             'name' => 10,
@@ -17,4 +16,6 @@ class File extends Model
             'thumbnail_path' => 4,
         ],
     ];
+
+    // protected $hidden = ['pivot'];
 }

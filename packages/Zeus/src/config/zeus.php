@@ -14,7 +14,7 @@ return [
         'route_prefix' => 'RomanCamp.'
     ],
     'database' => [
-        'hidden_tables' => ['data_types', 'data_rows', 'menu_items', 'permission_role', 'role_user', 'migrations', 'sessions', 'password_resets', 'settings'],
+        'hidden_tables' => ['data_types', 'data_rows', 'menu_items', 'permission_role', 'role_user', 'migrations', 'sessions', 'password_resets'], // 'settings'
         'date_format' => 'Y-m-d H:i:s',
     ],
     'developers' => [
