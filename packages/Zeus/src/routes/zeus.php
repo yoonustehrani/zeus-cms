@@ -9,7 +9,6 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     Route::get('extentions', $namespace_prefix . 'ExtentionController@index');
 
     Route::resource('datatypes', $namespace_prefix . 'DataTypeController')->except(['show','create', 'store']);
-    Route::view('file-manager', 'ZEV::pages.file');
     Route::get('datatypes/{datatype}/create', $namespace_prefix . 'DataTypeController@create')->name('datatypes.create');
     Route::post('datatypes/{datatype}/add', $namespace_prefix . 'DataTypeController@store')->name('datatypes.store');
     Route::resource('datatypes/{datatype}/datarows', $namespace_prefix . 'DataRowController');
@@ -20,14 +19,26 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 
     try {
         foreach (ZeusFacade::model('DataType')::all() as $dataType) {
-            $breadController = $dataType->controller ? \Illuminate\Support\Str::start($dataType->controller, '\\') : $namespace_prefix.'ZeusBaseController';
-            // Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
-            // Route::post($dataType->slug.'/action', $breadController.'@action')->name($dataType->slug.'.action');
-            // Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.update_order');
-            // Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
-            // Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
-            // Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
-            Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
+            $defaultController = $namespace_prefix.'ZeusBaseController';
+            $campController = $dataType->controller ? \Illuminate\Support\Str::start($dataType->controller, '\\') : $defaultController;
+            // Route::get($dataType->slug.'/order', $campController.'@order')->name($dataType->slug.'.order');
+            // Route::post($dataType->slug.'/action', $campController.'@action')->name($dataType->slug.'.action');
+            // Route::post($dataType->slug.'/order', $campController.'@update_order')->name($dataType->slug.'.update_order');
+            // Route::get($dataType->slug.'/{id}/restore', $campController.'@restore')->name($dataType->slug.'.restore');
+            // Route::get($dataType->slug.'/relation', $campController.'@relation')->name($dataType->slug.'.relation');
+            // Route::post($dataType->slug.'/remove', $campController.'@remove_media')->name($dataType->slug.'.media.remove');
+            $route = Route::resource($dataType->slug, $campController);
+            if ($dataType->details && $dataType->controller && isset($dataType->details->routes)) {
+                if ($dataType->details->routes->only) {
+                    $route->only($dataType->details->routes->only);
+                } elseif($dataType->details->routes->except) {
+                    $route->except($dataType->details->routes->except);
+                }
+                if ($dataType->details->routes->auto) {
+                    Route::resource($dataType->slug, $defaultController)->only($dataType->details->routes->auto)->parameters([$dataType->slug => 'id']);
+                }
+            }
+            $route->parameters([$dataType->slug => 'id']);
         }
     } catch (\InvalidArgumentException $e) {
         throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
