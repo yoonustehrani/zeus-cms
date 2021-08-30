@@ -60,28 +60,14 @@ class ZeusBaseController extends Controller
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
         foreach ($datatype->add_rows as $row) {
-            switch ($row->type) {
-                case 'relationship__belongsTo':
-                    $row->type = 'selectbox';
-                    if (optional($row->details)->target_model && $datatype->model_name) {
-                        $data = \Zeus::getModel($row->details->target_model)->get();
+            if ($row->relationship && $row->relationship->target_model && ! $row->relationship->dynamic) {
+                switch ($row->relationship->type) {
+                    case 'belongsTo':
+                    case 'belongsToMany':
+                        $data = \Zeus::getModel($row->relationship->target_model)->get();
                         $row->data = $data;
-                    }
-                    break;
-                case 'relationship__belongsToMany':
-                    $row->type = 'selectbox-multiple';
-                    if (optional($row->details)->target_method && $datatype->model_name) {
-                        $data = \Zeus::getModel($row->details->target_model)->get();
-                        $row->data = $data;
-                    }
-                    break;
-                case 'relationship__morphToMany':
-                    $row->type = 'selectbox-multiple';
-                    if (optional($row->details)->target_method && $datatype->model_name) {
-                        $data = \Zeus::getModel($row->details->target_model)->get();
-                        $row->data = $data;
-                    }
-                    break;
+                        break;
+                }
             }
         }
         if ($request->debug) {
@@ -138,38 +124,26 @@ class ZeusBaseController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $slug = $this->getSlug($request);
-        $datatype = \Zeus::model('DataType')->with(['rows' => function($q) {
-            $q->where('edit', true);
-        }])->where('slug', '=', $slug)->first();
-        // return $datatype
-        $model = \Zeus::getModel($datatype->model_name);
-        $editable = $model::whereId($id)->firstOrFail();
-        foreach ($datatype->rows as $row) {
-            switch ($row->type) {
-                case 'relationship__belongsTo':
-                    $row->type = 'selectbox';
-                    if (optional($row->details)->target_model && $datatype->model_name) {
-                        $data = \Zeus::getModel($row->details->target_model)->get();
-                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->first();
-                        $row->data = $data;
-                    }
-                    break;
-                case 'relationship__belongsToMany':
-                    $row->type = 'selectbox-multiple';
-                    if (optional($row->details)->target_method && $datatype->model_name) {
-                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->get();
-                        $row->data = \Zeus::getModel($row->details->target_model)->get();
-                    }
-                    break;
-                case 'relationship__morphToMany':
-                    $row->type = 'selectbox-multiple';
-                    if (optional($row->details)->target_method && $datatype->model_name) {
-                        $editable->{$row->details->target_method} = $editable->{$row->details->target_method}()->get();
-                        $row->data = \Zeus::getModel($row->details->target_model)->get();
-                    }
-                    break;
+        try {
+            $slug = $this->getSlug($request);
+            $datatype = \Zeus::model('DataType')->with('edit_rows')->where('slug', '=', $slug)->first();
+            $editable = \Zeus::getModel($datatype->model_name)::whereId($id)->firstOrFail();
+            foreach ($datatype->edit_rows as $row) {
+                if ($row->relationship && $row->relationship->target_model) {
+                    $row->data = ! $row->relationship->dynamic ? \Zeus::getModel($row->relationship->target_model)->get() : [];
+                    $editable->load([$row->relationship->local_method]);
+                }
             }
+        } catch(\Exception $e) {
+            throw $e->getMessage();
+        }
+        if ($request->debug) {
+            dd(
+                'Datatype',
+                $datatype->toArray(),
+                'Editable',
+                $editable->toArray()
+            );
         }
         return view('ZEV::pages.default.edit', compact('editable', 'datatype'));
     }

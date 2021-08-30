@@ -1,6 +1,6 @@
 <?php
 
-namespace Zeus\Http\Controllers;
+namespace Zeus\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Rules\MustHaveExtension;

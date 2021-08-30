@@ -14,4 +14,8 @@ class DataRow extends Model
     public function setDetailsAttribute($details) {
         $this->attributes['details'] = json_encode($details);
     }
+    public function relationship()
+    {
+        return $this->hasOne(DataRelationship::class,);
+    }
 }

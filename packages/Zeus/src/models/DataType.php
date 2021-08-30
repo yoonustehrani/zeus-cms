@@ -36,19 +36,19 @@ class DataType extends Model
     ];
     public function rows()
     {
-        return $this->hasMany(DataRow::class);
+        return $this->hasMany(DataRow::class)->with('relationship');
     }
     public function columns()
     {
-        return $this->hasMany(DataRow::class)->whereBrowse(true)->orderBy('order');
+        return $this->rows()->whereBrowse(true)->orderBy('order');
     }
     public function add_rows()
     {
-        return $this->hasMany(DataRow::class)->whereAdd(true)->orderBy('order');
+        return $this->rows()->whereAdd(true)->orderBy('order');
     }
     public function edit_rows()
     {
-        return $this->hasMany(DataRow::class)->whereEdit(true)->orderBy('order');
+        return $this->rows()->whereEdit(true)->orderBy('order');
     }
     public function getDetailsAttribute($details)
     {
@@ -119,6 +119,9 @@ class DataType extends Model
                 array_push($rules, 'required');
                 $should_be_added = true;
             }
+            if ($row->type == 'password') {
+                array_push($rules, 'confirmed');
+            }
             $key_value_rules = ['min', 'max'];
             foreach ($key_value_rules as $rule) {
                 if ($row->details && isset($row->details->validation) && isset($row->details->validation->{$rule})) {
@@ -147,15 +150,15 @@ class DataType extends Model
                         ))->timezone(config('ZEC.package.timezone'));
                         $model->{$row->field} = $date->format(config('ZEC.database.date_format'));
                         break;
-                    case 'relationship__belongsTo':
-                        $target = \Zeus::getModel($row->details->target_model)::whereId($request->{$row->field})->firstOrFail();
-                        $model->{$row->details->target_method}()->associate($target);
-                        break;
-                    case 'relationship__belongsToMany':
-                    case 'relationship__morphToMany':
-                        break;
+                    case 'selectbox':
+                        if ($row->relationship) {
+                            $target = \Zeus::getModel($row->details->target_model)::whereId($request->{$row->field})->firstOrFail();
+                            $model->{$row->details->target_method}()->associate($target);
+                        }
                     default:
-                        $model->{$row->field} = $request->{$row->field};
+                        if (! $row->relationship) {
+                            $model->{$row->field} = $request->{$row->field};
+                        }
                         break;
                 }
             }
@@ -165,21 +168,21 @@ class DataType extends Model
     public function assign_relationships($model, $rows, $request)
     {
         foreach ($rows as $row) {
-            if ($request->{$row->field}) {
+            if ($request->{$row->field} && $row->relationship && !$row->relationship->dynamic) {
                 switch ($row->type) {
                     case 'relationship__belongsToMany':
                         $model->{$row->details->target_method}()->sync($request->input($row->field));
                         break;
-                    case 'relationship__morphToMany':
-                        $items = collect([]);
-                        foreach ($request->input($row->field) as $item) {
-                            $items->put($item, [
-                                // 'alt' => \Illuminate\Support\Str::random(rand(5,20)),
-                                // 'title' => \Illuminate\Support\Str::random(rand(3, 8))
-                            ]);
-                        }
-                        $model->{$row->details->target_method}()->withTimestamps()->sync($items->toArray());
-                        break;
+                    // case 'relationship__morphToMany':
+                    //     $items = collect([]);
+                    //     foreach ($request->input($row->field) as $item) {
+                    //         $items->put($item, [
+                    //             // 'alt' => \Illuminate\Support\Str::random(rand(5,20)),
+                    //             // 'title' => \Illuminate\Support\Str::random(rand(3, 8))
+                    //         ]);
+                    //     }
+                    //     $model->{$row->details->target_method}()->withTimestamps()->sync($items->toArray());
+                    //     break;
                 }
             }
         }

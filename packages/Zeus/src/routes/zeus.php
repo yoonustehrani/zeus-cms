@@ -18,7 +18,8 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     });
 
     try {
-        foreach (ZeusFacade::model('DataType')::all() as $dataType) {
+        $data_types = ZeusFacade::model('DataType')::all();
+        foreach ($data_types as $dataType) {
             $defaultController = $namespace_prefix.'ZeusBaseController';
             $campController = $dataType->controller ? \Illuminate\Support\Str::start($dataType->controller, '\\') : $defaultController;
             // Route::get($dataType->slug.'/order', $campController.'@order')->name($dataType->slug.'.order');
@@ -63,7 +64,32 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 });
 
 Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['api']], function() {
-    $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\';
+    $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\Api\\';
+    $apiController = $namespace_prefix . 'ZeusBaseApiController';
+    $data_types = ZeusFacade::model('DataType')::all();
+    foreach ($data_types as $dataType) {
+        // $apiController = $dataType->controller ? \Illuminate\Support\Str::start($dataType->controller, '\\') : $apiController;
+        // // Route::get($dataType->slug.'/order', $apiController.'@order')->name($dataType->slug.'.order');
+        // // Route::post($dataType->slug.'/action', $apiController.'@action')->name($dataType->slug.'.action');
+        // // Route::post($dataType->slug.'/order', $apiController.'@update_order')->name($dataType->slug.'.update_order');
+        // // Route::get($dataType->slug.'/{id}/restore', $apiController.'@restore')->name($dataType->slug.'.restore');
+        // // Route::get($dataType->slug.'/relation', $apiController.'@relation')->name($dataType->slug.'.relation');
+        // // Route::post($dataType->slug.'/remove', $apiController.'@remove_media')->name($dataType->slug.'.media.remove');
+        $route = Route::resource($dataType->slug, $apiController);
+        if ($dataType->details && $dataType->controller && isset($dataType->details->routes)) {
+            if ($dataType->details->routes->only) {
+                $route->only($dataType->details->routes->only);
+            } elseif($dataType->details->routes->except) {
+                $route->except($dataType->details->routes->except);
+            }
+            if ($dataType->details->routes->auto) {
+                Route::resource($dataType->slug, $apiController)->only($dataType->details->routes->auto)->parameters([$dataType->slug => 'id']);
+            }
+        } else {
+            $route->except(['create', 'edit']);
+        }
+        $route->parameters([$dataType->slug => 'id']);
+    }
     Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
     Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
     Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');

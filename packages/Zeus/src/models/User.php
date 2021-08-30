@@ -18,7 +18,7 @@ class User extends Authenticatable
     }
     public function photos()
     {
-        return $this->morphToMany(File::class, 'photoable', 'photos'); // ->withPivot('title', 'alt')
+        return $this->morphToMany(File::class, 'photoable', 'photos')->withTimestamps()->withPivot('title', 'alt');
     }
     /**
      * returns true if a user has the target permission(s)
