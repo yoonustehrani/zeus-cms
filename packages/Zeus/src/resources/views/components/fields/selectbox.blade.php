@@ -2,17 +2,17 @@
     <div class="input-group-prepend">
         <span class="input-group-text">@if($row->details && isset($row->details->icon)) <i class="{{ $row->details->icon }}"></i> @else {{ $row->display_name }} @endif</span>
     </div>
-    <select name="{{ $row->field }}" class="form-control must_be_select2" 
-    @if ($row->relationship && $row->relationship->target_route)
-        data-load-options=""
+    <select name="{{ $row->field }}" class="form-control must_be_select2"
+    @if ($row->relationship && $row->relationship->dynamic && $row->relationship->target_route)
+        data-dynamic-load
+        data-index="{{ route($row->relationship->target_route . ".index") }}"
     @endif
     @if($row->required) required @endif
     @if($row->details && isset($row->details->place_holder)) data-placeholder="{{ $row->details->place_holder }}" @endif>
         <option></option>
         @if ($row->data)
             @foreach ($row->data as $item)
-                <option @if (isset($edit) && $item->id === $edit['value']->id) selected @endif
-                value="{{ $item->id }}">{{ method_exists($item, '__str') ? $item->__str() : $item->id }}</option>
+                <option @if (isset($edit) && $item->id === $edit['value']) selected @endif>{{ method_exists($item, '__str') ? $item->__str() : $item->id }}</option>
             @endforeach
         @endif
     </select>

@@ -8,6 +8,10 @@ class DataRow extends Model
 {
     protected $fillable = ['data_type_id', 'field', 'type', 'display_name', 'required', 'browse', 'read', 'edit', 'add', 'order', 'details'];
     public $timestamps = false;
+    public function __str()
+    {
+        return $this->data_type->name . "-" . $this->field;
+    }
     public function getDetailsAttribute($details) {
         return json_decode($details);
     }
@@ -17,5 +21,9 @@ class DataRow extends Model
     public function relationship()
     {
         return $this->hasOne(DataRelationship::class,);
+    }
+    public function data_type()
+    {
+        return $this->belongsTo(DataType::class);
     }
 }

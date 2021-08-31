@@ -109,7 +109,7 @@ class FileManagerController extends Controller
      */
     public function show($file)
     {
-        //
+        // return $file;
     }
 
     /**

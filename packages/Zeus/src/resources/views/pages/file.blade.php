@@ -15,9 +15,9 @@
     id="react-files" 
     class="col-12 float-left p-3"
     data-search="{{ route('RomanCamp.api.files.index') }}"
-    data-file="{{ route('RomanCamp.api.files.show', ['file' => 'fileId']) }}"
+    data-file="{{ route('RomanCamp.api.files.show', ['id' => 'fileId']) }}"
     data-upload="{{ route('RomanCamp.api.files.upload', ['type' => 'image']) }}"
-    data-restore="{{ route('RomanCamp.api.files.restore', ['file' => 'fileId']) }}"
+    data-restore="{{ route('RomanCamp.api.files.restore', ['id' => 'fileId']) }}"
     data-edit="{{ route('RomanCamp.files.edit', ['id' => 'fileId']) }}"
 >
 </div>

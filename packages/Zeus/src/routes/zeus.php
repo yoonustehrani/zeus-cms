@@ -65,26 +65,26 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
 
 Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['api']], function() {
     $namespace_prefix = '\\' . config('ZEC.controllers.namespace') . '\\Api\\';
-    $apiController = $namespace_prefix . 'ZeusBaseApiController';
+    $apiController_default = $namespace_prefix . 'ZeusBaseApiController';
     $data_types = ZeusFacade::model('DataType')::all();
     foreach ($data_types as $dataType) {
-        // $apiController = $dataType->controller ? \Illuminate\Support\Str::start($dataType->controller, '\\') : $apiController;
+        $apiController = $dataType->details && isset($dataType->details->api_controller) ? \Illuminate\Support\Str::start($dataType->details->api_controller, '\\') : $apiController_default;
         // // Route::get($dataType->slug.'/order', $apiController.'@order')->name($dataType->slug.'.order');
         // // Route::post($dataType->slug.'/action', $apiController.'@action')->name($dataType->slug.'.action');
         // // Route::post($dataType->slug.'/order', $apiController.'@update_order')->name($dataType->slug.'.update_order');
-        // // Route::get($dataType->slug.'/{id}/restore', $apiController.'@restore')->name($dataType->slug.'.restore');
+        Route::patch($dataType->slug.'/{id}/restore', $apiController.'@restore')->name($dataType->slug.'.restore');
         // // Route::get($dataType->slug.'/relation', $apiController.'@relation')->name($dataType->slug.'.relation');
         // // Route::post($dataType->slug.'/remove', $apiController.'@remove_media')->name($dataType->slug.'.media.remove');
-        $route = Route::resource($dataType->slug, $apiController);
-        if ($dataType->details && $dataType->controller && isset($dataType->details->routes)) {
-            if ($dataType->details->routes->only) {
-                $route->only($dataType->details->routes->only);
-            } elseif($dataType->details->routes->except) {
-                $route->except($dataType->details->routes->except);
+        $route = Route::apiResource($dataType->slug, $apiController);
+        if ($dataType->details && isset($dataType->details->api_controller) && isset($dataType->details->routes) && isset($dataType->details->routes->api)) {
+            if (isset($dataType->details->routes->api->only)) {
+                $route->only($dataType->details->routes->api->only);
+            } elseif(isset($dataType->details->routes->api->except)) {
+                $route->except($dataType->details->routes->api->except);
             }
-            if ($dataType->details->routes->auto) {
-                Route::resource($dataType->slug, $apiController)->only($dataType->details->routes->auto)->parameters([$dataType->slug => 'id']);
-            }
+            // if ($dataType->details->routes->api->auto) {
+            //     Route::resource($dataType->slug, $apiController)->only($dataType->details->routes->api->auto)->parameters([$dataType->slug => 'id']);
+            // }
         } else {
             $route->except(['create', 'edit']);
         }
@@ -95,7 +95,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['
     Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');
     Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
     Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
-    Route::resource('file-manager/files',  $namespace_prefix . 'FileManagerController')->except(['store']);
-    Route::patch('file-manager/files/{file}/restore', $namespace_prefix . 'FileManagerController@restore')->name('files.restore');
+    // Route::patch('file-manager/files/{file}/restore', $namespace_prefix . 'FileManagerController@restore')->name('files.restore');
     Route::post('file-manager/files/{type}/upload', $namespace_prefix . 'FileManagerController@store')->name('files.upload')->middleware('api');
 });
