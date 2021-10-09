@@ -25,11 +25,11 @@ mix.disableNotifications()
 // mix.react(res.js + 'app.js', pub.js)
 // .js(res.js + 'tools.js', pub.js)
 // mix.react(res.js + 'menu_builder.js', pub.js)
-// .js(res.js + 'tools.js', pub.js)
+mix.js(res.js + 'tools.js', pub.js)
 // mix.sass(res.sass + 'zeus/zeus.scss', pub.css)
-mix.sass(res.sass + 'zeus/files.scss', pub.css);
+// mix.sass(res.sass + 'zeus/files.scss', pub.css);
 // .sass(res.sass + 'zeus/zeus.scss', pub.css);
 
-mix.js(res.js + 'files.js', pub.js).react();
+// mix.js(res.js + 'files.js', pub.js).react();
 // mix.js(res.js + 'app.js', pub.js)
     // .js(res.js + 'select2.js', pub.js)

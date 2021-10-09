@@ -5,8 +5,14 @@
     <td class="text-left text-small">
         @if (isset($edit))
             <b>{{ $row['field'] }}</b> 
+            @if($row['required'])<br><span class="text-danger">required</span> @endif
+            @if($row['relationship'])
             <br>
-            @if($row['required']) <span class="text-danger">required</span> @endif
+            <a href="{{ route('RomanCamp.data_relationships.edit', ['id' => $row['relationship']['id']]) }}">
+                <p class="m-0 text-secondary"><i class="fas fa-ring"></i> relationship</p>
+                <p class="m-0 text-secondary">{{ $row['relationship']['type'] }}</p>
+            </a>
+            @endif
         @else
             <p>Field Name: <b>{{ $row['field'] }} @if($row['auto']) - Auto increaments @endif</b></p>
             <p>Type: ({{ $row['type'] }}) @if($row['required']) <span class="text-danger">required</span> @endif</p>

@@ -5,9 +5,19 @@ namespace Zeus\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class User extends Authenticatable
 {
+    use SearchableTrait;
+
+    protected $searchable = [
+        'columns' => [
+            'name' => 10,
+            'email' => 8,
+        ],
+    ];
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);

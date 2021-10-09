@@ -59,17 +59,11 @@ class ZeusBaseController extends Controller
     public function create(Request $request)
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('add_rows')->first();
-        foreach ($datatype->add_rows as $row) {
-            if ($row->relationship && $row->relationship->target_model && ! $row->relationship->dynamic) {
-                switch ($row->relationship->type) {
-                    case 'belongsTo':
-                    case 'belongsToMany':
-                        $data = \Zeus::getModel($row->relationship->target_model)->get();
-                        $row->data = $data;
-                        break;
-                }
-            }
-        }
+        // foreach ($datatype->add_rows as $row) {
+        //     if ($row->relationship && $row->relationship->target_model) {
+        //         $row->data = ! $row->relationship->dynamic ? \Zeus::getModel($row->relationship->target_model)->get() : [];
+        //     }
+        // }
         if ($request->debug) {
             return $datatype;
         }

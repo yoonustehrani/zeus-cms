@@ -18,6 +18,7 @@ class ZeusBaseApiController extends Controller
             $model = \Zeus::getModel($datatype->model_name);
             $details  = (array) $datatype->details;
             if ($details) {
+                $limit = $request->query('limit') ?? 10;
                 $orderBy = isset($details['order_column']) ? $details['order_column'] : false;
                 if ($request->sort_by) {
                     $orderBy = $request->sort_by;
@@ -29,10 +30,15 @@ class ZeusBaseApiController extends Controller
                 if ($orderBy) {
                     $model = $model->orderBy($orderBy, $orderDir);
                 }
-                if ($datatype->server_side) {
+
+                if ($request->query('q') && method_exists($datatype->model_name, 'scopeSearch')) {
+                    $model = $model->search($request->query('q'), null, true);
+                }
+
+                if ($datatype->server_side && !$request->query('limit') ) {
                     $data = (isset($details['paginate']) && is_numeric($details['paginate'])) ? $model->paginate($details['paginate']) : $model->paginate(20);
                 } else {
-                    $data = $orderBy ? $model->get() : $model->all();
+                    $data = $orderBy ? $model->limit($limit)->get() : $model->all();
                 }
                 
             } else {

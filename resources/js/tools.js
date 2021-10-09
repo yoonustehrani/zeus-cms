@@ -36,5 +36,26 @@ $('.must_be_select2').each(function() {
     let config = {};
     let place_holder = $(this).attr('data-placeholder');
     config.placeholder = place_holder ? place_holder : 'Select';
+    let ajaxURL = $(this).attr('data-ajax');
+    if (ajaxURL) {
+        console.log(ajaxURL);
+        config.ajax = {
+            url: ajaxURL,
+            dataType: 'json',
+            delay: 250,
+            minimumInputLength: 3,
+            data: params => ({q: params.term, limit: 10}),
+            processResults: (data) => ({
+                results:  $.map(data, function (item) {
+                    let keys = Object.keys(item)
+                    return {
+                        text: item.title || item.name || item[keys[1]],
+                        id: item.id
+                    }
+                })
+            }),
+            cache: true
+        }
+    }
     $(this).select2(config);
 })

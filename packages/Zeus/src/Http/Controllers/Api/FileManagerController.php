@@ -33,7 +33,7 @@ class FileManagerController extends Controller
         ]);
         
         $files = ($request->trash == 'true') ? ZeusFile::onlyTrashed() : new ZeusFile;
-        
+        $limit = $request->query('limit') ?? 10;
 
         if ($request->type && in_array($request->type, ['image', 'video', 'audio'])) {
             $files = $files->whereType($request->type);
@@ -57,7 +57,7 @@ class FileManagerController extends Controller
             $files = $files->search($request->query('q'), null, true);
         }
 
-        return $files->paginate(12);
+        return $request->query('limit') ? $files->limit($limit)->get() : $files->paginate(12);
     }
 
 

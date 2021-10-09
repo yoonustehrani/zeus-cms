@@ -25,13 +25,6 @@ class DataTypeController extends Controller
         'richtext' => 'Rich Text Editor',
         'selectbox' => 'Select Box',
         'selectbox-multiple' => 'Select Box Multi',
-        'relationship__hasOne' => 'Has One Relationship',
-        'relationship__hasMany' => 'Has Many Relationship',
-        'relationship__belongsTo' => 'Belongs To Relationship',
-        'relationship__belongsToMany' => 'Belongs To Many Relationship',
-        'relationship__morphOne' => 'Polymeric One to One Relationship',
-        'relationship__morphMany' => 'Polymeric One to Many Relationship',
-        'relationship__morphToMany' => 'Polymeric Many to Many Relationship',
     ];
     public $relations = [
         'hasOne',
@@ -125,7 +118,7 @@ class DataTypeController extends Controller
     }
     public function edit($table)
     {
-        $datatype = DataType::whereSlug($table)->with('rows')->firstOrFail();
+        $datatype = DataType::whereSlug($table)->with('rows.relationship')->firstOrFail();
         $types = $this->types;
         $scopes = null;
         $visibilities = $this->visibility;

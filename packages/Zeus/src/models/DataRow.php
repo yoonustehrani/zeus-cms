@@ -10,7 +10,7 @@ class DataRow extends Model
     public $timestamps = false;
     public function __str()
     {
-        return $this->data_type->name . "-" . $this->field;
+        return  $this->field . "@" . $this->data_type->name;
     }
     public function getDetailsAttribute($details) {
         return json_decode($details);

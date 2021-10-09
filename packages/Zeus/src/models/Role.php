@@ -3,9 +3,17 @@
 namespace Zeus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Role extends Model
 {
+    use SearchableTrait;
+    protected $searchable = [
+        'columns' => [
+            'title' => 10,
+            'name' => 8,
+        ],
+    ];
     public function __str()
     {
         return $this->title;
