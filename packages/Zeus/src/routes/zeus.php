@@ -14,7 +14,7 @@ Route::group(['as' => 'RomanCamp.', 'middleware' => ['auth','zeus.commanders']],
     Route::resource('datatypes/{datatype}/datarows', $namespace_prefix . 'DataRowController');
     Route::resource('database', $namespace_prefix . 'DatabaseController')->only('index');
     Route::prefix('menu-builder')->group(function() use($namespace_prefix) {
-        Route::get('/{menu}', $namespace_prefix . 'MenuBuilderController@edit')->name('menus.builder');
+        Route::get('/{id}', $namespace_prefix . 'Api\\MenuBuilderController@edit')->name('menus.builder');
     });
 
     try {
@@ -90,11 +90,9 @@ Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['
         }
         $route->parameters([$dataType->slug => 'id']);
     }
-    Route::get('menus/{menu}', $namespace_prefix . 'MenuBuilderController@show')->name('menu.show');
-    Route::put('menus/{menu}/items/update', $namespace_prefix . 'MenuBuilderController@updateMany')->name('menu.update');
-    Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menu.items.store');
-    Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@update')->name('menu.items.update');
-    Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menu.items.destroy');
+    Route::post('menus/{menu}/items', $namespace_prefix . 'MenuBuilderController@store')->name('menus.items.store');
+    Route::put('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@updateItem')->name('menus.items.update');
+    Route::delete('menus/{menu}/items/{menuItem}', $namespace_prefix . 'MenuBuilderController@destroy')->name('menus.items.destroy');
     // Route::patch('file-manager/files/{file}/restore', $namespace_prefix . 'FileManagerController@restore')->name('files.restore');
     Route::post('file-manager/files/{type}/upload', $namespace_prefix . 'FileManagerController@store')->name('files.upload')->middleware('api');
 });

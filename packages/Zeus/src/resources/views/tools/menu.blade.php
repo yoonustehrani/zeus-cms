@@ -1,10 +1,10 @@
 <nav>
     <ul class="horizental-menu col-12">
         @php
-            $menu = App\Menu::whereName('admin')->with([
+            $menu = \App\Menu::whereName('admin')->with([
                 'parent_items' => function($q) { $q->with('children')->orderBy('order', 'asc'); }
-            ])->first();
-            $extentions = \Zeus::get_extentions();
+            ])->firstOrFail();
+            $extentions = []; // \Zeus::get_extentions()
         @endphp
         @foreach ($menu->parent_items as $item)
             @if (count($item->children) < 1)

@@ -44,7 +44,8 @@ class ZeusBaseController extends Controller
             } else {
                 $data = $model->all();
             }
-            return view('ZEV::pages.default.index', compact('data', 'datatype'));
+            $actions = isset($details['actions']->index) ? $details['actions']->index : [];
+            return view('ZEV::pages.default.index', compact('data', 'datatype', 'actions'));
         } catch(\Exception $e) {
             throw $e;
             // abort(403, 'Model Name Not Right');

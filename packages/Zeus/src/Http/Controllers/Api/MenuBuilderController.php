@@ -1,6 +1,6 @@
 <?php
 
-namespace Zeus\Http\Controllers;
+namespace Zeus\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,12 +9,9 @@ use App\MenuItem;
 
 class MenuBuilderController extends Controller
 {
-    public function index()
+    public function edit($menu)
     {
-
-    }
-    public function edit(Menu $menu)
-    {
+        $menu = Menu::findOrFail($menu);
         return view('ZEV::pages.menus.builder', compact('menu'));
     }
     public function show($menu)
@@ -25,8 +22,9 @@ class MenuBuilderController extends Controller
         
         return $menu;
     }
-    public function store(Request $request, Menu $menu)
+    public function store(Request $request, $menu)
     {
+        $menu = Menu::findOrFail($menu);
         $menuItem = new MenuItem();
         $menuItem->title = $request->title;
         $menuItem->url   = $request->url ?: '';
@@ -38,8 +36,9 @@ class MenuBuilderController extends Controller
         $menuItem->children = [];
         return $menuItem;
     }
-    public function update(Request $request, Menu $menu, $menuItem)
+    public function updateItem(Request $request, $menu, $menuItem)
     {
+        $menu = Menu::findOrFail($menu);
         $menuItem = $menu->items()->findOrFail($menuItem);
         $menuItem->title = $request->title;
         $menuItem->url   = $request->url ?: '';
@@ -56,8 +55,9 @@ class MenuBuilderController extends Controller
             ]
         ]], 422);
     }
-    public function destroy(Menu $menu, $menuItem)
+    public function destroy($menu, $menuItem)
     {
+        $menu = Menu::findOrFail($menu);
         $menuItem = $menu->items()->findOrFail($menuItem);
         $target_order = $menuItem->order;
         try {
@@ -77,8 +77,9 @@ class MenuBuilderController extends Controller
             throw $e;
         }
     }
-    public function updateMany(Request $request, Menu $menu)
+    public function update(Request $request, $menu) // updateMany
     {
+        $menu = Menu::findOrFail($menu);
         $menu->load('items');
         $items = $request->items;
         $updateIds = array_keys($items);

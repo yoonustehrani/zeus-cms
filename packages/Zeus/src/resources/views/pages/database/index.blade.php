@@ -12,8 +12,8 @@
                 <th scope="col">Table Name</th>
                 <th scope="col"></th>
                 <th scope="col">Browse</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
+                {{-- <th scope="col">Edit</th>
+                <th scope="col">Delete</th> --}}
             </thead>
             <tbody>
                 @foreach ($tables as $table)
@@ -32,8 +32,8 @@
                                 <a class="btn btn-sm btn-warning" href="{{ route('RomanCamp.' . $table->slug . '.index') }}"><i class="fas fa-search"></i></a>
                             @endif
                         </td>
-                        <td><a class="btn btn-sm btn-primary" href=""><i class="fas fa-pencil-alt"></i></a></td>
-                        <td><a class="btn btn-sm btn-danger" href=""><i class="fas fa-trash"></i></a></td>
+                        {{-- <td><a class="btn btn-sm btn-primary" href=""><i class="fas fa-pencil-alt"></i></a></td>
+                        <td><a class="btn btn-sm btn-danger" href=""><i class="fas fa-trash"></i></a></td> --}}
                     </tr>
                 @endforeach
             </tbody>

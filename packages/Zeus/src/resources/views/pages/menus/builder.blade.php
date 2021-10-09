@@ -7,11 +7,11 @@
 @section('pagecontent')
     <div class="col-12 float-left p-3">
         <div 
-        data-menu-show="{{ route('Romancamp.api.menu.show', ['menu' => $menu->id]) }}" 
-        data-menu-update="{{ route('Romancamp.api.menu.update', ['menu' => $menu->id]) }}"
-        data-store="{{ route('Romancamp.api.menu.items.store', ['menu' => $menu->id]) }}"
-        data-update="{{ route('Romancamp.api.menu.items.update', ['menu' => $menu->id, 'menuItem' => 'menuItem']) }}"
-        data-destroy="{{ route('Romancamp.api.menu.items.destroy', ['menu' => $menu->id, 'menuItem' => 'menuItem']) }}"
+        data-menu-show="{{ route('RomanCamp.api.menus.show', ['id' => $menu->id]) }}" 
+        data-menu-update="{{ route('RomanCamp.api.menus.update', ['id' => $menu->id]) }}"
+        data-store="{{ route('RomanCamp.api.menus.items.store', ['menu' => $menu->id]) }}"
+        data-update="{{ route('RomanCamp.api.menus.items.update', ['menu' => $menu->id, 'menuItem' => 'menuItem']) }}"
+        data-destroy="{{ route('RomanCamp.api.menus.items.destroy', ['menu' => $menu->id, 'menuItem' => 'menuItem']) }}"
         id="react-menu_builder"></div>
     </div>
 @endsection

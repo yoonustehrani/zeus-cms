@@ -35,6 +35,11 @@
                     </a>
                 </th>
             @endforeach
+            @if ($actions)
+                @foreach ($actions as $action)
+                    <th scope="col">{{ $action->title }}</th>
+                @endforeach
+            @endif
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
         </thead>
@@ -54,6 +59,13 @@
                     @endif
                 </td>
                 @endforeach
+                @if ($actions)
+                    @foreach ($actions as $action)
+                        <td>
+                            @component('ZEV::components.actions.button', ['data' => $action->data, 'id' => $dt->id]) @endcomponent
+                        </td>
+                    @endforeach
+                @endif
                 <td><a class="btn btn-sm btn-outline-info" href="{{ route('RomanCamp.' . $datatype->slug . '.edit' , ['id' => $dt->id]) }}"><i class="fas fa-pencil-alt"></i></a></td>
                 <td>
                     <form action="{{ route('RomanCamp.' . $datatype->slug . '.destroy' , ['id' => $dt->id]) }}" method="post">
