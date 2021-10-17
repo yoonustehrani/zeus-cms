@@ -20,23 +20,35 @@
             </div>
             <input type="text" class="form-control" required value="{{ old('slug') ?: $table }}" name="slug" id="slug">
         </div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Datatype Name Singular</span>
+        <div class="col-12 float-left">
+            <p>Datatype Name :</p>
+            <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Singular</span>
+                </div>
+                <input type="text" class="form-control" required value="{{ old('display_name_singular') ?: ucwords(\Illuminate\Support\Str::singular($table)) }}" name="display_name_singular" id="display_name_singular">
             </div>
-            <input type="text" class="form-control" required value="{{ old('display_name_singular') ?: ucwords(\Illuminate\Support\Str::singular($table)) }}" name="display_name_singular" id="display_name_singular">
+            <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Plural</span>
+                </div>
+                <input type="text" class="form-control" required value="{{ old('display_name_plural') ?: ucwords(\Illuminate\Support\Str::plural($table)) }}" placeholder="Datatype Name Plural" name="display_name_plural" id="display_name_plural">
+            </div>
         </div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Datatype Name Plural</span>
+        <div class="col-12 float-left">
+            <p>Custom Controllers : </p>
+            <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Http</span>
+                </div>
+                <input type="text" class="form-control" value="{{ old('controller') }}" name="controller" id="controller">
             </div>
-            <input type="text" class="form-control" required value="{{ old('display_name_plural') ?: ucwords(\Illuminate\Support\Str::plural($table)) }}" placeholder="Datatype Name Plural" name="display_name_plural" id="display_name_plural">
-        </div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Icon</span>
+            <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Api</span>
+                </div>
+                <input type="text" class="form-control" value="{{ old('api_controller') }}" name="api_controller" id="api_controller">
             </div>
-            <input type="text" class="form-control" value="{{ old('icon') }}" placeholder="e.g. : `fas fa-user`" name="icon" id="icon">
         </div>
         <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
             <div class="input-group-prepend">
@@ -52,9 +64,9 @@
         </div>
         <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text">Controller</span>
+                <span class="input-group-text">Icon</span>
             </div>
-            <input type="text" class="form-control" value="{{ old('controller') }}" name="controller" id="controller">
+            <input type="text" class="form-control" value="{{ old('icon') }}" placeholder="e.g. : `fas fa-user`" name="icon" id="icon">
         </div>
         <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
             <div class="input-group-prepend">
@@ -86,45 +98,42 @@
                 @endforeach
             </select>
         </div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
+        {{-- <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
             @if ($scopes)
                 <div class="input-group-prepend">
                     <span class="input-group-text">Scope</span>
                 </div>
                 <select class="form-control" name="scope" id="scope">
-                    {{-- @foreach ($default_rows as $row)
+                    @foreach ($default_rows as $row)
                     <option @if(old('default_search_key') == $row['name']) selected @endif value="{{ $row['name'] }}">{{ $row['display_name'] }}</option>
-                    @endforeach --}}
+                    @endforeach
                 </select>
             @endif
-        </div>
-        <div class="col-12 float-left"></div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
-            <p class="w-100 float-left">Description: </p>
-            <textarea class="form-control" name="description" id="description" maxlength="400" placeholder="..." style="resize: none;" cols="30" rows="10">{{ old('description') }}</textarea>
-        </div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
-            <p class="w-100 float-left">Details in Json Format: </p>
-            <textarea class="form-control bg-dark text-warning json-code" style="resize: none;" name="details" id="details" spellcheck="false"
-            placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="10"></textarea>
-        </div>
-        <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
-            <div class="input-group-prepend">
-                <div class="input-group-text p-1 px-2">
-                    Generate Permissions : 
-                    <label style="margin-left:10px;" class="checkbox-c toggle-check mt-2" for="generate_permission">
-                        <input type="checkbox" name="generate_permission" checked id="generate_permission">
-                        <span class="check-handle"></span>
-                    </label>
-                </div>
+        </div> --}}
+        <div class="col-12 p-0 float-left">
+            <div class="input-group col-lg-5 col-md-6 col-12 float-left mb-3">
+                <p class="w-100 float-left">Details in Json Format: </p>
+                <textarea class="form-control bg-dark text-warning json-code" style="resize: none;" name="details" id="details" spellcheck="false"
+                placeholder="{{ "{\n\"foo\":\"bar\"\n}" }}" contenteditable="true" cols="30" rows="10"></textarea>
             </div>
-            <div class="input-group-prepend">
-                <div class="input-group-text p-1 px-2">
-                    Pagination : 
-                    <label style="margin-left:10px;" class="checkbox-c toggle-check mt-2" for="server_side">
-                        <input type="checkbox" name="server_side" id="server_side">
-                        <span class="check-handle"></span>
-                    </label>
+            <div class="input-group col-12 float-left mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text p-1 px-2">
+                        Generate Permissions : 
+                        <label style="margin-left:10px;" class="checkbox-c toggle-check mt-2" for="generate_permissions">
+                            <input type="checkbox" name="generate_permissions" checked id="generate_permissions">
+                            <span class="check-handle"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="input-group-prepend">
+                    <div class="input-group-text p-1 px-2">
+                        Pagination : 
+                        <label style="margin-left:10px;" class="checkbox-c toggle-check mt-2" for="pagination">
+                            <input type="checkbox" name="pagination" id="pagination">
+                            <span class="check-handle"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,7 +148,7 @@
                     <th scope="col">Custom Data</th>
                 </thead>
                 <tbody>
-                    @component('ZEV::pages.datatype.rows', ['rows' => $default_rows, 'types' => $types])@endcomponent
+                    @component('ZEV::pages.datatype.rows', ['rows' => $default_rows, 'types' => $types, 'edit' => false])@endcomponent
                 </tbody>
             </table>
         </div>

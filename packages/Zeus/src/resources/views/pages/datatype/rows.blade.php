@@ -1,9 +1,11 @@
 @foreach ($rows as $row)
+@php
+    $auto = $edit ? ($row['type'] == 'auto') : $row['auto'];
+@endphp
 <tr>
-    @if($row['required']) <input type="hidden" value="required" name="row_{{ $row['field'] }}_required"> @endif
     <th>{{ $loop->index + 1 }}</th>
     <td class="text-left text-small">
-        @if (isset($edit))
+        @if ($edit)
             <b>{{ $row['field'] }}</b> 
             @if($row['required'])<br><span class="text-danger">required</span> @endif
             @if($row['relationship'])
@@ -14,13 +16,20 @@
             </a>
             @endif
         @else
-            <p>Field Name: <b>{{ $row['field'] }} @if($row['auto']) - Auto increaments @endif</b></p>
+            <p>Field Name: <b>{{ $row['field'] }} @if($row['auto']) - Auto increments @endif</b></p>
             <p>Type: ({{ $row['type'] }}) @if($row['required']) <span class="text-danger">required</span> @endif</p>
             <p>Length: {{ $row['length'] ?: 'unlimited' }}</p>
         @endif
+        @if($row['required']) 
+            <input type="hidden" value="required" name="row_{{ $row['field'] }}_required">
+        @else
+            <label class="text-danger" for="row_{{ $row['field'] }}_required">required</label>
+            <input type="checkbox" id="row_{{ $row['field'] }}_required" name="row_{{ $row['field'] }}_required">
+            <br>
+        @endif
     </td>
     <td class="text-left">
-        @if (isset($edit))
+        @if ($edit)
             @foreach ($visiblities as $visiblity => $data)
             <label title="{{ $data }}" for="row_{{ $row['field'] }}_{{ $visiblity }}">{{ $visiblity }}</label>
             <input type="checkbox" id="row_{{ $row['field'] }}_{{ $visiblity }}" name="row_{{ $row['field'] }}_{{ $visiblity }}" @if($row[$visiblity]) checked @endif>
@@ -35,6 +44,7 @@
         @endif
     </td>
     <td>
+        @unless ($auto)
         <select class="form-control" name="row_{{ $row['field'] }}_type" id="row_{{ $row['field'] }}_type">
             @foreach ($types as $type => $name)
                 <option 
@@ -49,6 +59,7 @@
                 @endif value="{{ $type }}">{{ ucwords($name) }}</option>
             @endforeach
         </select>
+        @endunless
     </td>
     <td>
         <input type="text" class="form-control" value="{{ old($row['field'] . '_display_name') ?: $row['display_name'] }}" 

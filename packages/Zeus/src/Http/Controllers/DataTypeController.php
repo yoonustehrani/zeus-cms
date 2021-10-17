@@ -25,7 +25,8 @@ class DataTypeController extends Controller
         'richtext' => 'Rich Text Editor',
         'selectbox' => 'Select Box',
         'selectbox-multiple' => 'Select Box Multi',
-        'json' => 'Json Field'
+        'json' => 'Json Field',
+        'auto' => 'Auto Increment'
     ];
     public $relations = [
         'hasOne',
@@ -62,7 +63,8 @@ class DataTypeController extends Controller
                     $visiblities[$visibility] = ($visibility == 'add') ? [false, $detail] : [true, $detail];
                     break;
                 case 'password':
-                    $visiblities[$visibility] = ($visibility == 'browse') ? [false, $detail] : [true, $detail];
+                    $visiblities[$visibility] = in_array($visibility, ['browse', 'read']) ? [false, $detail] : [true, $detail];
+                    break;
                 default:
                     $visiblities[$visibility] = [true, $detail];
                     break;
@@ -70,8 +72,11 @@ class DataTypeController extends Controller
         }
         return $visiblities;
     }
-    protected function type_for_column($column_type, $column_name)
+    protected function type_for_column($column_type, $column_name, $auto = false)
     {
+        if ($auto) {
+            return ['auto', 'auto'];
+        }
         switch ($column_type) {
             case 'varchar':
                 if ($column_name == 'email') return ['input','email'];
@@ -116,7 +121,7 @@ class DataTypeController extends Controller
                 'default' => $detail['default'],
                 'required' => $detail['notnull'],
                 'length' => $detail['length'],
-                'suggested_type' => $this->type_for_column($detail['type'], $detail['name']),
+                'suggested_type' => $this->type_for_column($detail['type'], $detail['name'], $detail['autoincrement']),
                 'visiblities' => $this->visiblities_for_column($detail['type'], $detail['name'])
             ];
             $default_rows->push($info);
@@ -135,18 +140,17 @@ class DataTypeController extends Controller
     }
     public function store(Request $request, $table)
     {
-        return $request;
-        // abort_if(! (! \Zeus::model('DataType')::where('slug', $table)->first() && ZeusSchemaManager::tableExists($table)), 404);
-        // $request->validate([
-        //     'name' => 'required|string|min:3|max:60',
-        //     'slug' => 'required|string|min:3|max:60|unique:data_types',
-        //     'display_name_singular' => 'required|string|min:3|max:60',
-        //     'display_name_plural' => 'required|string|min:3|max:60',
-        //     'model_name' => 'required|string|min:3|max:60',
-        //     'policy_name' => 'max:60',
-        //     'controller' => 'max:60',
-        //     'model_name' => 'max:60',
-        // ]);
+        abort_if(! (! \Zeus::model('DataType')::where('slug', $table)->first() && ZeusSchemaManager::tableExists($table)), 404);
+        $request->validate([
+            'name' => 'required|string|min:3|max:60',
+            'slug' => 'required|string|min:3|max:60|unique:data_types',
+            'display_name_singular' => 'required|string|min:3|max:60',
+            'display_name_plural' => 'required|string|min:3|max:60',
+            'model_name' => 'required|string|min:3|max:60',
+            // 'policy_name' => 'max:60',
+            // 'controller' => 'max:60',
+            // 'model_name' => 'max:60',
+        ]);
         try {
             DB::beginTransaction();
             $datatype = new DataType;
@@ -158,26 +162,34 @@ class DataTypeController extends Controller
             $datatype->model_name = $request->model_name;
             $datatype->policy_name = $request->policy_name;
             $datatype->controller = $request->controller;
-            $datatype->description = $request->description;
-            $datatype->details = json_decode($request->details) ?: [];
-            $special_fields = ['server_side', 'generate_permission'];
-            foreach ($special_fields as $field) {
-                $datatype->{$field} = (! isset($request->{$field})) ? false : true;
-            }
+            $datatype->api_controller = $request->api_controller;
+            $datatype->details = $request->details ?: "[]";
+            $datatype->pagination = !! $request->pagination;
             $datatype->pushToDetails($request);
-            $datatype->save();
-            
+            // return $datatype;
             if ($datatype->save()) {
-
                 $datatype->createDataRows($request->all());
                 $menu = \Zeus::getModel('App\Menu')->whereName(config('ZEC.menus.main'))->firstOrFail();
-                $menuItem = \Zeus::getModel('App\MenuItem');
-                $menuItem = new $menuItem;
+                $menuItem_class = \Zeus::getModel('App\MenuItem');
+                $menuItem = new $menuItem_class;
                 $menuItem->title =  $datatype->display_name_plural;
                 $menuItem->icon_class = $datatype->icon;
                 $menuItem->order = $menu->generate_order();
                 $menuItem->route = "RomanCamp.{$datatype->slug}.index";
-                $menu->items()->create($menuItem->toArray());
+                $menu->items()->save($menuItem);
+                $children = ["All %s" => ['', "RomanCamp.{$datatype->slug}.index"], "Add new %s" => ['fas fa-plus', "RomanCamp.{$datatype->slug}.create"]];
+                $childrenItems = [];
+                $i = 0;
+                foreach ($children as $child => $detail) {
+                    $item = new $menuItem_class;
+                    $item->title = sprintf($child, $datatype->display_name_plural);
+                    $item->icon_class = $detail[0] ?? $datatype->icon;
+                    $item->order = $i++;
+                    $item->route = $detail[1];
+                    $item->parent_id = $menuItem->id;
+                    array_push($childrenItems, $item);
+                }
+                $menu->items()->saveMany($childrenItems);
             }
             DB::commit();
         } catch (\Exception $e) {
@@ -195,9 +207,9 @@ class DataTypeController extends Controller
             'display_name_singular' => 'required|string|min:3|max:60',
             'display_name_plural' => 'required|string|min:3|max:60',
             'model_name' => 'required|string|min:3|max:60',
-            'policy_name' => 'max:60',
-            'controller' => 'max:60',
-            'model_name' => 'max:60',
+            // 'policy_name' => 'max:60',
+            // 'controller' => 'max:60',
+            // 'model_name' => 'max:60',
         ]);
         try {
             DB::beginTransaction();
@@ -209,12 +221,9 @@ class DataTypeController extends Controller
             $datatype->model_name = $request->model_name;
             $datatype->policy_name = $request->policy_name;
             $datatype->controller = $request->controller;
-            $datatype->description = $request->description;
-            $datatype->details = json_decode($request->details) ?: [];
-            $special_fields = ['server_side', 'generate_permission'];
-            foreach ($special_fields as $field) {
-                $datatype->{$field} = (! isset($request->{$field})) ? false : true;
-            }
+            $datatype->api_controller = $request->api_controller;
+            $datatype->details = $request->details ?: "[]";
+            $datatype->pagination = !! $request->pagination;
             $datatype->pushToDetails($request);
             if ($datatype->save()) {
                 $datatype->updateDataRows($request->all());

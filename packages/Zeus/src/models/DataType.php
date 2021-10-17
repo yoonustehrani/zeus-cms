@@ -62,10 +62,11 @@ class DataType extends Model
     public function createDataRows($request_data)
     {
         $order = 0;
+        $rows = [];
         foreach ($this->getColumns() as $column) {
             $row = new DataRow();
             $row->required = isset($request_data["row_{$column}_required"]) ? true : false; 
-            $row->type = $request_data["row_{$column}_type"];
+            $row->type = isset($request_data["row_{$column}_type"]) ? $request_data["row_{$column}_type"] : 'auto';
             $row->field = $column;
             $row->order = $order;
             $row->display_name = $request_data["row_{$column}_display_name"];
@@ -73,14 +74,15 @@ class DataType extends Model
             foreach ($this->visibility as $visibility => $description) {
                 $row->{$visibility} = isset($request_data["row_{$column}_{$visibility}"]) ? true : false;
             }
-            $this->rows()->create($row->toArray());
+            array_push($rows, $row);
             $order++;
         }
+        $this->rows()->saveMany($rows);
     }
     public function updateDataRows($request_data)
     {
         foreach ($this->rows as $row) {
-            $row->type = $request_data["row_{$row->field}_type"];
+            $row->type = isset($request_data["row_{$row->field}_type"]) ? $request_data["row_{$row->field}_type"] : 'auto';
             $row->display_name = $request_data["row_{$row->field}_display_name"];
             $row->details = json_decode($request_data["row_{$row->field}_details"]) ?: [];
             foreach ($this->visibility as $visibility => $description) {
