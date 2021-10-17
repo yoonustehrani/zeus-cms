@@ -27,10 +27,10 @@ class DataTypeSeeder extends Seeder
                 'model_name' => $dt[2],
                 'policy_name' => '',
                 'controller' => $dt[3],
-                'description' => '',
-                'details' => null,
-                'generate_permission' => true,
-                'server_side' => true
+                // 'description' => '',
+                'details' => json_encode(json_decode("[]")),
+                // 'generate_permission' => true,
+                'pagination' => true
             ];
             DataType::create($dataType);
         }

@@ -25,7 +25,7 @@ class CreateDataRowsTable extends Migration
             $table->boolean('edit');
             $table->boolean('add');
             $table->boolean('delete');
-            $table->text('details')->nullable();
+            $table->json('details')->default(json_encode(json_decode('[]')));
             $table->integer('order');
             $table->foreign('data_type_id')->references('id')->on('data_types')->onDelete('cascade')->onUpdate('cascade');
         });

@@ -18,7 +18,7 @@ class CreateSettingsTable extends Migration
             $table->string('key')->unique();
             $table->string('display_name');
             $table->text('value');
-            $table->text('details')->nullable()->default(null);
+            $table->json('details')->default(json_encode(json_decode('[]')));
             $table->string('type');
             $table->integer('order')->default('1');
             $table->timestamps();

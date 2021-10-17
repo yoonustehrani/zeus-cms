@@ -23,7 +23,7 @@ class CreateMenuItemsTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->integer('order');
             $table->string('route')->nullable()->default(null);
-            $table->text('parameters')->nullable()->default(null);
+            $table->json('parameters')->default(json_encode(json_decode('[]')));
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade')->onUpdate('cascade');
         });
     }

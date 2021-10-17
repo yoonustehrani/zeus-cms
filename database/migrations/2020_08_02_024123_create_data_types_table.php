@@ -23,10 +23,12 @@ class CreateDataTypesTable extends Migration
             $table->string('model_name');
             $table->string('policy_name')->nullable();
             $table->string('controller')->nullable();
-            $table->string('description', 400)->nullable();
-            $table->boolean('generate_permission')->default(false);
-            $table->boolean('server_side')->default(true);
-            $table->text('details')->nullable();
+            $table->string('api_controller')->nullable();
+            $table->boolean('pagination')->nullable();
+            // $table->string('description', 400)->nullable();
+            // $table->boolean('generate_permission')->default(false);
+            // $table->boolean('server_side')->default(true);
+            $table->json('details')->default(json_encode(json_decode('[]')));
             $table->timestamps();
         });
     }

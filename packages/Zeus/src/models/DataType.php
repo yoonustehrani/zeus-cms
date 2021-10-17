@@ -57,7 +57,7 @@ class DataType extends Model
     }
     public function setDetailsAttribute($details)
     {
-        $this->attributes['details'] = json_encode($details);
+        $this->attributes['details'] = json_encode(json_decode($details));
     }
     public function createDataRows($request_data)
     {

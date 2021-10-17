@@ -25,6 +25,7 @@ class DataTypeController extends Controller
         'richtext' => 'Rich Text Editor',
         'selectbox' => 'Select Box',
         'selectbox-multiple' => 'Select Box Multi',
+        'json' => 'Json Field'
     ];
     public $relations = [
         'hasOne',
@@ -36,10 +37,10 @@ class DataTypeController extends Controller
         'morphToMany'
     ];
     public $visibility = [
-        'browse' => 'field will show up when you browse the current data',
-        'read' => 'field will show when you click to view the current data',
-        'edit' => 'field will be visible and allow you to edit the data',
-        'add'  => 'field will be visible when you choose to create a new data type'
+        'browse' => '%s will show up when you browse the current data',
+        'read' => '%s will show when you click to view the current data',
+        'edit' => '%s will be visible and allow you to edit the data',
+        'add'  => '%s will be visible when you choose to create a new data type'
     ];
     protected function display_name($name)
     {
@@ -51,12 +52,20 @@ class DataTypeController extends Controller
     {
         $visiblities = [];
         foreach ($this->visibility as $visibility => $detail) {
-            if ($column_name == 'id' || $column_name == 'updated_at') {
-                $visiblities[$visibility] = [false, $detail];
-            } elseif($column_name == 'created_at') {
-                $visiblities[$visibility] = ($visibility == 'add') ? [false, $detail] : [true, $detail];
-            } else {
-                $visiblities[$visibility] = [true, $detail];
+            $detail = sprintf($detail, $column_name);
+            switch ($column_name) {
+                case 'id':
+                case 'updated_at':
+                    $visiblities[$visibility] = [false, $detail];
+                    break;
+                case 'created_at':
+                    $visiblities[$visibility] = ($visibility == 'add') ? [false, $detail] : [true, $detail];
+                    break;
+                case 'password':
+                    $visiblities[$visibility] = ($visibility == 'browse') ? [false, $detail] : [true, $detail];
+                default:
+                    $visiblities[$visibility] = [true, $detail];
+                    break;
             }
         }
         return $visiblities;
@@ -126,17 +135,18 @@ class DataTypeController extends Controller
     }
     public function store(Request $request, $table)
     {
-        abort_if(! (! \Zeus::model('DataType')::where('slug', $table)->first() && ZeusSchemaManager::tableExists($table)), 404);
-        $request->validate([
-            'name' => 'required|string|min:3|max:60',
-            'slug' => 'required|string|min:3|max:60|unique:data_types',
-            'display_name_singular' => 'required|string|min:3|max:60',
-            'display_name_plural' => 'required|string|min:3|max:60',
-            'model_name' => 'required|string|min:3|max:60',
-            'policy_name' => 'max:60',
-            'controller' => 'max:60',
-            'model_name' => 'max:60',
-        ]);
+        return $request;
+        // abort_if(! (! \Zeus::model('DataType')::where('slug', $table)->first() && ZeusSchemaManager::tableExists($table)), 404);
+        // $request->validate([
+        //     'name' => 'required|string|min:3|max:60',
+        //     'slug' => 'required|string|min:3|max:60|unique:data_types',
+        //     'display_name_singular' => 'required|string|min:3|max:60',
+        //     'display_name_plural' => 'required|string|min:3|max:60',
+        //     'model_name' => 'required|string|min:3|max:60',
+        //     'policy_name' => 'max:60',
+        //     'controller' => 'max:60',
+        //     'model_name' => 'max:60',
+        // ]);
         try {
             DB::beginTransaction();
             $datatype = new DataType;

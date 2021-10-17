@@ -21,13 +21,13 @@ class MenuSeeder extends Seeder
                 'route' => 'RomanCamp.dashboard',
                 'title' => 'Dashboard',
                 'icon_class' => 'fas fa-home',
-                'parameters' => null,
+                'parameters' => json_encode(json_decode("[]")),
             ],
             [
                 'route' => 'RomanCamp.database.index',
                 'title' => 'Database',
                 'icon_class' => 'fas fa-database',
-                'parameters' => null,
+                'parameters' => json_encode(json_decode("[]")),
             ]
         ];
         foreach ($items as $i => $item) {

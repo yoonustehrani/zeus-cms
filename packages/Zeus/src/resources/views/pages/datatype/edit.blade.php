@@ -73,7 +73,7 @@
             </div>
             <select class="form-control" name="order_direction" id="order_direction" required>
                 @foreach (['asc', 'desc'] as $item)
-                <option  @if($item == $datatype->details->order_direction) selected @endif value="{{ $item }}">{{ $item }}</option>
+                {{-- <option  @if($item == $datatype->details->order_direction) selected @endif value="{{ $item }}">{{ $item }}</option> --}}
                 @endforeach
             </select>
         </div>
@@ -157,35 +157,35 @@
 
 @push('scripts')
     <script>
-        $('.json-code').on('keydown', function(e) {
-            if (e.keyCode === 9) {
-                e.preventDefault();
-                var cursorPos = $(this).prop('selectionStart');
-                console.log(cursorPos);
-                var v = $(this).val();
-                var textBefore = v.substring(0,  cursorPos);
-                var textAfter  = v.substring(cursorPos, v.length);
-                $(this).val(textBefore + '    ' + textAfter);
-                $(this).prop({
-                    'selectionStart': cursorPos + 4,
-                    'selectionEnd': cursorPos + 4
-                });
-            } else if (event.shiftKey) {
-                if (e.keyCode === 222 || e.keyCode === 219) {
-                    e.preventDefault();
-                    var cursorPos = $(this).prop('selectionStart');
-                    console.log(cursorPos);
-                    var v = $(this).val();
-                    var textBefore = v.substring(0,  cursorPos);
-                    var textAfter  = v.substring(cursorPos, v.length);
-                    let targettxt = (e.keyCode === 222) ? '""' : '{}'
-                    $(this).val(textBefore + targettxt + textAfter);
-                    $(this).prop({
-                        'selectionStart': cursorPos + 1,
-                        'selectionEnd': cursorPos + 1
-                    });
-                }
-            }
-        });
+        // $('.json-code').on('keydown', function(e) {
+        //     if (e.keyCode === 9) {
+        //         e.preventDefault();
+        //         var cursorPos = $(this).prop('selectionStart');
+        //         console.log(cursorPos);
+        //         var v = $(this).val();
+        //         var textBefore = v.substring(0,  cursorPos);
+        //         var textAfter  = v.substring(cursorPos, v.length);
+        //         $(this).val(textBefore + '    ' + textAfter);
+        //         $(this).prop({
+        //             'selectionStart': cursorPos + 4,
+        //             'selectionEnd': cursorPos + 4
+        //         });
+        //     } else if (event.shiftKey) {
+        //         if (e.keyCode === 222 || e.keyCode === 219) {
+        //             e.preventDefault();
+        //             var cursorPos = $(this).prop('selectionStart');
+        //             console.log(cursorPos);
+        //             var v = $(this).val();
+        //             var textBefore = v.substring(0,  cursorPos);
+        //             var textAfter  = v.substring(cursorPos, v.length);
+        //             let targettxt = (e.keyCode === 222) ? '""' : '{}'
+        //             $(this).val(textBefore + targettxt + textAfter);
+        //             $(this).prop({
+        //                 'selectionStart': cursorPos + 1,
+        //                 'selectionEnd': cursorPos + 1
+        //             });
+        //         }
+        //     }
+        // });
     </script>
 @endpush
