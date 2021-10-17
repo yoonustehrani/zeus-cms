@@ -177,12 +177,12 @@ class DataTypeController extends Controller
                 $menuItem->order = $menu->generate_order();
                 $menuItem->route = "RomanCamp.{$datatype->slug}.index";
                 $menu->items()->save($menuItem);
-                $children = ["All %s" => ['', "RomanCamp.{$datatype->slug}.index"], "Add new %s" => ['fas fa-plus', "RomanCamp.{$datatype->slug}.create"]];
+                $children = ["All {$datatype->display_name_plural}" => ['', "RomanCamp.{$datatype->slug}.index"], "Add new {$datatype->display_name_singular}" => ['fas fa-plus', "RomanCamp.{$datatype->slug}.create"]];
                 $childrenItems = [];
                 $i = 0;
                 foreach ($children as $child => $detail) {
                     $item = new $menuItem_class;
-                    $item->title = sprintf($child, $datatype->display_name_plural);
+                    $item->title = $child;
                     $item->icon_class = $detail[0] ?? $datatype->icon;
                     $item->order = $i++;
                     $item->route = $detail[1];
