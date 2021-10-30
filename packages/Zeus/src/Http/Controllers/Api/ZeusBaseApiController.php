@@ -18,37 +18,13 @@ class ZeusBaseApiController extends Controller
         $datatype = $this->getDataType($this->getSlug($request))->with('columns')->first();
         try {
             $model = \Zeus::getModel($datatype->model_name);
-            $details  = (array) $datatype->details;
-            return $details ? $this->index_process($request, $model, $datatype, $details) : $model->all();
-            // if ($details) {
-            //     $limit = $request->query('limit') ?? 10;
-            //     $orderBy = isset($details['order_column']) ? $details['order_column'] : false;
-            //     if ($request->sort_by) {
-            //         $orderBy = $request->sort_by;
-            //     }
-            //     $orderDir = (isset($details['order_direction']) && $details['order_direction'] == 'desc') ? 'desc' : 'asc'; 
-            //     if ($request->sort) {
-            //         $orderDir = $request->sort == 'asc' ? 'asc' : 'desc';
-            //     }
-            //     if ($orderBy) {
-            //         $model = $model->orderBy($orderBy, $orderDir);
-            //     }
-
-            //     if ($request->query('q') && method_exists($datatype->model_name, 'scopeSearch')) {
-            //         $model = $model->search($request->query('q'), null, true);
-            //     }
-
-            //     if ($datatype->server_side && !$request->query('limit') ) {
-            //         $data = (isset($details['paginate']) && is_numeric($details['paginate'])) ? $model->paginate($details['paginate']) : $model->paginate(20);
-            //     } else {
-            //         $model = $request->group_by ? $model->groupBy($model->group_by) : $model;
-            //         $data = $orderBy ? $model->limit($limit)->get() : $model->all();
-            //     }
-                
-            // } else {
-            //     $data = $model->all();
-            // }
-            // return $data;
+            $details  = $datatype->details;
+            if ($details) {
+                $data = $this->index_process($request, $model, $datatype, $details);
+            } else {
+                $data = $datatype->pagination ? $model->paginate(10) : $model->all();
+            }
+            return $data;
         } catch(\Exception $e) {
             throw $e;
             // abort(403, 'Model Name Not Right');

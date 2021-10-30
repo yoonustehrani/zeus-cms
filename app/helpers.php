@@ -16,3 +16,12 @@ if (! function_exists("sort_url_by")) {
     }
 }
 
+if (! function_exists("safe_route")) {
+    function safe_route($route, $parameters = [], $absolute = true) {
+        try {
+            return route($route, $parameters, $absolute);
+        } catch (\Exception $err) {
+            return "";
+        }
+    }
+}

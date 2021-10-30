@@ -68,7 +68,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['
     $apiController_default = $namespace_prefix . 'ZeusBaseApiController';
     $data_types = ZeusFacade::model('DataType')::all();
     foreach ($data_types as $dataType) {
-        $apiController = $dataType->details && isset($dataType->details->api_controller) ? \Illuminate\Support\Str::start($dataType->details->api_controller, '\\') : $apiController_default;
+        $apiController = $dataType->details && isset($dataType->api_controller) ? \Illuminate\Support\Str::start($dataType->api_controller, '\\') : $apiController_default;
         // // Route::get($dataType->slug.'/order', $apiController.'@order')->name($dataType->slug.'.order');
         // // Route::post($dataType->slug.'/action', $apiController.'@action')->name($dataType->slug.'.action');
         // // Route::post($dataType->slug.'/order', $apiController.'@update_order')->name($dataType->slug.'.update_order');
@@ -76,7 +76,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'RomanCamp.api.', 'middleware' => ['
         // // Route::get($dataType->slug.'/relation', $apiController.'@relation')->name($dataType->slug.'.relation');
         // // Route::post($dataType->slug.'/remove', $apiController.'@remove_media')->name($dataType->slug.'.media.remove');
         $route = Route::apiResource($dataType->slug, $apiController);
-        if ($dataType->details && isset($dataType->details->api_controller) && isset($dataType->details->routes) && isset($dataType->details->routes->api)) {
+        if ($dataType->details && isset($dataType->api_controller) && isset($dataType->details->routes) && isset($dataType->details->routes->api)) {
             if (isset($dataType->details->routes->api->only)) {
                 $route->only($dataType->details->routes->api->only);
             } elseif(isset($dataType->details->routes->api->except)) {

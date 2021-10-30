@@ -21,7 +21,7 @@
                     </p>
                     <ul>
                     @foreach ($item->children as $child)
-                        <li class="sub"><a href="{{ ($child->route) ? route($child->route) : $child->url }}"><i class="{{ $child->icon_class ?: '' }}"></i>{{ $child->title }}</a></li>
+                        <li class="sub"><a href="{{ ($child->route) ? safe_route($child->route) : $child->url }}"><i class="{{ $child->icon_class ?: '' }}"></i>{{ $child->title }}</a></li>
                     @endforeach
                     </ul>
                 </li>

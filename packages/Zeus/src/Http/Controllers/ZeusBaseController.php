@@ -4,9 +4,11 @@ namespace Zeus\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Zeus\Traits\RequestProcess;
 
 class ZeusBaseController extends Controller
 {
+    use RequestProcess;
     /**
      * Display a listing of the resource.
      *
@@ -20,31 +22,18 @@ class ZeusBaseController extends Controller
     public function index(Request $request)
     {
         $datatype = $this->getDataType($this->getSlug($request))->with('columns')->first();
+        $request->validate([
+            'q' => 'nullable|min:3|max:60'
+        ]);
         try {
             $model = \Zeus::getModel($datatype->model_name);
-            $details  = (array) $datatype->details;
+            $details  = $datatype->details;
             if ($details) {
-                $orderBy = isset($details['order_column']) ? $details['order_column'] : false;
-                if ($request->sort_by) {
-                    $orderBy = $request->sort_by;
-                }
-                $orderDir = (isset($details['order_direction']) && $details['order_direction'] == 'desc') ? 'desc' : 'asc'; 
-                if ($request->sort) {
-                    $orderDir = $request->sort == 'asc' ? 'asc' : 'desc';
-                }
-                if ($orderBy) {
-                    $model = $model->orderBy($orderBy, $orderDir);
-                }
-                if ($datatype->server_side) {
-                    $data = (isset($details['paginate']) && is_numeric($details['paginate'])) ? $model->paginate($details['paginate']) : $model->paginate(20);
-                } else {
-                    $data = $orderBy ? $model->get() : $model->all();
-                }
-                
+                $data = $this->index_process($request, $model, $datatype, $details);
             } else {
-                $data = $model->all();
+                $data = $datatype->pagination ? $model->paginate(10) : $model->all();
             }
-            $actions = isset($details['actions']->index) ? $details['actions']->index : [];
+            $actions = isset($details->actions->index) ?: [];
             return view('ZEV::pages.default.index', compact('data', 'datatype', 'actions'));
         } catch(\Exception $e) {
             throw $e;

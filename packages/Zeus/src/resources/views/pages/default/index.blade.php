@@ -19,6 +19,12 @@
             <a class="btn btn-sm btn-outline-info ml-2" href="{{ request()->page ? $current_url . '?page=' . request()->page : $current_url  }}"><i class="fas fa-undo-alt"></i></a>
         </p>
     @endif
+    <form class="col-lg-5 col-sm-6 col-12 mt-4 mb-3 input-group" method="get">
+        <input name="q" type="text" class="form-control" placeholder="{{ __('Search for') . ' ' . __($datatype->display_name_plural) }}" value="{{ request()->query('q') }}">
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
     <table class="table table-bordered table-sm text-center float-left">
         <thead class="thead-dark">
             <th scope="col">#</th>
@@ -79,7 +85,7 @@
         </tbody>
     </table>
     <div class="col-12 float-left text-center">
-        @if ($datatype->server_side)
+        @if ($datatype->pagination)
             {!! $data->withQueryString()->links() !!}
         @endif
     </div>
